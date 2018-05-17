@@ -1,0 +1,28 @@
+package ua.training.controller.commands.action.purge;
+
+import ua.training.constant.Attributes;
+import ua.training.constant.Pages;
+import ua.training.controller.commands.Command;
+import ua.training.controller.commands.utils.CommandsUtil;
+
+import javax.servlet.http.HttpServletRequest;
+
+/**
+ * Description: This class delete users ration composition
+ *
+ * @author Zakusylo Pavlo
+ */
+public class DeleteUsersComposition implements Command {
+    @Override
+    public String execute(HttpServletRequest request) {
+        String[] arrDish = request
+                .getParameter(Attributes.REQUEST_ARR_COMPOSITION)
+                .split(",");
+
+        Integer[] idDishes = CommandsUtil.stringArrayToInteger(arrDish);
+
+        RATION_COMPOSITION_SERVICE_IMP.deleteArrayCompositionById(idDishes);
+
+        return Pages.DAY_RATION_REDIRECT;
+    }
+}

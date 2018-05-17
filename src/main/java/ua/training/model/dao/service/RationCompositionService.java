@@ -1,0 +1,25 @@
+package ua.training.model.dao.service;
+
+import ua.training.model.entity.RationComposition;
+import ua.training.model.entity.enums.FoodIntake;
+
+import java.util.Optional;
+
+public interface RationCompositionService extends Service {
+    void insertNewDayRation(RationComposition entity);
+
+    Integer sumCaloriesCompositionByRationId(Integer idDayRation);
+
+    Optional<RationComposition> getCompositionByRationDishFoodIntake(Integer rationId,
+                                                                     FoodIntake foodIntake,
+                                                                     Integer dishId);
+
+    void updateCompositionById(RationComposition entity);
+
+    void updateCompositionAmountOfDish(RationComposition entity);
+
+    void deleteArrayCompositionById(Integer[] compositionId);
+
+    Optional<RationComposition> getCompositionById(Integer compositionId);
+
+}
