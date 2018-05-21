@@ -4,11 +4,9 @@ import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
 import ua.training.controller.commands.exception.DataSqlException;
 import ua.training.model.dao.RationCompositionDao;
-import ua.training.model.dao.mapper.DayRationMapper;
 import ua.training.model.dao.mapper.DishMapper;
 import ua.training.model.dao.mapper.RationCompositionMapper;
-import ua.training.model.dao.utils.QueryUtil;
-import ua.training.model.entity.DayRation;
+import ua.training.model.dao.utility.QueryUtil;
 import ua.training.model.entity.Dish;
 import ua.training.model.entity.RationComposition;
 import ua.training.model.entity.enums.FoodIntake;
@@ -27,7 +25,6 @@ public class JDBCRationCompositionDao implements RationCompositionDao {
      */
     private Connection connection;
     private RationCompositionMapper rationCompositionMapper = new RationCompositionMapper();
-    private DayRationMapper dayRationMapper = new DayRationMapper();
     private DishMapper dishMapper = new DishMapper();
 
     public JDBCRationCompositionDao(Connection connection) {
@@ -44,6 +41,7 @@ public class JDBCRationCompositionDao implements RationCompositionDao {
             ps.setInt(3, entity.getDish().getId());
             ps.setInt(4, entity.getNumberOfDish());
             ps.setInt(5, entity.getCaloriesOfDish());
+
             ps.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_NOT_INSERTED);
@@ -59,11 +57,13 @@ public class JDBCRationCompositionDao implements RationCompositionDao {
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
 
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 rationComposition = Optional.ofNullable(rationCompositionMapper.extractFromResultSet(rs));
             }
+
+            rs.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_GET_BY_ID);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
@@ -75,27 +75,17 @@ public class JDBCRationCompositionDao implements RationCompositionDao {
     @Override
     public List<RationComposition> findAll() {
         List<RationComposition> rationCompositions = new ArrayList<>();
-        Map<Integer, DayRation> dayRations = new HashMap<>();
-        Map<Integer, Dish> dishes = new HashMap<>();
         String query = DB_PROPERTIES.getAllComposition();
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ResultSet rs = ps.executeQuery();
 
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Optional<RationComposition> rationComposition = Optional.ofNullable(rationCompositionMapper.extractFromResultSet(rs));
-                Optional<DayRation> dayRation = Optional.ofNullable(dayRationMapper.extractFromResultSet(rs));
-                Optional<Dish> dish = Optional.ofNullable(dishMapper.extractFromResultSet(rs));
-
-                if (rationComposition.isPresent()) {
-                    dayRation.ifPresent(dr -> rationComposition.get()
-                            .setDayRation(dayRationMapper.makeUnique(dayRations, dr)));
-                    dish.ifPresent(d -> rationComposition.get()
-                            .setDish(dishMapper.makeUnique(dishes, d)));
-
-                    rationCompositions.add(rationComposition.get());
-                }
+                rationComposition.ifPresent(rationCompositions::add);
             }
+
+            rs.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_GET_ALL);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
@@ -115,6 +105,7 @@ public class JDBCRationCompositionDao implements RationCompositionDao {
             ps.setInt(4, entity.getNumberOfDish());
             ps.setInt(5, entity.getCaloriesOfDish());
             ps.setInt(6, entity.getId());
+
             ps.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_NOT_UPDATE_PARAMETERS);
@@ -128,6 +119,7 @@ public class JDBCRationCompositionDao implements RationCompositionDao {
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, id);
+
             ps.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_DELETE_BY_ID);
@@ -159,11 +151,13 @@ public class JDBCRationCompositionDao implements RationCompositionDao {
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, idDayRation);
-            ResultSet rs = ps.executeQuery();
 
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 sumCalories = rs.getInt(Attributes.SQL_SUM);
             }
+
+            rs.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_SUM_CALORIES_BY_RATION);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
@@ -190,16 +184,17 @@ public class JDBCRationCompositionDao implements RationCompositionDao {
             ps.setInt(1, rationId);
             ps.setString(2, foodIntake.toString());
             ps.setInt(3, dishId);
-            ResultSet rs = ps.executeQuery();
 
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 rationComposition = Optional.ofNullable(rationCompositionMapper.extractFromResultSet(rs));
             }
+
+            rs.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_GET_BY_RATION_AND_DISH);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
-
         return rationComposition;
     }
 
@@ -219,8 +214,8 @@ public class JDBCRationCompositionDao implements RationCompositionDao {
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, rationId);
-            ResultSet rs = ps.executeQuery();
 
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Optional<RationComposition> rationComposition = Optional.ofNullable(rationCompositionMapper.extractFromResultSet(rs));
                 Optional<Dish> dish = Optional.ofNullable(dishMapper.extractFromResultSet(rs));
@@ -233,6 +228,8 @@ public class JDBCRationCompositionDao implements RationCompositionDao {
                     rationCompositions.add(rationComposition.get());
                 }
             }
+
+            rs.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_GET_BY_RATION);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
@@ -278,6 +275,7 @@ public class JDBCRationCompositionDao implements RationCompositionDao {
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, entity.getNumberOfDish());
             ps.setInt(2, entity.getId());
+
             ps.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_NOT_UPDATE_PARAMETERS);

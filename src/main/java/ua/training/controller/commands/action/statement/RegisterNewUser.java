@@ -5,7 +5,7 @@ import ua.training.constant.Mess;
 import ua.training.constant.Pages;
 import ua.training.controller.commands.Command;
 import ua.training.controller.commands.exception.DataHttpException;
-import ua.training.controller.commands.utils.CommandsUtil;
+import ua.training.controller.commands.utility.CommandsUtil;
 import ua.training.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;

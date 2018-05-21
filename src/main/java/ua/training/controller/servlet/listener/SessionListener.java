@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import java.util.HashSet;
+import java.util.Optional;
 
 /**
  * Description: Listener for session after timeout
@@ -24,9 +25,9 @@ public class SessionListener implements HttpSessionListener {
 
     @Override
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
-        User user = (User) httpSessionEvent.getSession().getAttribute(Attributes.REQUEST_USER);
+        Optional<User> user = Optional.ofNullable((User) httpSessionEvent.getSession().getAttribute(Attributes.REQUEST_USER));
         allUsers = (HashSet<String>) httpSessionEvent.getSession().getServletContext().getAttribute(Attributes.REQUEST_USERS_ALL);
-        allUsers.remove(user.getEmail());
+        user.ifPresent(u -> allUsers.remove(u.getEmail()));
         httpSessionEvent.getSession().getServletContext().setAttribute(Attributes.REQUEST_USERS_ALL, allUsers);
     }
 }

@@ -422,7 +422,7 @@
                                         &nbsp;
                                         <button type="button" class="btn btn-sm bg-transparent">
                                             <fmt:message key="page.chosenCalories"/> =
-                                            <span class="badge badge-dark" id='resultChosenCalories'>0</span>
+                                            <span class="badge badge-secondary" id='resultChosenCalories'>0</span>
                                         </button>
                                     </div>
                                 </div>

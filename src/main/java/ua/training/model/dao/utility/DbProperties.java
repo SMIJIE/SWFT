@@ -1,4 +1,4 @@
-package ua.training.model.dao.utils;
+package ua.training.model.dao.utility;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -215,6 +215,10 @@ public class DbProperties {
         return props.getProperty(Attributes.DB_SQL_RATION_COMPOSITION_DELETE_BY_ID);
     }
 
+    public String deleteCompositionByDayRationId() {
+        return props.getProperty(Attributes.DB_SQL_RATION_COMPOSITION_DELETE_BY_DAY_RATION_ID);
+    }
+
     public String deleteArrayCompositionById() {
         return props.getProperty(Attributes.DB_SQL_RATION_COMPOSITION_DELETE_ARRAY_BY_ID);
     }
@@ -225,6 +229,10 @@ public class DbProperties {
 
     public String deleteCompositionByRationAndUser() {
         return props.getProperty(Attributes.DB_SQL_RATION_COMPOSITION_DELETE_BY_RATION_AND_USER);
+    }
+
+    public String deleteCompositionArrayByDishAndUser() {
+        return props.getProperty(Attributes.SQL_RATION_COMPOSITION_DELETE_ARRAY_BY_DISH_AND_USER);
     }
 
     public String deleteCompositionArrayByDish() {

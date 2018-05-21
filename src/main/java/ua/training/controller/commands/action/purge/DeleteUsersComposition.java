@@ -3,7 +3,7 @@ package ua.training.controller.commands.action.purge;
 import ua.training.constant.Attributes;
 import ua.training.constant.Pages;
 import ua.training.controller.commands.Command;
-import ua.training.controller.commands.utils.CommandsUtil;
+import ua.training.controller.commands.utility.CommandsUtil;
 
 import javax.servlet.http.HttpServletRequest;
 

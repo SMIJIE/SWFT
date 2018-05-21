@@ -1,7 +1,7 @@
 package ua.training.model.dao.implemation;
 
 import org.apache.commons.dbcp.BasicDataSource;
-import ua.training.model.dao.utils.DbProperties;
+import ua.training.model.dao.utility.DbProperties;
 
 import javax.sql.DataSource;
 
@@ -34,8 +34,9 @@ public class ConnectionPoolHolder {
                     ds.setUrl(dbProperties.getUrl());
                     ds.setUsername(dbProperties.getUser());
                     ds.setPassword(dbProperties.getPassword());
+                    ds.setMaxActive(20);
                     ds.setMinIdle(5);
-                    ds.setMaxIdle(10);
+                    ds.setMaxIdle(20);
                     ds.setMaxOpenPreparedStatements(100);
                     dataSource = ds;
                 }

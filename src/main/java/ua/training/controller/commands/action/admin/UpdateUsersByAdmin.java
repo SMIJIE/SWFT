@@ -3,7 +3,7 @@ package ua.training.controller.commands.action.admin;
 import ua.training.constant.Attributes;
 import ua.training.constant.Pages;
 import ua.training.controller.commands.Command;
-import ua.training.model.dao.utils.PasswordEncoder;
+import ua.training.model.dao.utility.PasswordEncoder;
 import ua.training.model.entity.User;
 import ua.training.model.entity.enums.Roles;
 

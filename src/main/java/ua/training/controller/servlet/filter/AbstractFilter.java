@@ -1,5 +1,7 @@
 package ua.training.controller.servlet.filter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ua.training.constant.Attributes;
 import ua.training.model.entity.User;
 
@@ -18,6 +20,13 @@ import java.util.Optional;
  * @see FilterChain
  */
 public abstract class AbstractFilter implements Filter {
+    /**
+     * Logger for AbstractFilter classes
+     *
+     * @see LogManager
+     */
+    Logger LOGGER = LogManager.getLogger(AbstractFilter.class);
+
     @Override
     public void init(FilterConfig filterConfig) {
     }

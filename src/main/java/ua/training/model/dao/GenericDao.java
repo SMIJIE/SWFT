@@ -2,7 +2,7 @@ package ua.training.model.dao;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ua.training.model.dao.utils.DbProperties;
+import ua.training.model.dao.utility.DbProperties;
 
 import java.util.List;
 import java.util.Optional;

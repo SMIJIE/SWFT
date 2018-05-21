@@ -26,15 +26,12 @@ public class ListUsersPage implements Command {
 
         Integer numPage = isNullOrEmpty(attrPage) ? sessionPage : Integer.valueOf(attrPage);
 
-//        Integer attrForPage = (Integer) request.getSession().getAttribute(Attributes.REQUEST_NUMBER_USERS);
-//        Integer forPage = isNull(attrForPage) ? 1 : attrForPage;
         Integer numberUsers = USER_SERVICE_IMP.countUsers(user.getId());
         Integer maxPage = (int) Math.round(((numberUsers / 6) + 0.5));
-        Integer pageForSQL = numPage < 1 ? 1 : numPage > maxPage ? maxPage : numPage;
+        Integer pageForSQL = numPage < 1 ? 1 : (numPage > maxPage ? maxPage : numPage);
 
         List<User> listUsers = USER_SERVICE_IMP.getLimitUsersWithoutAdmin(user.getId(), 6, 6 * (pageForSQL - 1));
         listUsers.sort(Comparator.comparing(User::getEmail));
-
 
         request.getSession().setAttribute(Attributes.REQUEST_LIST_USERS, listUsers);
         request.getSession().setAttribute(Attributes.REQUEST_NUMBER_USERS, numberUsers);

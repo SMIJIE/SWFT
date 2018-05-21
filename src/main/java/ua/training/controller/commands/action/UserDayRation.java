@@ -3,6 +3,7 @@ package ua.training.controller.commands.action;
 import ua.training.constant.Attributes;
 import ua.training.constant.Pages;
 import ua.training.controller.commands.Command;
+import ua.training.controller.commands.utility.CommandsUtil;
 import ua.training.model.entity.DayRation;
 import ua.training.model.entity.Dish;
 import ua.training.model.entity.RationComposition;
@@ -11,7 +12,6 @@ import ua.training.model.entity.User;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,8 +37,7 @@ public class UserDayRation implements Command {
         }
 
         usersDishes.addAll(generalDishes);
-        usersDishes.sort(Comparator.comparing(Dish::getFoodCategory)
-                .thenComparing(Dish::getCalories));
+        CommandsUtil.sortListByAnnotationFields(usersDishes);
 
         dayRationSql = DAY_RATION_SERVICE_IMP.checkDayRationByDateAndUserId(LocalDate.now(), user.getId());
         if (dayRationSql.isPresent()) {
@@ -51,6 +50,7 @@ public class UserDayRation implements Command {
         request.getSession().setAttribute(Attributes.REQUEST_USERS_DISHES, usersDishes);
         request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_DATA, Attributes.PAGE_USER_NON_ERROR_DATA);
         request.getSession().setAttribute(Attributes.PAGE_NAME, Attributes.PAGE_RATION);
+
         return Pages.DAY_RATION;
     }
 }

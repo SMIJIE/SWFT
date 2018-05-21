@@ -1,4 +1,4 @@
-package ua.training.model.dao.utils;
+package ua.training.model.dao.utility;
 
 /**
  * Description: Class that add attributes for query with clause 'IN"

@@ -7,7 +7,7 @@ import ua.training.model.dao.UserDao;
 import ua.training.model.dao.mapper.DayRationMapper;
 import ua.training.model.dao.mapper.UserMapper;
 import ua.training.model.dao.service.implementation.DayRationServiceImp;
-import ua.training.model.dao.utils.QueryUtil;
+import ua.training.model.dao.utility.QueryUtil;
 import ua.training.model.entity.DayRation;
 import ua.training.model.entity.User;
 
@@ -47,6 +47,7 @@ public class JDBCUserDao implements UserDao {
             ps.setInt(7, entity.getWeight());
             ps.setInt(8, entity.getWeightDesired());
             ps.setInt(9, entity.getLifeStyleCoefficient());
+
             ps.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_USER_NOT_REGISTERED);
@@ -61,10 +62,13 @@ public class JDBCUserDao implements UserDao {
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, id);
+
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 user = Optional.ofNullable(userMapper.extractFromResultSet(rs));
             }
+
+            rs.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_USER_GET_BY_ID);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
@@ -78,13 +82,14 @@ public class JDBCUserDao implements UserDao {
         List<User> users = new ArrayList<>();
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ResultSet rs = ps.executeQuery();
 
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 User user = userMapper.extractFromResultSet(rs);
                 users.add(user);
             }
 
+            rs.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_USER_GET_ALL);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
@@ -130,7 +135,6 @@ public class JDBCUserDao implements UserDao {
             }
 
             connection.commit();
-            connection.setAutoCommit(true);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_USER_NOT_UPDATE_PARAMETERS);
             try {
@@ -155,20 +159,19 @@ public class JDBCUserDao implements UserDao {
              PreparedStatement drc = connection.prepareStatement(deleteRationComposition)) {
             connection.setAutoCommit(false);
 
-            dd.setInt(1, id);
-            dd.executeUpdate();
-
             drc.setInt(1, id);
-            dd.executeUpdate();
+            drc.executeUpdate();
 
             ddr.setInt(1, id);
+            ddr.executeUpdate();
+
+            dd.setInt(1, id);
             dd.executeUpdate();
 
             du.setInt(1, id);
             du.executeUpdate();
 
             connection.commit();
-            connection.setAutoCommit(true);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_USER_DELETE_BY_ID);
             try {
@@ -176,6 +179,16 @@ public class JDBCUserDao implements UserDao {
             } catch (SQLException r) {
                 LOGGER.error(r.getMessage() + Mess.LOG_USER_DELETE_ROLLBACK);
             }
+            throw new DataSqlException(Attributes.SQL_EXCEPTION);
+        }
+    }
+
+    @Override
+    public void close() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage() + Mess.LOG_CONNECTION_NOT_CLOSE);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
     }
@@ -193,13 +206,14 @@ public class JDBCUserDao implements UserDao {
         Optional<User> user = Optional.empty();
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
-
             ps.setString(1, email.toLowerCase());
-            ResultSet rs = ps.executeQuery();
 
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 user = Optional.ofNullable(userMapper.extractFromResultSet(rs));
             }
+
+            rs.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_USER_GET_OR_CHECK);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
@@ -228,12 +242,12 @@ public class JDBCUserDao implements UserDao {
             ps.setInt(3, skip);
 
             ResultSet rs = ps.executeQuery();
-
             while (rs.next()) {
                 User user = userMapper.extractFromResultSet(rs);
                 users.add(user);
             }
 
+            rs.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_USER_GET_BY_ID);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
@@ -255,11 +269,13 @@ public class JDBCUserDao implements UserDao {
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, userId);
-            ResultSet rs = ps.executeQuery();
 
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 counter = rs.getInt(Attributes.SQL_COUNTER);
             }
+
+            rs.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_USER_COUNT);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
@@ -297,14 +313,14 @@ public class JDBCUserDao implements UserDao {
             drc.executeUpdate();
 
             for (int i = 0; i < emails.length; i++) {
-                dd.setString((i + 1), emails[i].toLowerCase());
-            }
-            dd.executeUpdate();
-
-            for (int i = 0; i < emails.length; i++) {
                 ddr.setString((i + 1), emails[i].toLowerCase());
             }
             ddr.executeUpdate();
+
+            for (int i = 0; i < emails.length; i++) {
+                dd.setString((i + 1), emails[i].toLowerCase());
+            }
+            dd.executeUpdate();
 
             for (int i = 0; i < emails.length; i++) {
                 du.setString((i + 1), emails[i].toLowerCase());
@@ -312,7 +328,6 @@ public class JDBCUserDao implements UserDao {
             du.executeUpdate();
 
             connection.commit();
-            connection.setAutoCommit(true);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_USER_DELETE_BY_EMAIL);
             try {
@@ -345,19 +360,10 @@ public class JDBCUserDao implements UserDao {
             ps.setInt(8, entity.getWeightDesired());
             ps.setInt(9, entity.getLifeStyleCoefficient());
             ps.setInt(10, entity.getId());
+
             ps.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_USER_NOT_UPDATE_PARAMETERS);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
-        }
-    }
-
-    @Override
-    public void close() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_CONNECTION_NOT_CLOSE);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
     }

@@ -23,6 +23,8 @@ public class PageFilterAdminTest {
     @Mock
     private HttpServletRequest requestRegisterUser;
     @Mock
+    private HttpServletRequest requestRegisterAdmin;
+    @Mock
     private HttpServletRequest requestNonRegisterUser;
     @Mock
     private HttpServletResponse response;
@@ -40,17 +42,20 @@ public class PageFilterAdminTest {
         PageFilterAdmin pageFilterAdmin = new PageFilterAdmin();
 
         when(user.getRole()).thenReturn(Roles.ADMIN);
-        pageFilterAdmin.filter(requestRegisterUser, response, chain, Optional.of(user));
-        verify(chain, times(1)).doFilter(requestRegisterUser, response);
+        pageFilterAdmin.filter(requestRegisterAdmin, response, chain, Optional.of(user));
+        verify(requestRegisterAdmin, times(0)).getRequestDispatcher(anyString());
+        verify(chain, times(1)).doFilter(requestRegisterAdmin, response);
 
         when(user.getRole()).thenReturn(Roles.USER);
         when(requestRegisterUser.getSession()).thenReturn(session);
         when(requestRegisterUser.getRequestDispatcher(anyString())).thenReturn(dispatcher);
         pageFilterAdmin.filter(requestRegisterUser, response, chain, Optional.of(user));
+        verify(chain, times(0)).doFilter(requestRegisterUser, response);
         verify(requestRegisterUser, times(1)).getRequestDispatcher(anyString());
 
         when(requestNonRegisterUser.getRequestDispatcher(anyString())).thenReturn(dispatcher);
         pageFilterAdmin.filter(requestNonRegisterUser, response, chain, Optional.empty());
+        verify(chain, times(0)).doFilter(requestNonRegisterUser, response);
         verify(requestNonRegisterUser, times(1)).getRequestDispatcher(anyString());
     }
 }

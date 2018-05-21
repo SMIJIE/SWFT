@@ -4,11 +4,11 @@ import ua.training.constant.Attributes;
 import ua.training.constant.Pages;
 import ua.training.controller.commands.Command;
 import ua.training.controller.commands.exception.DataHttpException;
+import ua.training.controller.commands.utility.CommandsUtil;
 import ua.training.model.entity.Dish;
 import ua.training.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,8 +44,7 @@ public class UpdateUsersDish implements Command {
             Integer numPage = (Integer) request.getSession().getAttribute(Attributes.REQUEST_NUMBER_PAGE);
 
             List<Dish> listUsers = DISH_SERVICE_IMP.getLimitDishesByUserId(user.getId(), 5, 5 * (numPage - 1));
-            listUsers.sort(Comparator.comparing(Dish::getFoodCategory)
-                    .thenComparing(Dish::getCalories));
+            CommandsUtil.sortListByAnnotationFields(listUsers);
 
             Integer forPage = DISH_SERVICE_IMP.counterDishByUserId(user.getId());
 

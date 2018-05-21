@@ -15,8 +15,8 @@ import java.util.List;
  * @author Zakusylo Pavlo
  */
 public class UserLazy extends User {
-    static final DaoFactory DAO_FACTORY = DaoFactory.getInstance();
-    static final JDBCDishDao JDBC_DISH_DAO = (JDBCDishDao) DAO_FACTORY.createDishDao();
+    private static final DaoFactory DAO_FACTORY = DaoFactory.getInstance();
+    private static final JDBCDishDao JDBC_DISH_DAO = (JDBCDishDao) DAO_FACTORY.createDishDao();
 
     @Override
     public ArrayList<Dish> getListDishes() {

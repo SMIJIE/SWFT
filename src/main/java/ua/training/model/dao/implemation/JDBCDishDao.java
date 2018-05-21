@@ -6,7 +6,7 @@ import ua.training.controller.commands.exception.DataSqlException;
 import ua.training.model.dao.DishDao;
 import ua.training.model.dao.mapper.DishMapper;
 import ua.training.model.dao.mapper.UserMapper;
-import ua.training.model.dao.utils.QueryUtil;
+import ua.training.model.dao.utility.QueryUtil;
 import ua.training.model.entity.Dish;
 import ua.training.model.entity.User;
 
@@ -15,6 +15,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+
+import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
 
 public class JDBCDishDao implements DishDao {
     /**
@@ -44,6 +46,7 @@ public class JDBCDishDao implements DishDao {
             ps.setInt(7, entity.getCarbohydrates());
             ps.setInt(8, entity.getUser().getId());
             ps.setBoolean(9, entity.getGeneralFood());
+
             ps.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_DISH_NOT_INSERTED);
@@ -58,11 +61,13 @@ public class JDBCDishDao implements DishDao {
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
 
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 dish = Optional.ofNullable(dishMapper.extractFromResultSet(rs));
             }
+
+            rs.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_DISH_GET_BY_ID);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
@@ -78,16 +83,22 @@ public class JDBCDishDao implements DishDao {
         Map<Integer, User> users = new HashMap<>();
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
+
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Optional<Dish> dish = Optional.ofNullable(dishMapper.extractFromResultSet(rs));
-                Optional<User> user = Optional.ofNullable(userMapper.extractFromResultSet(rs));
+                Optional<User> user = Optional.empty();
+
+                if (!isNullOrEmpty(rs.getString(Attributes.SQL_USER_ID))) {
+                    user = Optional.ofNullable(userMapper.extractFromResultSet(rs));
+                }
 
                 if (dish.isPresent()) {
                     user.ifPresent(u -> dish.get().setUser(userMapper.makeUnique(users, u)));
                     dishes.add(dish.get());
                 }
             }
+            rs.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_DISH_GET_BY_ID);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
@@ -106,6 +117,7 @@ public class JDBCDishDao implements DishDao {
             ps.setInt(4, entity.getFats());
             ps.setInt(5, entity.getCarbohydrates());
             ps.setInt(6, entity.getId());
+
             ps.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_DISH_NOT_UPDATE_PARAMETERS);
@@ -115,13 +127,27 @@ public class JDBCDishDao implements DishDao {
 
     @Override
     public void delete(Integer id) {
-        String query = DB_PROPERTIES.deleteDishById();
+        String deleteDish = DB_PROPERTIES.deleteDishById();
+        String deleteRationComposition = DB_PROPERTIES.deleteCompositionArrayByDish();
 
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, id);
-            ps.executeUpdate();
+        try (PreparedStatement dd = connection.prepareStatement(deleteDish);
+             PreparedStatement drc = connection.prepareStatement(deleteRationComposition)) {
+            connection.setAutoCommit(false);
+
+            drc.setInt(1, id);
+            drc.executeUpdate();
+
+            dd.setInt(1, id);
+            dd.executeUpdate();
+
+            connection.commit();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_DISH_DELETE_BY_ID);
+            try {
+                connection.rollback();
+            } catch (SQLException r) {
+                LOGGER.error(r.getMessage() + Mess.LOG_DISH_DELETE_ROLLBACK);
+            }
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
     }
@@ -149,14 +175,14 @@ public class JDBCDishDao implements DishDao {
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setBoolean(1, true);
-            ResultSet rs = ps.executeQuery();
 
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Optional<Dish> dish = Optional.ofNullable(dishMapper.extractFromResultSet(rs));
                 dish.ifPresent(dishes::add);
             }
 
-            dishes.sort(Comparator.comparing(Dish::getCalories));
+            rs.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_DISH_GET_GENERAL);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
@@ -182,15 +208,14 @@ public class JDBCDishDao implements DishDao {
             ps.setInt(1, userId);
             ps.setInt(2, limit);
             ps.setInt(3, skip);
-            ResultSet rs = ps.executeQuery();
 
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Optional<Dish> dish = Optional.ofNullable(dishMapper.extractFromResultSet(rs));
                 dish.ifPresent(dishes::add);
             }
 
-            dishes.sort(Comparator.comparing(Dish::getFoodCategory)
-                    .thenComparing(Dish::getCalories));
+            rs.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_DISH_GET_BY_USER);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
@@ -212,15 +237,14 @@ public class JDBCDishDao implements DishDao {
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, userId);
-            ResultSet rs = ps.executeQuery();
 
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Optional<Dish> dish = Optional.ofNullable(dishMapper.extractFromResultSet(rs));
                 dish.ifPresent(dishes::add);
             }
 
-            dishes.sort(Comparator.comparing(Dish::getFoodCategory)
-                    .thenComparing(Dish::getCalories));
+            rs.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_DISH_GET_BY_USER);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
@@ -236,18 +260,33 @@ public class JDBCDishDao implements DishDao {
      */
     @Override
     public void deleteArrayDishesById(Integer[] array) {
-        String query = DB_PROPERTIES.deleteArrayDishById();
-        query = QueryUtil.addParamAccordingToArrSize(query, array.length);
+        String deleteDish = DB_PROPERTIES.deleteArrayDishById();
+        deleteDish = QueryUtil.addParamAccordingToArrSize(deleteDish, array.length);
+        String deleteRationComposition = DB_PROPERTIES.deleteCompositionArrayByDish();
+        deleteRationComposition = QueryUtil.addParamAccordingToArrSize(deleteRationComposition, array.length);
 
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try (PreparedStatement dd = connection.prepareStatement(deleteDish);
+             PreparedStatement drc = connection.prepareStatement(deleteRationComposition)) {
+            connection.setAutoCommit(false);
 
             for (int i = 0; i < array.length; i++) {
-                ps.setInt((i + 1), array[i]);
+                drc.setInt((i + 1), array[i]);
             }
+            drc.executeUpdate();
 
-            ps.executeUpdate();
+            for (int i = 0; i < array.length; i++) {
+                dd.setInt((i + 1), array[i]);
+            }
+            dd.executeUpdate();
+
+            connection.commit();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_DISH_DELETE_BY_ID);
+            try {
+                connection.rollback();
+            } catch (SQLException r) {
+                LOGGER.error(r.getMessage() + Mess.LOG_DISH_DELETE_ROLLBACK);
+            }
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
     }
@@ -262,7 +301,7 @@ public class JDBCDishDao implements DishDao {
     @Override
     public void deleteArrayDishesByIdAndUser(Integer[] array, Integer userId) {
         String deleteDish = DB_PROPERTIES.deleteArrayDishByIdAndUser();
-        String deleteComposition = DB_PROPERTIES.deleteCompositionArrayByDish();
+        String deleteComposition = DB_PROPERTIES.deleteCompositionArrayByDishAndUser();
         deleteDish = QueryUtil.addParamAccordingToArrSize(deleteDish, array.length);
         deleteComposition = QueryUtil.addParamAccordingToArrSize(deleteComposition, array.length);
 
@@ -283,7 +322,6 @@ public class JDBCDishDao implements DishDao {
             dd.executeUpdate();
 
             connection.commit();
-            connection.setAutoCommit(true);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_DISH_DELETE_BY_ID);
             try {
@@ -308,10 +346,13 @@ public class JDBCDishDao implements DishDao {
         Integer counter = 0;
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, userId);
+
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 counter = rs.getInt(Attributes.SQL_COUNTER);
             }
+
+            rs.close();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_DISH_COUNT_BY_USER_ID);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
@@ -337,6 +378,7 @@ public class JDBCDishDao implements DishDao {
             ps.setInt(5, entity.getCarbohydrates());
             ps.setInt(6, entity.getId());
             ps.setInt(7, entity.getUser().getId());
+
             ps.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error(e.getMessage() + Mess.LOG_DISH_NOT_UPDATE_PARAMETERS);

@@ -4,7 +4,7 @@ import ua.training.constant.Attributes;
 import ua.training.constant.Pages;
 import ua.training.constant.RegexExpress;
 import ua.training.controller.commands.Command;
-import ua.training.controller.commands.utils.CommandsUtil;
+import ua.training.controller.commands.utility.CommandsUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

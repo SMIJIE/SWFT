@@ -10,6 +10,7 @@ public interface Mess {
     String LOG_CONNECTION_NOT = "\n\tProblem to get connection";
     String LOG_CONNECTION_NOT_CLOSE = "\n\tProblem to close connection";
     String LOG_NOT_WRITE_CUSTOM_TAG = "\n\tProblem to write custom tag";
+    String LOG_NOT_ACCESSIBLE_ENTITY_FIELDS = "\n\tProblem to get entity fields";
 
     String LOG_USER_DOUBLE_AUTH = "Double authorization";
     String LOG_USER_LOGGED = "User logged";
@@ -28,6 +29,9 @@ public interface Mess {
     String LOG_USER_NOT_UPDATE_PARAMETERS = "\n\tProblem to update user parameters";
     String LOG_USER_RS_NOT_EXTRACT = "\n\tProblem to extract user from ResultSet";
     String LOG_USER_HTTP_NOT_EXTRACT = "\n\tProblem to extract user from HttpServletRequest";
+    String LOG_USER_GO_ADMIN_URL = "\n\tTries to go by admin urls";
+    String LOG_USER_GO_USER_URL = "\n\tTries to go by user urls";
+    String LOG_USER_GO_NON_REGISTERED_URL = "\n\tTries to go by user(non registered) urls";
 
     String LOG_DISH_GET_BY_ID = "\n\tProblem to get dish by id";
     String LOG_DISH_COUNT_BY_USER_ID = "\n\tProblem to count dishes by user id";
@@ -47,6 +51,7 @@ public interface Mess {
     String LOG_DAY_RATION_NOT_UPDATE_PARAMETERS = "\n\tProblem to update day ration parameters";
     String LOG_DAY_RATION_RS_NOT_EXTRACT = "\n\tProblem to extract day ration from ResultSet";
     String LOG_DAY_RATION_HTTP_NOT_EXTRACT = "\n\tProblem to extract day ration from HttpServletRequest";
+    String LOG_DAY_RATION_DELETE_ROLLBACK = "\n\tProblem to rollback delete day ration";
 
     String LOG_RATION_COMPOSITION_SUM_CALORIES_BY_RATION = "\n\tProblem to sum calories by day ration";
     String LOG_RATION_COMPOSITION_GET_BY_ID = "\n\tProblem to get composition by id";

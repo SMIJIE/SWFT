@@ -7,7 +7,7 @@ package ua.training.model.entity.enums;
  * @author Zakusylo Pavlo
  */
 public enum Roles {
-    ADMIN, USER;
+    ADMIN, USER, UNKNOWN;
 
     @Override
     public String toString() {

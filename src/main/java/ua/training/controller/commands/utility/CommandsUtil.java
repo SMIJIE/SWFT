@@ -1,4 +1,4 @@
-package ua.training.controller.commands.utils;
+package ua.training.controller.commands.utility;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,13 +25,15 @@ import ua.training.controller.commands.action.update.UpdateUsersComposition;
 import ua.training.controller.commands.action.update.UpdateUsersDish;
 import ua.training.controller.commands.action.update.UpdateUsersParameters;
 import ua.training.controller.commands.direction.*;
+import ua.training.controller.commands.exception.DataSqlException;
+import ua.training.model.dao.utility.DishComparator;
+import ua.training.model.dao.utility.SortAnnotation;
+import ua.training.model.entity.Dish;
 import ua.training.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.lang.reflect.Field;
+import java.util.*;
 
 /**
  * Description: This util class for commands
@@ -39,6 +41,13 @@ import java.util.Map;
  * @author Zakusylo Pavlo
  */
 public class CommandsUtil {
+    /**
+     * Logger for CommandsUtil classes
+     *
+     * @see LogManager
+     */
+    private static Logger logger = LogManager.getLogger(CommandsUtil.class);
+    private static List<Dish> list;
 
     /**
      * Initialize all commands
@@ -94,7 +103,6 @@ public class CommandsUtil {
      * @return page String
      */
     public static String openUsersSession(HttpServletRequest request, User user) {
-        Logger logger = LogManager.getLogger(CommandsUtil.class);
 
         HashSet<String> allUsers = (HashSet<String>) request.getServletContext().getAttribute(Attributes.REQUEST_USERS_ALL);
 
@@ -137,10 +145,49 @@ public class CommandsUtil {
      * @return intArr Integer[]
      */
     public static Integer[] stringArrayToInteger(String[] strArr) {
-        Integer[] intArr = Arrays.stream(strArr)
-                .map(Integer::parseInt)
-                .toArray(Integer[]::new);
+        Integer[] intArr;
+
+        try {
+            intArr = Arrays.stream(strArr)
+                    .map(Integer::parseInt)
+                    .toArray(Integer[]::new);
+        } catch (NumberFormatException e) {
+            logger.error(e.getMessage());
+            throw new DataSqlException(Attributes.SQL_EXCEPTION);
+        }
 
         return intArr;
+    }
+
+    /**
+     * Sort list of dish by annotation fields
+     *
+     * @param list List<T>
+     */
+    public static void sortListByAnnotationFields(List<Dish> list) {
+        CommandsUtil.list = list;
+        Class<?> cl = Dish.class;
+        Field[] fields = cl.getDeclaredFields();
+        ArrayList<Field> fieldsForSort = new ArrayList<>();
+        Comparator<Dish> comparator = null;
+        boolean flag = true;
+
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(SortAnnotation.class)) {
+                field.setAccessible(true);
+                fieldsForSort.add(field);
+            }
+        }
+
+        for (Field field : fieldsForSort) {
+            if (flag) {
+                comparator = new DishComparator(field);
+                flag = false;
+                continue;
+            }
+            comparator = comparator.thenComparing(new DishComparator(field));
+        }
+
+        list.sort(comparator);
     }
 }

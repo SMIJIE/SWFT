@@ -1,4 +1,4 @@
-package ua.training.model.dao.utils;
+package ua.training.model.dao.utility;
 
 import org.apache.commons.codec.digest.DigestUtils;
 

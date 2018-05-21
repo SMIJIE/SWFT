@@ -3,8 +3,8 @@ package ua.training.controller.commands.action.statement;
 import ua.training.constant.Attributes;
 import ua.training.constant.Pages;
 import ua.training.controller.commands.Command;
-import ua.training.controller.commands.utils.CommandsUtil;
-import ua.training.model.dao.utils.PasswordEncoder;
+import ua.training.controller.commands.utility.CommandsUtil;
+import ua.training.model.dao.utility.PasswordEncoder;
 import ua.training.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;

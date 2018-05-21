@@ -20,6 +20,8 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class PageFilterNonRegisteredTest {
     @Mock
+    private HttpServletRequest requestClient;
+    @Mock
     private HttpServletRequest request;
     @Mock
     private HttpServletResponse response;
@@ -35,9 +37,11 @@ public class PageFilterNonRegisteredTest {
         PageFilterNonRegistered nonRegistered = new PageFilterNonRegistered();
         when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
         nonRegistered.filter(request, response, chain, Optional.empty());
+        verify(chain, times(0)).doFilter(request, response);
         verify(request, times(1)).getRequestDispatcher(anyString());
 
-        nonRegistered.filter(request, response, chain, Optional.of(user));
-        verify(chain, times(1)).doFilter(request, response);
+        nonRegistered.filter(requestClient, response, chain, Optional.of(user));
+        verify(requestClient, times(0)).getRequestDispatcher(anyString());
+        verify(chain, times(1)).doFilter(requestClient, response);
     }
 }

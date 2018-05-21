@@ -21,6 +21,8 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class PageFilterRegisteredTest {
     @Mock
+    private HttpServletRequest requestClient;
+    @Mock
     private HttpServletRequest request;
     @Mock
     private HttpServletResponse response;
@@ -37,12 +39,14 @@ public class PageFilterRegisteredTest {
     public void filter() throws IOException, ServletException {
         PageFilterRegistered registered = new PageFilterRegistered();
 
-        when(request.getSession()).thenReturn(session);
-        when(request.getRequestDispatcher(anyString())).thenReturn(dispatcher);
-        registered.filter(request, response, chain, Optional.of(user));
-        verify(request, times(1)).getRequestDispatcher(anyString());
+        when(requestClient.getSession()).thenReturn(session);
+        when(requestClient.getRequestDispatcher(anyString())).thenReturn(dispatcher);
+        registered.filter(requestClient, response, chain, Optional.of(user));
+        verify(chain, times(0)).doFilter(requestClient, response);
+        verify(requestClient, times(1)).getRequestDispatcher(anyString());
 
         registered.filter(request, response, chain, Optional.empty());
+        verify(request, times(0)).getRequestDispatcher(anyString());
         verify(chain, times(1)).doFilter(request, response);
     }
 }

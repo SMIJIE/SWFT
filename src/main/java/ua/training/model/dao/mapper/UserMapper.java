@@ -5,7 +5,7 @@ import ua.training.constant.Mess;
 import ua.training.constant.RegexExpress;
 import ua.training.controller.commands.exception.DataHttpException;
 import ua.training.controller.commands.exception.DataSqlException;
-import ua.training.model.dao.utils.PasswordEncoder;
+import ua.training.model.dao.utility.PasswordEncoder;
 import ua.training.model.entity.User;
 import ua.training.model.entity.enums.Roles;
 

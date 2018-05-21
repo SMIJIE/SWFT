@@ -4,10 +4,10 @@ import ua.training.constant.Attributes;
 import ua.training.constant.Pages;
 import ua.training.controller.commands.Command;
 import ua.training.controller.commands.exception.DataHttpException;
+import ua.training.controller.commands.utility.CommandsUtil;
 import ua.training.model.entity.Dish;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,7 +39,7 @@ public class UpdateGeneralDish implements Command {
             DISH_SERVICE_IMP.updateDishParameters(dishHttp);
 
             List<Dish> general = DISH_SERVICE_IMP.getGeneralDishes();
-            general.sort(Comparator.comparing(Dish::getCalories));
+            CommandsUtil.sortListByAnnotationFields(general);
             request.getServletContext().setAttribute(Attributes.REQUEST_GENERAL_DISHES, general);
         }
 
