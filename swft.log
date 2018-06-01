@@ -3704,3 +3704,230 @@ Last packet sent to the server was 0 ms ago.)
 	Tries to go by user urls - [UNKNOWN]
 2018-05-21 12:16:17.065 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
 	Tries to go by user(non registered) urls - [null]
+2018-05-31 09:35:05.727 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract dish from HttpServletRequest
+2018-05-31 09:35:06.070 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract day ration from HttpServletRequest
+2018-05-31 09:35:06.241 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Test"
+2018-05-31 09:35:06.366 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract dish from HttpServletRequest
+2018-05-31 09:35:06.460 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Test"
+2018-05-31 09:35:06.460 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Test"
+2018-05-31 09:35:06.491 [main] INFO  ua.training.controller.commands.utility.CommandsUtil - User logged[pavlo@mail.ua]
+2018-05-31 09:35:06.507 [main] INFO  ua.training.controller.commands.Command - User logged out[Zakusylo@gmail.com]
+2018-05-31 09:35:06.507 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract user from HttpServletRequest
+2018-05-31 09:35:06.507 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract user from HttpServletRequest
+2018-05-31 09:35:06.522 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract dish from HttpServletRequest
+2018-05-31 09:35:06.538 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract user from HttpServletRequest
+2018-05-31 09:35:06.553 [main] INFO  ua.training.controller.commands.utility.CommandsUtil - User logged[Pavlo@mail.com]
+2018-05-31 09:35:06.553 [main] WARN  ua.training.controller.commands.utility.CommandsUtil - Double authorization [Zakusylo@gmail.com]
+2018-05-31 09:35:06.553 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Zakusylo@gmail.com"
+2018-05-31 09:35:06.959 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by admin urls - [null]
+2018-05-31 09:35:06.975 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by admin urls - [UNKNOWN]
+2018-05-31 09:35:06.975 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user urls - [UNKNOWN]
+2018-05-31 09:35:07.021 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user(non registered) urls - [null]
+2018-05-31 09:37:31.145 [http-bio-8080-exec-6] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user urls - [UNKNOWN]
+2018-05-31 09:37:47.183 [http-bio-8080-exec-6] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user urls - [UNKNOWN]
+2018-05-31 09:37:51.780 [http-bio-8080-exec-6] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user urls - [UNKNOWN]
+2018-05-31 09:37:52.713 [http-bio-8080-exec-6] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user urls - [UNKNOWN]
+2018-05-31 09:38:09.143 [http-bio-8080-exec-6] INFO  ua.training.controller.commands.utility.CommandsUtil - User logged[pavlo@mail.ua]
+2018-05-31 09:39:54.878 [http-bio-8080-exec-1] INFO  ua.training.controller.commands.Command - User logged out[pavlo@mail.ua]
+2018-05-31 09:39:56.502 [http-bio-8080-exec-1] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user urls - [UNKNOWN]
+2018-05-31 09:39:57.394 [http-bio-8080-exec-1] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user urls - [UNKNOWN]
+2018-05-31 09:41:15.650 [http-bio-8080-exec-6] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user urls - [UNKNOWN]
+2018-05-31 09:44:41.389 [http-bio-8080-exec-7] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user urls - [UNKNOWN]
+2018-05-31 09:44:44.001 [http-bio-8080-exec-9] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user urls - [UNKNOWN]
+2018-05-31 09:45:18.359 [http-bio-8080-exec-1] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user urls - [UNKNOWN]
+2018-05-31 09:45:28.030 [http-bio-8080-exec-1] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user urls - [UNKNOWN]
+2018-05-31 09:45:47.301 [http-bio-8080-exec-1] INFO  ua.training.controller.commands.utility.CommandsUtil - User logged[pavlo@mail.ua]
+2018-05-31 09:54:11.862 [http-bio-8080-exec-10] ERROR ua.training.controller.commands.Command - 
+	Problem to extract day ration from HttpServletRequest
+2018-05-31 09:54:43.317 [http-bio-8080-exec-10] ERROR ua.training.controller.commands.Command - 
+	Problem to extract day ration from HttpServletRequest
+2018-05-31 10:01:09.158 [http-bio-8080-exec-3] INFO  ua.training.controller.commands.Command - User logged out[pavlo@mail.ua]
+2018-05-31 10:01:17.457 [http-bio-8080-exec-3] INFO  ua.training.controller.commands.utility.CommandsUtil - User logged[zakusylo@gmail.com]
+2018-05-31 10:02:43.192 [http-bio-8080-exec-3] INFO  ua.training.controller.commands.Command - User logged out[zakusylo@gmail.com]
+2018-05-31 10:04:01.453 [http-bio-8080-exec-1] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user urls - [UNKNOWN]
+2018-06-01 11:22:54.913 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract dish from HttpServletRequest
+2018-06-01 11:22:55.131 [main] ERROR ua.training.model.dao.GenericDao - Cannot add or update a child row: a foreign key constraint fails (`dbswft`.`dayration`, CONSTRAINT `idUser` FOREIGN KEY (`idUser`) REFERENCES `user` (`idU`) ON DELETE NO ACTION ON UPDATE NO ACTION)
+	Problem to insert new day ration
+2018-06-01 11:22:55.150 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Test"
+2018-06-01 11:22:55.275 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract dish from HttpServletRequest
+2018-06-01 11:22:55.342 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Test"
+2018-06-01 11:22:55.344 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Test"
+2018-06-01 11:22:55.359 [main] INFO  ua.training.controller.commands.utility.CommandsUtil - User logged[pavlo@mail.ua]
+2018-06-01 11:22:55.367 [main] INFO  ua.training.controller.commands.Command - User logged out[Zakusylo@gmail.com]
+2018-06-01 11:22:55.372 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract user from HttpServletRequest
+2018-06-01 11:22:55.373 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract user from HttpServletRequest
+2018-06-01 11:22:55.718 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract dish from HttpServletRequest
+2018-06-01 11:22:55.723 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract user from HttpServletRequest
+2018-06-01 11:22:55.734 [main] INFO  ua.training.controller.commands.utility.CommandsUtil - User logged[Pavlo@mail.com]
+2018-06-01 11:22:55.734 [main] WARN  ua.training.controller.commands.utility.CommandsUtil - Double authorization [Zakusylo@gmail.com]
+2018-06-01 11:22:55.737 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Zakusylo@gmail.com"
+2018-06-01 11:22:55.919 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by admin urls - [null]
+2018-06-01 11:22:55.920 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by admin urls - [UNKNOWN]
+2018-06-01 11:22:55.924 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user urls - [UNKNOWN]
+2018-06-01 11:22:55.928 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user(non registered) urls - [null]
+2018-06-01 11:36:13.378 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract dish from HttpServletRequest
+2018-06-01 11:36:13.518 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract day ration from HttpServletRequest
+2018-06-01 11:36:13.528 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Test"
+2018-06-01 11:36:13.597 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract dish from HttpServletRequest
+2018-06-01 11:36:13.699 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Test"
+2018-06-01 11:36:13.702 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Test"
+2018-06-01 11:36:13.717 [main] INFO  ua.training.controller.commands.utility.CommandsUtil - User logged[pavlo@mail.ua]
+2018-06-01 11:36:13.724 [main] INFO  ua.training.controller.commands.Command - User logged out[Zakusylo@gmail.com]
+2018-06-01 11:36:13.733 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract user from HttpServletRequest
+2018-06-01 11:36:13.734 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract user from HttpServletRequest
+2018-06-01 11:36:13.780 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract dish from HttpServletRequest
+2018-06-01 11:36:13.785 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract user from HttpServletRequest
+2018-06-01 11:36:13.803 [main] INFO  ua.training.controller.commands.utility.CommandsUtil - User logged[Pavlo@mail.com]
+2018-06-01 11:36:13.803 [main] WARN  ua.training.controller.commands.utility.CommandsUtil - Double authorization [Zakusylo@gmail.com]
+2018-06-01 11:36:13.806 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Zakusylo@gmail.com"
+2018-06-01 11:36:13.948 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by admin urls - [null]
+2018-06-01 11:36:13.949 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by admin urls - [UNKNOWN]
+2018-06-01 11:36:13.955 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user urls - [UNKNOWN]
+2018-06-01 11:36:13.958 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user(non registered) urls - [null]
+2018-06-01 11:46:32.480 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract dish from HttpServletRequest
+2018-06-01 11:46:32.668 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract day ration from HttpServletRequest
+2018-06-01 11:46:32.714 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Test"
+2018-06-01 11:46:32.902 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract dish from HttpServletRequest
+2018-06-01 11:46:32.995 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Test"
+2018-06-01 11:46:32.995 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Test"
+2018-06-01 11:46:33.026 [main] INFO  ua.training.controller.commands.utility.CommandsUtil - User logged[pavlo@mail.ua]
+2018-06-01 11:46:33.026 [main] INFO  ua.training.controller.commands.Command - User logged out[Zakusylo@gmail.com]
+2018-06-01 11:46:33.042 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract user from HttpServletRequest
+2018-06-01 11:46:33.042 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract user from HttpServletRequest
+2018-06-01 11:46:33.089 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract dish from HttpServletRequest
+2018-06-01 11:46:33.104 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract user from HttpServletRequest
+2018-06-01 11:46:33.120 [main] INFO  ua.training.controller.commands.utility.CommandsUtil - User logged[Pavlo@mail.com]
+2018-06-01 11:46:33.120 [main] WARN  ua.training.controller.commands.utility.CommandsUtil - Double authorization [Zakusylo@gmail.com]
+2018-06-01 11:46:33.136 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Zakusylo@gmail.com"
+2018-06-01 11:46:33.432 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by admin urls - [null]
+2018-06-01 11:46:33.432 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by admin urls - [UNKNOWN]
+2018-06-01 11:46:33.448 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user urls - [UNKNOWN]
+2018-06-01 11:46:33.448 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user(non registered) urls - [null]
+2018-06-01 11:48:03.039 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract dish from HttpServletRequest
+2018-06-01 11:48:03.694 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract day ration from HttpServletRequest
+2018-06-01 11:48:03.710 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Test"
+2018-06-01 11:48:03.897 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract dish from HttpServletRequest
+2018-06-01 11:48:04.084 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Test"
+2018-06-01 11:48:04.100 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Test"
+2018-06-01 11:48:04.131 [main] INFO  ua.training.controller.commands.utility.CommandsUtil - User logged[pavlo@mail.ua]
+2018-06-01 11:48:04.146 [main] INFO  ua.training.controller.commands.Command - User logged out[Zakusylo@gmail.com]
+2018-06-01 11:48:04.162 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract user from HttpServletRequest
+2018-06-01 11:48:04.162 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract user from HttpServletRequest
+2018-06-01 11:48:04.209 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract dish from HttpServletRequest
+2018-06-01 11:48:04.224 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract user from HttpServletRequest
+2018-06-01 11:48:04.240 [main] INFO  ua.training.controller.commands.utility.CommandsUtil - User logged[Pavlo@mail.com]
+2018-06-01 11:48:04.240 [main] WARN  ua.training.controller.commands.utility.CommandsUtil - Double authorization [Zakusylo@gmail.com]
+2018-06-01 11:48:04.240 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Zakusylo@gmail.com"
+2018-06-01 11:48:04.458 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by admin urls - [null]
+2018-06-01 11:48:04.458 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by admin urls - [UNKNOWN]
+2018-06-01 11:48:04.490 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user urls - [UNKNOWN]
+2018-06-01 11:48:04.490 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user(non registered) urls - [null]
+2018-06-01 11:57:02.123 [http-bio-8080-exec-9] INFO  ua.training.controller.commands.utility.CommandsUtil - User logged[zakusylo@gmail.com]
+2018-06-01 11:57:36.167 [http-bio-8080-exec-10] INFO  ua.training.controller.commands.Command - User logged out[zakusylo@gmail.com]
+2018-06-01 11:57:42.236 [http-bio-8080-exec-10] INFO  ua.training.controller.commands.utility.CommandsUtil - User logged[pavlo@mail.ua]
+2018-06-01 12:03:14.187 [http-bio-8080-exec-8] INFO  ua.training.controller.commands.Command - User update parameters[pavlo@mail.ua]
+2018-06-01 12:07:29.449 [http-bio-8080-exec-8] INFO  ua.training.controller.commands.utility.CommandsUtil - User logged[pavlo@mail.ua]
+2018-06-01 12:08:54.608 [http-bio-8080-exec-1] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user urls - [UNKNOWN]
+2018-06-01 12:09:02.447 [http-bio-8080-exec-4] INFO  ua.training.controller.commands.utility.CommandsUtil - User logged[pavlo@mail.ua]
+2018-06-01 12:09:36.023 [http-bio-8080-exec-10] INFO  ua.training.controller.commands.Command - User update parameters[pavlo@mail.ua]
+2018-06-01 12:10:01.504 [http-bio-8080-exec-10] INFO  ua.training.controller.commands.Command - User update parameters[pavlo@mail.ua]
+2018-06-01 12:10:13.803 [http-bio-8080-exec-10] INFO  ua.training.controller.commands.Command - User logged out[pavlo@mail.ua]
+2018-06-01 12:10:18.801 [http-bio-8080-exec-10] INFO  ua.training.controller.commands.utility.CommandsUtil - User logged[zakusylo@gmail.com]
+2018-06-01 12:14:25.369 [http-bio-8080-exec-8] INFO  ua.training.controller.commands.utility.CommandsUtil - User logged[zakusylo@gmail.com]
+2018-06-01 12:16:02.746 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract dish from HttpServletRequest
+2018-06-01 12:16:02.902 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract day ration from HttpServletRequest
+2018-06-01 12:16:02.918 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Test"
+2018-06-01 12:16:03.043 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract dish from HttpServletRequest
+2018-06-01 12:16:03.183 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Test"
+2018-06-01 12:16:03.199 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Test"
+2018-06-01 12:16:03.230 [main] INFO  ua.training.controller.commands.utility.CommandsUtil - User logged[pavlo@mail.ua]
+2018-06-01 12:16:03.261 [main] INFO  ua.training.controller.commands.Command - User logged out[Zakusylo@gmail.com]
+2018-06-01 12:16:03.277 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract user from HttpServletRequest
+2018-06-01 12:16:03.277 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract user from HttpServletRequest
+2018-06-01 12:16:03.386 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract dish from HttpServletRequest
+2018-06-01 12:16:03.417 [main] ERROR ua.training.controller.commands.Command - 
+	Problem to extract user from HttpServletRequest
+2018-06-01 12:16:03.448 [main] INFO  ua.training.controller.commands.utility.CommandsUtil - User logged[Pavlo@mail.com]
+2018-06-01 12:16:03.448 [main] WARN  ua.training.controller.commands.utility.CommandsUtil - Double authorization [Zakusylo@gmail.com]
+2018-06-01 12:16:03.448 [main] ERROR ua.training.controller.commands.utility.CommandsUtil - For input string: "Zakusylo@gmail.com"
+2018-06-01 12:16:03.729 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by admin urls - [null]
+2018-06-01 12:16:03.729 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by admin urls - [UNKNOWN]
+2018-06-01 12:16:03.729 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user urls - [UNKNOWN]
+2018-06-01 12:16:03.745 [main] WARN  ua.training.controller.servlet.filter.AbstractFilter - 
+	Tries to go by user(non registered) urls - [null]

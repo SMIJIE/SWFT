@@ -127,8 +127,8 @@ public class JDBCUserDao implements UserDao {
                         entity.getWeight(), entity.getHeight(), period.getYears());
                 Integer userCaloriesDesired = DayRationMapper.formulaMifflinSanJerura(entity.getLifeStyleCoefficient(),
                         entity.getWeightDesired(), entity.getHeight(), period.getYears());
-                udr.setInt(1, userCalories);
-                udr.setInt(2, userCaloriesDesired);
+                udr.setInt(1, userCalories * 1000);
+                udr.setInt(2, userCaloriesDesired * 1000);
                 udr.setDate(3, Date.valueOf(localDate));
                 udr.setInt(4, entity.getId());
                 udr.executeUpdate();
