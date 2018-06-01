@@ -17,7 +17,7 @@ public class UserLazyTest {
     @Before
     public void setUp() {
         user = new UserLazy();
-        user.setId(2);
+        user.setId(1);
         arrDish = new ArrayList<>();
     }
 

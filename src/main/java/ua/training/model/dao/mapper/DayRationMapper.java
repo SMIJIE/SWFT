@@ -122,6 +122,8 @@ public class DayRationMapper implements ObjectMapper<DayRation> {
 
         if (period.getDays() > 14 || period.getDays() < -14) {
             flag = false;
+        } else if (period.getDays() == period.getDays() && period.getMonths()!=0) {
+            flag = false;
         } else if (isNull(dayRation.getUser())) {
             flag = false;
         }

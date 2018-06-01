@@ -514,9 +514,11 @@
         $('#dayRation').submit(function (event) {
             var myDate = new Date($('#date').val());
             var currentDate = new Date();
+            var timeDiff = Math.abs(currentDate.getTime() - myDate.getTime());
+            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
             if (!isNaN(myDate)) {
-                if ((currentDate.getDate() - myDate.getDate()) > 14
-                    || (currentDate.getDate() - myDate.getDate()) < -14) {
+                if (diffDays > 14
+                    || diffDays < -14) {
                     event.preventDefault();
                     alert('<fmt:message key="page.date.wrong"/>');
                     return;

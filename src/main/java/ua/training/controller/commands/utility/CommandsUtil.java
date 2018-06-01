@@ -188,6 +188,8 @@ public class CommandsUtil {
             comparator = comparator.thenComparing(new DishComparator(field));
         }
 
-        list.sort(comparator);
+        if (!fieldsForSort.isEmpty()) {
+            list.sort(comparator);
+        }
     }
 }
