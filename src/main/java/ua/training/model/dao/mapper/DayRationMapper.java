@@ -61,14 +61,12 @@ public class DayRationMapper implements ObjectMapper<DayRation> {
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
 
-        DayRation dayRation = new DayRation.DayRationBuilder()
+        return new DayRation.DayRationBuilder()
                 .setId(id)
                 .setDate(date)
                 .setUserCalories(userCalories)
                 .setUserCaloriesDesired(userCaloriesDesired)
                 .buildLazy();
-
-        return dayRation;
     }
 
     /**
@@ -122,7 +120,7 @@ public class DayRationMapper implements ObjectMapper<DayRation> {
 
         if (period.getDays() > 14 || period.getDays() < -14) {
             flag = false;
-        } else if (period.getDays() == period.getDays() && period.getMonths()!=0) {
+        } else if (period.getDays() == period.getDays() && period.getMonths() != 0) {
             flag = false;
         } else if (isNull(dayRation.getUser())) {
             flag = false;

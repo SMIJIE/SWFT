@@ -1,5 +1,6 @@
 package ua.training.model.entity;
 
+import lombok.*;
 import ua.training.model.dao.proxy.DayRationLazy;
 
 import java.time.LocalDate;
@@ -7,6 +8,11 @@ import java.util.ArrayList;
 
 import static java.util.Objects.isNull;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
 public class DayRation implements Entity<Integer> {
     private Integer id;
     /**
@@ -26,55 +32,6 @@ public class DayRation implements Entity<Integer> {
      * Data for graphical visualisation
      */
     private Integer userCaloriesDesired;
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public ArrayList<RationComposition> getCompositions() {
-        return compositions;
-    }
-
-    public void setCompositions(ArrayList<RationComposition> compositions) {
-        this.compositions = compositions;
-    }
-
-    public Integer getUserCalories() {
-        return userCalories;
-    }
-
-    public void setUserCalories(Integer userCalories) {
-        this.userCalories = userCalories;
-    }
-
-    public Integer getUserCaloriesDesired() {
-        return userCaloriesDesired;
-    }
-
-    public void setUserCaloriesDesired(Integer userCaloriesDesired) {
-        this.userCaloriesDesired = userCaloriesDesired;
-    }
 
     public static final class DayRationBuilder implements EntityBuilder<DayRation> {
         private Integer id;

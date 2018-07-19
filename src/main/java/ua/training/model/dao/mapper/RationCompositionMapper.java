@@ -35,12 +35,12 @@ public class RationCompositionMapper implements ObjectMapper<RationComposition> 
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
 
-        return new RationComposition.RationCompositionBuilder()
-                .setId(id)
-                .setFoodIntake(foodIntake)
-                .setNumberOfDish(numberDish)
-                .setCaloriesOfDish(caloriesOfDish)
-                .buildLazy();
+        return RationComposition.builder()
+                .id(id)
+                .foodIntake(foodIntake)
+                .numberOfDish(numberDish)
+                .caloriesOfDish(caloriesOfDish)
+                .build();
     }
 
     /**

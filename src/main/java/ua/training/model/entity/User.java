@@ -1,5 +1,6 @@
 package ua.training.model.entity;
 
+import lombok.*;
 import ua.training.model.dao.proxy.UserLazy;
 import ua.training.model.entity.enums.Roles;
 
@@ -8,6 +9,11 @@ import java.util.ArrayList;
 
 import static java.util.Objects.isNull;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
 public class User implements Entity<Integer> {
     private Integer id;
     private String name;
@@ -36,103 +42,6 @@ public class User implements Entity<Integer> {
      * All day rations of the user
      */
     private ArrayList<DayRation> dayRations;
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public LocalDate getDob() {
-        return dob;
-    }
-
-    public void setDob(LocalDate dob) {
-        this.dob = dob;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Roles getRole() {
-        return role;
-    }
-
-    public void setRole(Roles role) {
-        this.role = role;
-    }
-
-    public Integer getHeight() {
-        return height;
-    }
-
-    public void setHeight(Integer height) {
-        this.height = height;
-    }
-
-    public Integer getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Integer weight) {
-        this.weight = weight;
-    }
-
-    public Integer getWeightDesired() {
-        return weightDesired;
-    }
-
-    public void setWeightDesired(Integer weightDesired) {
-        this.weightDesired = weightDesired;
-    }
-
-    public Integer getLifeStyleCoefficient() {
-        return lifeStyleCoefficient;
-    }
-
-    public void setLifeStyleCoefficient(Integer lifeStyleCoefficient) {
-        this.lifeStyleCoefficient = lifeStyleCoefficient;
-    }
-
-    public ArrayList<Dish> getListDishes() {
-        return listDishes;
-    }
-
-    public void setListDishes(ArrayList<Dish> listDishes) {
-        this.listDishes = listDishes;
-    }
-
-    public ArrayList<DayRation> getDayRations() {
-        return dayRations;
-    }
-
-    public void setDayRations(ArrayList<DayRation> dayRations) {
-        this.dayRations = dayRations;
-    }
 
     public static final class UserBuilder implements EntityBuilder<User> {
         private Integer id;
