@@ -19,16 +19,15 @@ public class RationComposition implements EntityObject<Integer> {
     @Column(name = "idRC", nullable = false)
     private Integer id;
     //    @Column(name = "idDayRation", nullable = false)
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name = "idDayRation", nullable = false)
     private DayRation dayRation;
     /**
      * Food intake per day
      */
-    @Column(name = "idDayRation", nullable = false)
+    @Column(nullable = false)
     private FoodIntake foodIntake;
-    //    @Column(name = "idDish", nullable = false)
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name = "idDish", nullable = false)
     private Dish dish;
     @Column(nullable = false)

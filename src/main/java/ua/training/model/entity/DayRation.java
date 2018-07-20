@@ -27,7 +27,6 @@ public class DayRation implements EntityObject<Integer> {
      */
     @Column(nullable = false)
     private LocalDate date;
-    //    @Column(name = "idUser",nullable = false)
     @ManyToOne
     @JoinColumn(name = "idUser", nullable = false)
     private User user;

@@ -58,7 +58,7 @@ public class User implements EntityObject<Integer> {
     /**
      * All day rations of the user
      */
-    @OneToMany(mappedBy = "user",cascade=CascadeType.ALL,targetEntity = DayRation.class)
+    @OneToMany(mappedBy = "user")
     private List<DayRation> dayRations;
 
     public static final class UserBuilder implements EntityBuilder<User> {
