@@ -7,6 +7,7 @@ import ua.training.model.entity.enums.Roles;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import static java.util.Objects.isNull;
 
@@ -53,12 +54,12 @@ public class User implements EntityObject<Integer> {
      * All dishes of the user
      */
     @OneToMany(mappedBy = "user")
-    private ArrayList<Dish> listDishes;
+    private List<Dish> listDishes;
     /**
      * All day rations of the user
      */
-    @OneToMany(mappedBy = "user")
-    private ArrayList<DayRation> dayRations;
+    @OneToMany(mappedBy = "user",cascade=CascadeType.ALL,targetEntity = DayRation.class)
+    private List<DayRation> dayRations;
 
     public static final class UserBuilder implements EntityBuilder<User> {
         private Integer id;

@@ -8,6 +8,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import ua.training.model.entity.RationComposition;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -15,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(MockitoJUnitRunner.class)
 public class DayRationLazyTest {
     private DayRationLazy dayRation;
-    private ArrayList<RationComposition> arrDR;
+    private List<RationComposition> arrDR;
 
     @Before
     public void setUp() {

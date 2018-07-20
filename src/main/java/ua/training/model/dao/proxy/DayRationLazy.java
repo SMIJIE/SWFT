@@ -20,12 +20,12 @@ public class DayRationLazy extends DayRation {
 
 
     @Override
-    public ArrayList<RationComposition> getCompositions() {
-        ArrayList<RationComposition> arrDish = new ArrayList<>();
+    public List<RationComposition> getCompositions() {
+        List<RationComposition> arrDish = new ArrayList<>();
         List<RationComposition> listDish = JDBC_RATION_COMPOSITION_DAO.getAllCompositionByRation(super.getId());
 
         if (!listDish.isEmpty()) {
-            arrDish = (ArrayList<RationComposition>) listDish;
+            arrDish = listDish;
         }
 
         return arrDish;

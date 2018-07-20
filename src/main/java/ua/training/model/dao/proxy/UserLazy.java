@@ -19,12 +19,12 @@ public class UserLazy extends User {
     private static final JDBCDishDao JDBC_DISH_DAO = (JDBCDishDao) DAO_FACTORY.createDishDao();
 
     @Override
-    public ArrayList<Dish> getListDishes() {
-        ArrayList<Dish> arrDish = new ArrayList<>();
+    public List<Dish> getListDishes() {
+        List<Dish> arrDish = new ArrayList<>();
         List<Dish> listDish = JDBC_DISH_DAO.getAllDishesByUserId(super.getId());
 
         if (!listDish.isEmpty()) {
-            arrDish = (ArrayList<Dish>) listDish;
+            arrDish = listDish;
         }
 
         return arrDish;

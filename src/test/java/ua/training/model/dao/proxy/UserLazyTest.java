@@ -6,13 +6,14 @@ import org.junit.Test;
 import ua.training.model.entity.Dish;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class UserLazyTest {
     private UserLazy user;
-    private ArrayList<Dish> arrDish;
+    private List<Dish> arrDish;
 
     @Before
     public void setUp() {

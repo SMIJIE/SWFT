@@ -29,8 +29,8 @@ public class UserDayRation implements Command {
         List<RationComposition> rationCompositions = new ArrayList<>();
         Optional<DayRation> dayRationSql;
 
-        ArrayList<Dish> usersDishes = new ArrayList<>();
-        Optional<ArrayList<Dish>> listOfDishes = Optional.ofNullable(user.getListDishes());
+        List<Dish> usersDishes = new ArrayList<>();
+        Optional<List<Dish>> listOfDishes = Optional.ofNullable(user.getListDishes());
 
         if (listOfDishes.isPresent()) {
             usersDishes = listOfDishes.get();

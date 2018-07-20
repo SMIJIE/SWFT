@@ -6,6 +6,7 @@ import ua.training.model.dao.proxy.DayRationLazy;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import static java.util.Objects.isNull;
 
@@ -34,7 +35,7 @@ public class DayRation implements EntityObject<Integer> {
      * List of dishes of the ration
      */
     @ManyToMany(mappedBy = "dayRation")
-    private ArrayList<RationComposition> compositions;
+    private List<RationComposition> compositions;
     /**
      * Data for graphical visualisation
      */
