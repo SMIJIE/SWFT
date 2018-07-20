@@ -1,7 +1,6 @@
 package ua.training.model.entity;
 
 import lombok.*;
-import org.hibernate.annotations.Type;
 import ua.training.model.dao.utility.SortAnnotation;
 import ua.training.model.entity.enums.FoodCategory;
 
@@ -45,6 +44,6 @@ public class Dish implements EntityObject<Integer> {
     /**
      * Parameter for basic and custom dishes
      */
-    @Column(nullable = false,columnDefinition = "TINYINT(1)")
+    @Column(nullable = false, columnDefinition = "TINYINT(1)")
     private Boolean generalFood;
 }

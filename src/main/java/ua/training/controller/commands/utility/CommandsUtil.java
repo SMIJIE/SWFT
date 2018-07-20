@@ -188,7 +188,7 @@ public class CommandsUtil {
             comparator = comparator.thenComparing(new DishComparator(field));
         }
 
-         if (!fieldsForSort.isEmpty()) {
+        if (!fieldsForSort.isEmpty()) {
             list.sort(comparator);
         }
     }

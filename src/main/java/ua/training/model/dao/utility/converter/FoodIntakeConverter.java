@@ -1,7 +1,6 @@
 package ua.training.model.dao.utility.converter;
 
 import ua.training.model.entity.enums.FoodIntake;
-import ua.training.model.entity.enums.Roles;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
