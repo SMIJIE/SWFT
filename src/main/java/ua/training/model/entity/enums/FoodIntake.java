@@ -7,7 +7,17 @@ package ua.training.model.entity.enums;
  * @author Zakusylo Pavlo
  */
 public enum FoodIntake {
-    BREAKFAST, DINNER, SUPPER;
+    BREAKFAST("BREAKFAST"), DINNER("DINNER"), SUPPER("SUPPER");
+
+    private String value;
+
+    FoodIntake(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
 
     @Override
     public String toString() {

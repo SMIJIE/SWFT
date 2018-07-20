@@ -7,7 +7,17 @@ package ua.training.model.entity.enums;
  * @author Zakusylo Pavlo
  */
 public enum Roles {
-    ADMIN, USER, UNKNOWN;
+    ADMIN("ADMIN"), USER("USER"), UNKNOWN("UNKNOWN");
+
+    private String value;
+
+    Roles(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
 
     @Override
     public String toString() {

@@ -7,7 +7,17 @@ package ua.training.model.entity.enums;
  * @author Zakusylo Pavlo
  */
 public enum FoodCategory {
-    LUNCHEON, SOUP, HOT, DESSERT;
+    LUNCHEON("LUNCHEON"), SOUP("SOUP"), HOT("HOT"), DESSERT("DESSERT");
+
+    private String value;
+
+    FoodCategory(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
 
     @Override
     public String toString() {
