@@ -10,14 +10,14 @@ import java.io.Serializable;
  *
  * @author Zakusylo Pavlo
  */
-public interface Entity<ID> extends Serializable {
+public interface EntityObject<ID> extends Serializable {
     long SERIAL_VERSION_UID = 1L;
     /**
-     * Logger for Entity classes
+     * Logger for EntityObject classes
      *
      * @see LogManager
      */
-    Logger LOGGER = LogManager.getLogger(Entity.class);
+    Logger LOGGER = LogManager.getLogger(EntityObject.class);
 
     ID getId();
 }

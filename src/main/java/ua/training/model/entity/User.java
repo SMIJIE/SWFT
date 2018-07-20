@@ -4,6 +4,7 @@ import lombok.*;
 import ua.training.model.dao.proxy.UserLazy;
 import ua.training.model.entity.enums.Roles;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -14,33 +15,49 @@ import static java.util.Objects.isNull;
 @Getter
 @Setter
 @ToString
-public class User implements Entity<Integer> {
+@Entity
+@Table(name = "user")
+public class User implements EntityObject<Integer> {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idU", nullable = false)
     private Integer id;
+    @Column(nullable = false)
     private String name;
     /**
      * Date of Birthday
      */
+    @Column(nullable = false)
     private LocalDate dob;
+    @Column(nullable = false)
     private String email;
+    @Column(nullable = false)
     private String password;
     /**
      * Roles of user
      */
+    @Column(nullable = false)
     private Roles role;
+    @Column(nullable = false)
     private Integer height;
+    @Column(nullable = false)
     private Integer weight;
+    @Column(nullable = false)
     private Integer weightDesired;
     /**
      * For the Mifflin-San Jehora formula
      */
+    @Column(nullable = false)
     private Integer lifeStyleCoefficient;
     /**
      * All dishes of the user
      */
+    @OneToMany(mappedBy = "user")
     private ArrayList<Dish> listDishes;
     /**
      * All day rations of the user
      */
+    @OneToMany(mappedBy = "user")
     private ArrayList<DayRation> dayRations;
 
     public static final class UserBuilder implements EntityBuilder<User> {

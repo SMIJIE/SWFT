@@ -3,6 +3,7 @@ package ua.training.model.entity;
 import lombok.*;
 import ua.training.model.dao.proxy.DayRationLazy;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -13,24 +14,36 @@ import static java.util.Objects.isNull;
 @Getter
 @Setter
 @ToString
-public class DayRation implements Entity<Integer> {
+@Entity
+@Table(name = "dayration")
+public class DayRation implements EntityObject<Integer> {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idDR", nullable = false)
     private Integer id;
     /**
      * Date of creation
      */
+    @Column(nullable = false)
     private LocalDate date;
+    //    @Column(name = "idUser",nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "idUser", nullable = false)
     private User user;
     /**
      * List of dishes of the ration
      */
+    @ManyToMany(mappedBy = "dayRation")
     private ArrayList<RationComposition> compositions;
     /**
      * Data for graphical visualisation
      */
+    @Column(nullable = false)
     private Integer userCalories;
     /**
      * Data for graphical visualisation
      */
+    @Column(nullable = false)
     private Integer userCaloriesDesired;
 
     public static final class DayRationBuilder implements EntityBuilder<DayRation> {

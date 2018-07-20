@@ -9,5 +9,8 @@ import java.io.Serializable;
  */
 public interface EntityBuilder<E> extends Serializable {
     long SERIAL_VERSION_UID = 1L;
+
     E build();
+
+    E buildLazy();
 }
