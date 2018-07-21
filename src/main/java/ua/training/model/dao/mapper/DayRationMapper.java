@@ -1,5 +1,6 @@
 package ua.training.model.dao.mapper;
 
+import lombok.extern.log4j.Log4j2;
 import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
 import ua.training.controller.commands.exception.DataHttpException;
@@ -17,6 +18,7 @@ import java.util.Map;
 import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
 import static java.util.Objects.isNull;
 
+@Log4j2
 public class DayRationMapper implements ObjectMapper<DayRation> {
 
     /**
@@ -57,7 +59,7 @@ public class DayRationMapper implements ObjectMapper<DayRation> {
             userCalories = rs.getInt(Attributes.REQUEST_USER_CALORIES);
             userCaloriesDesired = rs.getInt(Attributes.REQUEST_USER_CALORIES_DESIRED);
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_DAY_RATION_RS_NOT_EXTRACT);
+            log.error(e.getMessage() + Mess.LOG_DAY_RATION_RS_NOT_EXTRACT);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
 

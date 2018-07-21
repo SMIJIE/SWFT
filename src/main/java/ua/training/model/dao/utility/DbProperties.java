@@ -1,7 +1,6 @@
 package ua.training.model.dao.utility;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
 import ua.training.controller.commands.exception.DataSqlException;
@@ -15,6 +14,7 @@ import java.util.Properties;
  *
  * @author Zakusylo Pavlo
  */
+@Log4j2
 public class DbProperties {
     /**
      * Represents a persistent set of properties
@@ -24,13 +24,12 @@ public class DbProperties {
     private Properties props;
 
     public DbProperties() {
-        Logger logger = LogManager.getLogger(DbProperties.class);
 
         try (InputStream is = getClass().getClassLoader().getResourceAsStream(Attributes.DB_PROPERTIES)) {
             props = new Properties();
             props.load(is);
         } catch (IOException ex) {
-            logger.error(ex.getMessage() + Mess.LOG_DB_PROPERTIES);
+            log.error(ex.getMessage() + Mess.LOG_DB_PROPERTIES);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
     }

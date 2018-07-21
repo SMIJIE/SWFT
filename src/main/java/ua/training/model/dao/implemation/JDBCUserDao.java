@@ -1,5 +1,6 @@
 package ua.training.model.dao.implemation;
 
+import lombok.extern.log4j.Log4j2;
 import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
 import ua.training.controller.commands.exception.DataSqlException;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Log4j2
 public class JDBCUserDao implements UserDao {
     /**
      * Connection for JDBCUserDao
@@ -50,7 +52,7 @@ public class JDBCUserDao implements UserDao {
 
             ps.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_USER_NOT_REGISTERED);
+            log.error(e.getMessage() + Mess.LOG_USER_NOT_REGISTERED);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
     }
@@ -70,7 +72,7 @@ public class JDBCUserDao implements UserDao {
 
             rs.close();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_USER_GET_BY_ID);
+            log.error(e.getMessage() + Mess.LOG_USER_GET_BY_ID);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
         return user;
@@ -91,7 +93,7 @@ public class JDBCUserDao implements UserDao {
 
             rs.close();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_USER_GET_ALL);
+            log.error(e.getMessage() + Mess.LOG_USER_GET_ALL);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
         return users;
@@ -136,11 +138,11 @@ public class JDBCUserDao implements UserDao {
 
             connection.commit();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_USER_NOT_UPDATE_PARAMETERS);
+            log.error(e.getMessage() + Mess.LOG_USER_NOT_UPDATE_PARAMETERS);
             try {
                 connection.rollback();
             } catch (SQLException r) {
-                LOGGER.error(r.getMessage() + Mess.LOG_USER_UPDATE_ROLLBACK);
+                log.error(r.getMessage() + Mess.LOG_USER_UPDATE_ROLLBACK);
             }
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
@@ -173,11 +175,11 @@ public class JDBCUserDao implements UserDao {
 
             connection.commit();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_USER_DELETE_BY_ID);
+            log.error(e.getMessage() + Mess.LOG_USER_DELETE_BY_ID);
             try {
                 connection.rollback();
             } catch (SQLException r) {
-                LOGGER.error(r.getMessage() + Mess.LOG_USER_DELETE_ROLLBACK);
+                log.error(r.getMessage() + Mess.LOG_USER_DELETE_ROLLBACK);
             }
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
@@ -188,7 +190,7 @@ public class JDBCUserDao implements UserDao {
         try {
             connection.close();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_CONNECTION_NOT_CLOSE);
+            log.error(e.getMessage() + Mess.LOG_CONNECTION_NOT_CLOSE);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
     }
@@ -215,7 +217,7 @@ public class JDBCUserDao implements UserDao {
 
             rs.close();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_USER_GET_OR_CHECK);
+            log.error(e.getMessage() + Mess.LOG_USER_GET_OR_CHECK);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
 
@@ -249,7 +251,7 @@ public class JDBCUserDao implements UserDao {
 
             rs.close();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_USER_GET_BY_ID);
+            log.error(e.getMessage() + Mess.LOG_USER_GET_BY_ID);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
         return users;
@@ -277,7 +279,7 @@ public class JDBCUserDao implements UserDao {
 
             rs.close();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_USER_COUNT);
+            log.error(e.getMessage() + Mess.LOG_USER_COUNT);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
         return counter;
@@ -329,11 +331,11 @@ public class JDBCUserDao implements UserDao {
 
             connection.commit();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_USER_DELETE_BY_EMAIL);
+            log.error(e.getMessage() + Mess.LOG_USER_DELETE_BY_EMAIL);
             try {
                 connection.rollback();
             } catch (SQLException r) {
-                LOGGER.error(r.getMessage() + Mess.LOG_USER_DELETE_ROLLBACK);
+                log.error(r.getMessage() + Mess.LOG_USER_DELETE_ROLLBACK);
             }
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
@@ -363,7 +365,7 @@ public class JDBCUserDao implements UserDao {
 
             ps.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_USER_NOT_UPDATE_PARAMETERS);
+            log.error(e.getMessage() + Mess.LOG_USER_NOT_UPDATE_PARAMETERS);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
     }

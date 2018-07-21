@@ -1,5 +1,6 @@
 package ua.training.controller.commands.action.update;
 
+import lombok.extern.log4j.Log4j2;
 import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
 import ua.training.constant.Pages;
@@ -16,6 +17,7 @@ import java.util.Optional;
  *
  * @author Zakusylo Pavlo
  */
+@Log4j2
 public class UpdateUsersParameters implements Command {
 
     @Override
@@ -28,7 +30,7 @@ public class UpdateUsersParameters implements Command {
             userHttp = USER_MAPPER.extractFromHttpServletRequest(request);
         } catch (DataHttpException e) {
             request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_DATA, Attributes.PAGE_USER_WRONG_DATA);
-            LOGGER.error(e.getMessage());
+            log.error(e.getMessage());
             return Pages.USER_SETTINGS_REDIRECT_WITH_ERROR;
         }
 
@@ -42,7 +44,7 @@ public class UpdateUsersParameters implements Command {
             userHttp.setPassword(flagPassword ? user.getPassword() : userHttp.getPassword());
 
             USER_SERVICE_IMP.updateUserParameters(userHttp);
-            LOGGER.info(Mess.LOG_USER_UPDATE_PARAMETERS + "[" + user.getEmail() + "]");
+            log.info(Mess.LOG_USER_UPDATE_PARAMETERS + "[" + user.getEmail() + "]");
 
             HashSet<String> allUsers = (HashSet<String>) request.getServletContext().getAttribute(Attributes.REQUEST_USERS_ALL);
             allUsers.remove(user.getEmail());

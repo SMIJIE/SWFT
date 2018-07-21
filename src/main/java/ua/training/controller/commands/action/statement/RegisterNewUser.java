@@ -1,5 +1,6 @@
 package ua.training.controller.commands.action.statement;
 
+import lombok.extern.log4j.Log4j2;
 import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
 import ua.training.constant.Pages;
@@ -16,6 +17,7 @@ import java.util.Optional;
  *
  * @author Zakusylo Pavlo
  */
+@Log4j2
 public class RegisterNewUser implements Command {
 
     @Override
@@ -27,7 +29,7 @@ public class RegisterNewUser implements Command {
             userHttp = USER_MAPPER.extractFromHttpServletRequest(request);
         } catch (DataHttpException e) {
             request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_EMAIL, Attributes.PAGE_USER_WRONG_DATA);
-            LOGGER.error(e.getMessage());
+            log.error(e.getMessage());
             return returnPage;
         }
 
@@ -36,7 +38,7 @@ public class RegisterNewUser implements Command {
         if (!userSQL.isPresent()) {
             USER_SERVICE_IMP.registerNewUser(userHttp);
             userSQL = USER_SERVICE_IMP.getOrCheckUserByEmail(userHttp.getEmail());
-            LOGGER.info(Mess.LOG_USER_REGISTERED + "[" + userSQL.get().getEmail() + "]");
+            log.info(Mess.LOG_USER_REGISTERED + "[" + userSQL.get().getEmail() + "]");
             returnPage = CommandsUtil.openUsersSession(request, userSQL.get());
         } else {
             request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_EMAIL, Attributes.PAGE_USER_EXIST);

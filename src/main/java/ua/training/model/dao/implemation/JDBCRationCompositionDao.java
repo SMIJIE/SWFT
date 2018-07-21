@@ -1,5 +1,6 @@
 package ua.training.model.dao.implemation;
 
+import lombok.extern.log4j.Log4j2;
 import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
 import ua.training.controller.commands.exception.DataSqlException;
@@ -17,6 +18,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+@Log4j2
 public class JDBCRationCompositionDao implements RationCompositionDao {
     /**
      * Connection for JDBCRationCompositionDao
@@ -44,7 +46,7 @@ public class JDBCRationCompositionDao implements RationCompositionDao {
 
             ps.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_NOT_INSERTED);
+            log.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_NOT_INSERTED);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
 
@@ -65,7 +67,7 @@ public class JDBCRationCompositionDao implements RationCompositionDao {
 
             rs.close();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_GET_BY_ID);
+            log.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_GET_BY_ID);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
 
@@ -87,7 +89,7 @@ public class JDBCRationCompositionDao implements RationCompositionDao {
 
             rs.close();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_GET_ALL);
+            log.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_GET_ALL);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
 
@@ -108,7 +110,7 @@ public class JDBCRationCompositionDao implements RationCompositionDao {
 
             ps.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_NOT_UPDATE_PARAMETERS);
+            log.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_NOT_UPDATE_PARAMETERS);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
     }
@@ -122,7 +124,7 @@ public class JDBCRationCompositionDao implements RationCompositionDao {
 
             ps.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_DELETE_BY_ID);
+            log.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_DELETE_BY_ID);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
     }
@@ -132,7 +134,7 @@ public class JDBCRationCompositionDao implements RationCompositionDao {
         try {
             connection.close();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_CONNECTION_NOT_CLOSE);
+            log.error(e.getMessage() + Mess.LOG_CONNECTION_NOT_CLOSE);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
     }
@@ -159,7 +161,7 @@ public class JDBCRationCompositionDao implements RationCompositionDao {
 
             rs.close();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_SUM_CALORIES_BY_RATION);
+            log.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_SUM_CALORIES_BY_RATION);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
 
@@ -192,7 +194,7 @@ public class JDBCRationCompositionDao implements RationCompositionDao {
 
             rs.close();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_GET_BY_RATION_AND_DISH);
+            log.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_GET_BY_RATION_AND_DISH);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
         return rationComposition;
@@ -231,7 +233,7 @@ public class JDBCRationCompositionDao implements RationCompositionDao {
 
             rs.close();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_GET_BY_RATION);
+            log.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_GET_BY_RATION);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
 
@@ -257,7 +259,7 @@ public class JDBCRationCompositionDao implements RationCompositionDao {
 
             ps.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_DELETE_BY_ID);
+            log.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_DELETE_BY_ID);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
     }
@@ -278,7 +280,7 @@ public class JDBCRationCompositionDao implements RationCompositionDao {
 
             ps.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_NOT_UPDATE_PARAMETERS);
+            log.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_NOT_UPDATE_PARAMETERS);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
     }

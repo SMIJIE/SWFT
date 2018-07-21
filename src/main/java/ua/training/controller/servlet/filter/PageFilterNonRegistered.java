@@ -1,5 +1,6 @@
 package ua.training.controller.servlet.filter;
 
+import lombok.extern.log4j.Log4j2;
 import ua.training.constant.Mess;
 import ua.training.constant.Pages;
 import ua.training.model.entity.User;
@@ -23,6 +24,7 @@ import java.util.Optional;
         "/swft/addNewDish", "/swft/listDishPage", "/swft/deleteUsersMenuItem", "/swft/updateUsersDish", "/swft/dayRation",
         "/swft/createNewRation", "/swft/listHomePage", "/swft/listUserDayRation", "/swft/deleteUsersComposition",
         "/swft/updateUsersComposition", "/swft/menuUsersEditWithError"})
+@Log4j2
 public class PageFilterNonRegistered extends AbstractFilter {
 
     @Override
@@ -33,7 +35,7 @@ public class PageFilterNonRegistered extends AbstractFilter {
         if (user.isPresent()) {
             filterChain.doFilter(request, response);
         } else {
-            LOGGER.warn(Mess.LOG_USER_GO_USER_URL + " - [" + Roles.UNKNOWN + "]");
+            log.warn(Mess.LOG_USER_GO_USER_URL + " - [" + Roles.UNKNOWN + "]");
             request.getRequestDispatcher(Pages.INDEX).forward(request, response);
         }
     }

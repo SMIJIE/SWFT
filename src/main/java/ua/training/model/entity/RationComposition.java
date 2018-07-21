@@ -18,7 +18,6 @@ public class RationComposition implements EntityObject<Integer> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idRC", nullable = false)
     private Integer id;
-    //    @Column(name = "idDayRation", nullable = false)
     @ManyToOne
     @JoinColumn(name = "idDayRation", nullable = false)
     private DayRation dayRation;

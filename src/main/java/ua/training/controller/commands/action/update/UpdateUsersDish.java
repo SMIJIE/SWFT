@@ -1,5 +1,6 @@
 package ua.training.controller.commands.action.update;
 
+import lombok.extern.log4j.Log4j2;
 import ua.training.constant.Attributes;
 import ua.training.constant.Pages;
 import ua.training.controller.commands.Command;
@@ -17,6 +18,7 @@ import java.util.Optional;
  *
  * @author Zakusylo Pavlo
  */
+@Log4j2
 public class UpdateUsersDish implements Command {
     @Override
     public String execute(HttpServletRequest request) {
@@ -28,7 +30,7 @@ public class UpdateUsersDish implements Command {
             dishHttp = DISH_MAPPER.extractFromHttpServletRequest(request);
         } catch (DataHttpException e) {
             request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_DATA, Attributes.PAGE_USER_WRONG_DATA);
-            LOGGER.error(e.getMessage());
+            log.error(e.getMessage());
             return Pages.MENU_USERS_EDIT_REDIRECT_WITH_ERROR;
         }
 

@@ -1,7 +1,5 @@
 package ua.training.controller.commands;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import ua.training.model.dao.mapper.DayRationMapper;
 import ua.training.model.dao.mapper.DishMapper;
 import ua.training.model.dao.mapper.UserMapper;
@@ -18,12 +16,6 @@ import javax.servlet.http.HttpServletRequest;
  * @author Zakusylo Pavlo
  */
 public interface Command {
-    /**
-     * Logger for Command classes
-     *
-     * @see LogManager
-     */
-    Logger LOGGER = LogManager.getLogger(Command.class);
     UserServiceImp USER_SERVICE_IMP = new UserServiceImp();
     DishServiceImp DISH_SERVICE_IMP = new DishServiceImp();
     DayRationServiceImp DAY_RATION_SERVICE_IMP = new DayRationServiceImp();

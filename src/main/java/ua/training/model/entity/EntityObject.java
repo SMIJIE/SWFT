@@ -1,8 +1,5 @@
 package ua.training.model.entity;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.Serializable;
 
 /**
@@ -12,12 +9,6 @@ import java.io.Serializable;
  */
 public interface EntityObject<ID> extends Serializable {
     long SERIAL_VERSION_UID = 1L;
-    /**
-     * Logger for EntityObject classes
-     *
-     * @see LogManager
-     */
-    Logger LOGGER = LogManager.getLogger(EntityObject.class);
 
     ID getId();
 }

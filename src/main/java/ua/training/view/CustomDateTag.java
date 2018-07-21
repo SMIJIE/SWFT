@@ -1,7 +1,6 @@
 package ua.training.view;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import ua.training.constant.Mess;
 
 import javax.servlet.jsp.tagext.SimpleTagSupport;
@@ -19,15 +18,10 @@ import static java.util.Objects.isNull;
  *
  * @author Zakusylo Pavlo
  */
+@Log4j2
 public class CustomDateTag extends SimpleTagSupport {
     private String langCount;
     private LocalDate localDate;
-    /**
-     * Logger for CustomDateTag class
-     *
-     * @see LogManager
-     */
-    private Logger logger = LogManager.getLogger(SimpleTagSupport.class);
 
     public void setLocalDate(LocalDate localDate) {
         this.localDate = localDate;
@@ -55,7 +49,7 @@ public class CustomDateTag extends SimpleTagSupport {
                     .write(df.format(localDate));
         } catch (IOException e) {
             e.printStackTrace();
-            logger.error(e.getMessage() + Mess.LOG_NOT_WRITE_CUSTOM_TAG);
+            log.error(e.getMessage() + Mess.LOG_NOT_WRITE_CUSTOM_TAG);
         }
     }
 }

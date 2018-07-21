@@ -1,5 +1,6 @@
 package ua.training.model.dao.implemation;
 
+import lombok.extern.log4j.Log4j2;
 import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
 import ua.training.controller.commands.exception.DataSqlException;
@@ -18,6 +19,7 @@ import java.util.*;
 
 import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
 
+@Log4j2
 public class JDBCDishDao implements DishDao {
     /**
      * Connection for JDBCDishDao
@@ -49,7 +51,7 @@ public class JDBCDishDao implements DishDao {
 
             ps.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_DISH_NOT_INSERTED);
+            log.error(e.getMessage() + Mess.LOG_DISH_NOT_INSERTED);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
     }
@@ -69,7 +71,7 @@ public class JDBCDishDao implements DishDao {
 
             rs.close();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_DISH_GET_BY_ID);
+            log.error(e.getMessage() + Mess.LOG_DISH_GET_BY_ID);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
 
@@ -100,7 +102,7 @@ public class JDBCDishDao implements DishDao {
             }
             rs.close();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_DISH_GET_BY_ID);
+            log.error(e.getMessage() + Mess.LOG_DISH_GET_BY_ID);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
         return dishes;
@@ -120,7 +122,7 @@ public class JDBCDishDao implements DishDao {
 
             ps.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_DISH_NOT_UPDATE_PARAMETERS);
+            log.error(e.getMessage() + Mess.LOG_DISH_NOT_UPDATE_PARAMETERS);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
     }
@@ -142,11 +144,11 @@ public class JDBCDishDao implements DishDao {
 
             connection.commit();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_DISH_DELETE_BY_ID);
+            log.error(e.getMessage() + Mess.LOG_DISH_DELETE_BY_ID);
             try {
                 connection.rollback();
             } catch (SQLException r) {
-                LOGGER.error(r.getMessage() + Mess.LOG_DISH_DELETE_ROLLBACK);
+                log.error(r.getMessage() + Mess.LOG_DISH_DELETE_ROLLBACK);
             }
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
@@ -157,7 +159,7 @@ public class JDBCDishDao implements DishDao {
         try {
             connection.close();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_CONNECTION_NOT_CLOSE);
+            log.error(e.getMessage() + Mess.LOG_CONNECTION_NOT_CLOSE);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
     }
@@ -184,7 +186,7 @@ public class JDBCDishDao implements DishDao {
 
             rs.close();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_DISH_GET_GENERAL);
+            log.error(e.getMessage() + Mess.LOG_DISH_GET_GENERAL);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
         return dishes;
@@ -217,7 +219,7 @@ public class JDBCDishDao implements DishDao {
 
             rs.close();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_DISH_GET_BY_USER);
+            log.error(e.getMessage() + Mess.LOG_DISH_GET_BY_USER);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
         return dishes;
@@ -246,7 +248,7 @@ public class JDBCDishDao implements DishDao {
 
             rs.close();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_DISH_GET_BY_USER);
+            log.error(e.getMessage() + Mess.LOG_DISH_GET_BY_USER);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
         return dishes;
@@ -281,11 +283,11 @@ public class JDBCDishDao implements DishDao {
 
             connection.commit();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_DISH_DELETE_BY_ID);
+            log.error(e.getMessage() + Mess.LOG_DISH_DELETE_BY_ID);
             try {
                 connection.rollback();
             } catch (SQLException r) {
-                LOGGER.error(r.getMessage() + Mess.LOG_DISH_DELETE_ROLLBACK);
+                log.error(r.getMessage() + Mess.LOG_DISH_DELETE_ROLLBACK);
             }
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
@@ -323,11 +325,11 @@ public class JDBCDishDao implements DishDao {
 
             connection.commit();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_DISH_DELETE_BY_ID);
+            log.error(e.getMessage() + Mess.LOG_DISH_DELETE_BY_ID);
             try {
                 connection.rollback();
             } catch (SQLException r) {
-                LOGGER.error(r.getMessage() + Mess.LOG_DISH_DELETE_ROLLBACK);
+                log.error(r.getMessage() + Mess.LOG_DISH_DELETE_ROLLBACK);
             }
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
@@ -354,7 +356,7 @@ public class JDBCDishDao implements DishDao {
 
             rs.close();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_DISH_COUNT_BY_USER_ID);
+            log.error(e.getMessage() + Mess.LOG_DISH_COUNT_BY_USER_ID);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
         return counter;
@@ -381,7 +383,7 @@ public class JDBCDishDao implements DishDao {
 
             ps.executeUpdate();
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_DISH_NOT_UPDATE_PARAMETERS);
+            log.error(e.getMessage() + Mess.LOG_DISH_NOT_UPDATE_PARAMETERS);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
     }

@@ -1,5 +1,6 @@
 package ua.training.model.dao.mapper;
 
+import lombok.extern.log4j.Log4j2;
 import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
 import ua.training.constant.RegexExpress;
@@ -18,6 +19,7 @@ import java.util.Map;
 
 import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
 
+@Log4j2
 public class UserMapper implements ObjectMapper<User> {
     /**
      * @param rs ResultSet
@@ -49,7 +51,7 @@ public class UserMapper implements ObjectMapper<User> {
             lifeStyleCoefficient = rs.getInt(Attributes.SQL_LIFESTYLE_COEFFICIENT);
 
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_USER_RS_NOT_EXTRACT);
+            log.error(e.getMessage() + Mess.LOG_USER_RS_NOT_EXTRACT);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
 

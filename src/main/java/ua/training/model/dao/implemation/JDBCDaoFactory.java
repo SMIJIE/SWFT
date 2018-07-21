@@ -1,5 +1,6 @@
 package ua.training.model.dao.implemation;
 
+import lombok.extern.log4j.Log4j2;
 import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
 import ua.training.controller.commands.exception.DataSqlException;
@@ -9,6 +10,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+@Log4j2
 public class JDBCDaoFactory extends DaoFactory {
     /**
      * DataSource for DaoFactory
@@ -26,7 +28,7 @@ public class JDBCDaoFactory extends DaoFactory {
         try {
             return dataSource.getConnection();
         } catch (SQLException e) {
-            logger.error(e.getMessage() + Mess.LOG_CONNECTION_NOT);
+            log.error(e.getMessage() + Mess.LOG_CONNECTION_NOT);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
     }

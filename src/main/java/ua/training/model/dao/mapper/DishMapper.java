@@ -1,5 +1,6 @@
 package ua.training.model.dao.mapper;
 
+import lombok.extern.log4j.Log4j2;
 import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
 import ua.training.constant.RegexExpress;
@@ -17,6 +18,7 @@ import java.util.Optional;
 import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
 import static java.util.Objects.isNull;
 
+@Log4j2
 public class DishMapper implements ObjectMapper<Dish> {
     /**
      * @param rs ResultSet
@@ -46,7 +48,7 @@ public class DishMapper implements ObjectMapper<Dish> {
             generalFood = rs.getBoolean(Attributes.REQUEST_GENERAL_FOOD);
 
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_DISH_RS_NOT_EXTRACT);
+            log.error(e.getMessage() + Mess.LOG_DISH_RS_NOT_EXTRACT);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
 

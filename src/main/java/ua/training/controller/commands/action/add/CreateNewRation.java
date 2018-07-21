@@ -1,5 +1,6 @@
 package ua.training.controller.commands.action.add;
 
+import lombok.extern.log4j.Log4j2;
 import ua.training.constant.Attributes;
 import ua.training.constant.Pages;
 import ua.training.controller.commands.Command;
@@ -24,6 +25,7 @@ import static java.util.Objects.isNull;
  *
  * @author Zakusylo Pavlo
  */
+@Log4j2
 public class CreateNewRation implements Command {
 
     @Override
@@ -41,7 +43,7 @@ public class CreateNewRation implements Command {
                 dayRationHttp = DAY_RATION.extractFromHttpServletRequest(request);
             } catch (DataHttpException e) {
                 request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_DATA, Attributes.PAGE_USER_WRONG_DATA);
-                LOGGER.error(e.getMessage());
+                log.error(e.getMessage());
                 return Pages.DAY_RATION;
             }
 

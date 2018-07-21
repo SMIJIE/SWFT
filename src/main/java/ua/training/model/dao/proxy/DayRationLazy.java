@@ -18,7 +18,6 @@ public class DayRationLazy extends DayRation {
     private static final DaoFactory DAO_FACTORY = DaoFactory.getInstance();
     private static final JDBCRationCompositionDao JDBC_RATION_COMPOSITION_DAO = (JDBCRationCompositionDao) DAO_FACTORY.createRationCompositionDao();
 
-
     @Override
     public List<RationComposition> getCompositions() {
         List<RationComposition> arrDish = new ArrayList<>();

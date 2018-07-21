@@ -1,5 +1,6 @@
 package ua.training.model.dao.mapper;
 
+import lombok.extern.log4j.Log4j2;
 import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
 import ua.training.controller.commands.exception.DataHttpException;
@@ -12,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
+@Log4j2
 public class RationCompositionMapper implements ObjectMapper<RationComposition> {
     /**
      * @param rs ResultSet
@@ -31,7 +33,7 @@ public class RationCompositionMapper implements ObjectMapper<RationComposition> 
             caloriesOfDish = rs.getInt(Attributes.SQL_CALORIES_OF_DISH);
 
         } catch (SQLException e) {
-            LOGGER.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_RS_NOT_EXTRACT);
+            log.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_RS_NOT_EXTRACT);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
 

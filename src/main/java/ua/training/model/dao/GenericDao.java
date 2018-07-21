@@ -1,7 +1,5 @@
 package ua.training.model.dao;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import ua.training.model.dao.utility.DbProperties;
 
 import java.util.List;
@@ -13,13 +11,6 @@ import java.util.Optional;
  * @author Zakusylo Pavlo
  */
 public interface GenericDao<T> extends AutoCloseable {
-    /**
-     * Logger for GenericDao<T> classes
-     *
-     * @see LogManager
-     */
-    Logger LOGGER = LogManager.getLogger(GenericDao.class);
-
     /**
      * DbProperties for GenericDao<T> classes
      *

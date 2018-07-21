@@ -1,7 +1,6 @@
 package ua.training.controller.commands.utility;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
 import ua.training.constant.Pages;
@@ -40,15 +39,8 @@ import java.util.*;
  *
  * @author Zakusylo Pavlo
  */
+@Log4j2
 public class CommandsUtil {
-    /**
-     * Logger for CommandsUtil classes
-     *
-     * @see LogManager
-     */
-    private static Logger logger = LogManager.getLogger(CommandsUtil.class);
-    private static List<Dish> list;
-
     /**
      * Initialize all commands
      *
@@ -107,7 +99,7 @@ public class CommandsUtil {
         HashSet<String> allUsers = (HashSet<String>) request.getServletContext().getAttribute(Attributes.REQUEST_USERS_ALL);
 
         if (allUsers.contains(user.getEmail())) {
-            logger.warn(Mess.LOG_USER_DOUBLE_AUTH + " [" + user.getEmail() + "]");
+            log.warn(Mess.LOG_USER_DOUBLE_AUTH + " [" + user.getEmail() + "]");
             request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_EMAIL, Attributes.PAGE_USER_LOGGED);
             return Pages.SIGN_OR_REGISTER_WITH_ERROR;
         }
@@ -117,7 +109,7 @@ public class CommandsUtil {
 
         allUsers.add(user.getEmail());
         request.getServletContext().setAttribute(Attributes.REQUEST_USERS_ALL, allUsers);
-        logger.info(Mess.LOG_USER_LOGGED + "[" + user.getEmail() + "]");
+        log.info(Mess.LOG_USER_LOGGED + "[" + user.getEmail() + "]");
 
         return Pages.HOME_REDIRECT;
     }
@@ -152,7 +144,7 @@ public class CommandsUtil {
                     .map(Integer::parseInt)
                     .toArray(Integer[]::new);
         } catch (NumberFormatException e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
 
@@ -162,10 +154,9 @@ public class CommandsUtil {
     /**
      * Sort list of dish by annotation fields
      *
-     * @param list List<T>
+     * @param dishes List<T>
      */
-    public static void sortListByAnnotationFields(List<Dish> list) {
-        CommandsUtil.list = list;
+    public static void sortListByAnnotationFields(List<Dish> dishes) {
         Class<?> cl = Dish.class;
         Field[] fields = cl.getDeclaredFields();
         ArrayList<Field> fieldsForSort = new ArrayList<>();
@@ -189,7 +180,7 @@ public class CommandsUtil {
         }
 
         if (!fieldsForSort.isEmpty()) {
-            list.sort(comparator);
+            dishes.sort(comparator);
         }
     }
 }

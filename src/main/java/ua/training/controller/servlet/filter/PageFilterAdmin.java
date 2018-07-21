@@ -1,5 +1,6 @@
 package ua.training.controller.servlet.filter;
 
+import lombok.extern.log4j.Log4j2;
 import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
 import ua.training.constant.Pages;
@@ -22,6 +23,7 @@ import java.util.Optional;
 @WebFilter(urlPatterns = {"/swft/menuGeneralEdit", "/swft/menuGeneralEditWithError", "/swft/deleteGeneralMenuItem",
         "/swft/updateGeneralDish", "/swft/showUsers", "/swft/deleteUsers", "/swft/listUsersPage", "/swft/updateUsers",
         "/swft/showUsersAfterUpdateOrSearch", "/swft/searchUsersByEmail"})
+@Log4j2
 public class PageFilterAdmin extends AbstractFilter {
 
     @Override
@@ -33,12 +35,12 @@ public class PageFilterAdmin extends AbstractFilter {
             if (user.get().getRole().equals(Roles.ADMIN)) {
                 filterChain.doFilter(request, response);
             } else {
-                LOGGER.warn(Mess.LOG_USER_GO_ADMIN_URL + " - [" + user.get().getEmail() + "]");
+                log.warn(Mess.LOG_USER_GO_ADMIN_URL + " - [" + user.get().getEmail() + "]");
                 request.getSession().setAttribute(Attributes.PAGE_NAME, Attributes.PAGE_GENERAL);
                 request.getRequestDispatcher(Pages.HOME).forward(request, response);
             }
         } else {
-            LOGGER.warn(Mess.LOG_USER_GO_ADMIN_URL + " - [" + Roles.UNKNOWN + "]");
+            log.warn(Mess.LOG_USER_GO_ADMIN_URL + " - [" + Roles.UNKNOWN + "]");
             request.getRequestDispatcher(Pages.INDEX).forward(request, response);
         }
     }
