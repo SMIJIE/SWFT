@@ -3,7 +3,7 @@ package ua.training.model.dao;
 import ua.training.model.dao.implemation.JDBCDaoFactory;
 
 /**
- * Description: This is the abstract class for SQL Connection
+ * Description: This is the abstract class for Hibernate connection
  *
  * @author Zakusylo Pavlo
  */
@@ -14,8 +14,7 @@ public abstract class DaoFactory {
         if (daoFactory == null) {
             synchronized (DaoFactory.class) {
                 if (daoFactory == null) {
-                    DaoFactory temp = new JDBCDaoFactory();
-                    daoFactory = temp;
+                    daoFactory = new JDBCDaoFactory();
                 }
             }
         }
