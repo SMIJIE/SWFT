@@ -1,6 +1,9 @@
 package ua.training.model.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ua.training.model.dao.proxy.UserLazy;
 import ua.training.model.entity.enums.Roles;
 
@@ -15,7 +18,6 @@ import static java.util.Objects.isNull;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity
 @Table(name = "user")
 public class User implements EntityObject<Integer> {
@@ -53,13 +55,14 @@ public class User implements EntityObject<Integer> {
     /**
      * All dishes of the user
      */
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Dish> listDishes;
     /**
      * All day rations of the user
      */
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<DayRation> dayRations;
+
 
     public static final class UserBuilder implements EntityBuilder<User> {
         private Integer id;
@@ -153,6 +156,7 @@ public class User implements EntityObject<Integer> {
             return user;
         }
 
+        @Override
         public UserLazy buildLazy() {
             UserLazy userLazy = new UserLazy();
             if (!isNull(this.id)) {

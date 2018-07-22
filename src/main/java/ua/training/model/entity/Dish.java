@@ -11,7 +11,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Builder
-@ToString
 @Entity
 @Table(name = "dish")
 public class Dish implements EntityObject<Integer> {

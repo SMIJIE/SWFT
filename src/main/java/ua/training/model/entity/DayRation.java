@@ -14,7 +14,6 @@ import static java.util.Objects.isNull;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity
 @Table(name = "dayration")
 public class DayRation implements EntityObject<Integer> {
@@ -96,6 +95,7 @@ public class DayRation implements EntityObject<Integer> {
             return dayRation;
         }
 
+        @Override
         public DayRationLazy buildLazy() {
             DayRationLazy dayRationLazy = new DayRationLazy();
             if (!isNull(this.id)) {
