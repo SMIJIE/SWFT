@@ -1,23 +1,19 @@
 package ua.training.model.dao.implemation;
 
 import lombok.extern.log4j.Log4j2;
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
 import ua.training.controller.commands.exception.DataSqlException;
 import ua.training.model.dao.DishDao;
-import ua.training.model.dao.mapper.DishMapper;
-import ua.training.model.dao.mapper.UserMapper;
-import ua.training.model.dao.utility.QueryUtil;
 import ua.training.model.entity.Dish;
+import ua.training.model.entity.RationComposition;
 import ua.training.model.entity.User;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.*;
-
-import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
+import java.util.List;
+import java.util.Optional;
 
 @Log4j2
 public class HDishDao implements DishDao {
@@ -27,136 +23,86 @@ public class HDishDao implements DishDao {
      * @see Session
      */
     private Session session;
-    private UserMapper userMapper = new UserMapper();
-    private DishMapper dishMapper = new DishMapper();
 
-    public HDishDao(Session session) {
+    HDishDao(Session session) {
         this.session = session;
     }
 
     @Override
     public void create(Dish entity) {
+        session.beginTransaction();
         session.save(entity);
+        session.getTransaction().commit();
     }
 
+    /**
+     * Load dish from database by id
+     *
+     * @param id Integer
+     * @throws DataSqlException
+     */
     @Override
     public Optional<Dish> findById(Integer id) {
-        Optional<Dish> dish = Optional.ofNullable(session.load(Dish.class, id));
-        return dish;
+        try {
+            return Optional.of(session.load(Dish.class, id));
+        } catch (ObjectNotFoundException e) {
+            log.error(e.getMessage() + Mess.LOG_DISH_GET_BY_ID);
+            throw new DataSqlException(Attributes.SQL_EXCEPTION);
+        }
     }
 
     @Override
     public List<Dish> findAll() {
-        String query = DB_PROPERTIES.getAllDishes();
-        List<Dish> dishes = new ArrayList<>();
-        Map<Integer, User> users = new HashMap<>();
-
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
-
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Optional<Dish> dish = Optional.ofNullable(dishMapper.extractFromResultSet(rs));
-                Optional<User> user = Optional.empty();
-
-                if (!isNullOrEmpty(rs.getString(Attributes.SQL_USER_ID))) {
-                    user = Optional.ofNullable(userMapper.extractFromResultSet(rs));
-                }
-
-                if (dish.isPresent()) {
-                    user.ifPresent(u -> dish.get().setUser(userMapper.makeUnique(users, u)));
-                    dishes.add(dish.get());
-                }
-            }
-            rs.close();
-        } catch (SQLException e) {
-            log.error(e.getMessage() + Mess.LOG_DISH_GET_BY_ID);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
-        }
-        return dishes;
+        String hql = DB_PROPERTIES.getAllDishes();
+        Query<Dish> query = session.createQuery(hql, Dish.class);
+        return query.getResultList();
     }
 
     @Override
     public void update(Dish entity) {
-        String query = DB_PROPERTIES.updateDishParameters();
-
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, entity.getWeight());
-            ps.setInt(2, entity.getCalories());
-            ps.setInt(3, entity.getProteins());
-            ps.setInt(4, entity.getFats());
-            ps.setInt(5, entity.getCarbohydrates());
-            ps.setInt(6, entity.getId());
-
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            log.error(e.getMessage() + Mess.LOG_DISH_NOT_UPDATE_PARAMETERS);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
-        }
+        session.beginTransaction();
+        session.update(entity);
+        session.getTransaction().commit();
     }
 
+    /**
+     * Load and delete dish from database by id
+     *
+     * @param id Integer
+     */
     @Override
     public void delete(Integer id) {
-        String deleteDish = DB_PROPERTIES.deleteDishById();
-        String deleteRationComposition = DB_PROPERTIES.deleteCompositionArrayByDish();
+        String hqlDelRationCompos = DB_PROPERTIES.deleteCompositionArrayByDish();
+        Optional<Dish> dish = findById(id);
+        dish.ifPresent(d -> {
+            session.beginTransaction();
 
-        try (PreparedStatement dd = connection.prepareStatement(deleteDish);
-             PreparedStatement drc = connection.prepareStatement(deleteRationComposition)) {
-            connection.setAutoCommit(false);
+            Query<RationComposition> queryDelRationCompos = session.createQuery(hqlDelRationCompos, RationComposition.class);
+            queryDelRationCompos.setParameter("idDish", id);
 
-            drc.setInt(1, id);
-            drc.executeUpdate();
-
-            dd.setInt(1, id);
-            dd.executeUpdate();
-
-            connection.commit();
-        } catch (SQLException e) {
-            log.error(e.getMessage() + Mess.LOG_DISH_DELETE_BY_ID);
-            try {
-                connection.rollback();
-            } catch (SQLException r) {
-                log.error(r.getMessage() + Mess.LOG_DISH_DELETE_ROLLBACK);
-            }
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
-        }
+            session.delete(d);
+            session.getTransaction().commit();
+        });
     }
 
     @Override
     public void close() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            log.error(e.getMessage() + Mess.LOG_CONNECTION_NOT_CLOSE);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
-        }
+        session.close();
     }
 
     /**
      * Return all general dishes
      *
-     * @return returnDishes Optional<List<Dish>>
-     * @throws DataSqlException
+     * @return list List<Dish>
      */
     @Override
     public List<Dish> getAllGeneralDishes() {
-        String query = DB_PROPERTIES.getGeneralDishes();
-        List<Dish> dishes = new ArrayList<>();
+        String hql = DB_PROPERTIES.getGeneralDishes();
 
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setBoolean(1, true);
+        Query<Dish> query = session.createQuery(hql, Dish.class);
+        query.setParameter("isGeneralFood", true);
 
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Optional<Dish> dish = Optional.ofNullable(dishMapper.extractFromResultSet(rs));
-                dish.ifPresent(dishes::add);
-            }
-
-            rs.close();
-        } catch (SQLException e) {
-            log.error(e.getMessage() + Mess.LOG_DISH_GET_GENERAL);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
-        }
-        return dishes;
+        return query.getResultList();
     }
 
     /**
@@ -165,141 +111,82 @@ public class HDishDao implements DishDao {
      * @param userId Integer
      * @param limit  Integer
      * @param skip   Integer
-     * @return returnDishes Optional<List<Dish>>
-     * @throws DataSqlException
+     * @return list List<Dish>
      */
     @Override
     public List<Dish> getLimitDishesByUserId(Integer userId, Integer limit, Integer skip) {
-        String query = DB_PROPERTIES.getLimitDishByUserId();
-        List<Dish> dishes = new ArrayList<>();
+        String hql = DB_PROPERTIES.getDishByUserId();
+        User user = loadUserFromDataBase(userId);
 
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, userId);
-            ps.setInt(2, limit);
-            ps.setInt(3, skip);
+        Query<Dish> query = session.createQuery(hql, Dish.class);
+        query.setParameter("oUser", user);
+        query.setFirstResult(skip);
+        query.setMaxResults(limit);
 
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Optional<Dish> dish = Optional.ofNullable(dishMapper.extractFromResultSet(rs));
-                dish.ifPresent(dishes::add);
-            }
-
-            rs.close();
-        } catch (SQLException e) {
-            log.error(e.getMessage() + Mess.LOG_DISH_GET_BY_USER);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
-        }
-        return dishes;
+        return query.getResultList();
     }
 
     /**
      * Return all users dishes
      *
      * @param userId Integer
-     * @return returnDishes Optional<List<Dish>>
-     * @throws DataSqlException
+     * @return list List<Dish>
      */
     @Override
     public List<Dish> getAllDishesByUserId(Integer userId) {
-        String query = DB_PROPERTIES.getDishByUserId();
-        List<Dish> dishes = new ArrayList<>();
+        String hql = DB_PROPERTIES.getDishByUserId();
+        User user = loadUserFromDataBase(userId);
 
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, userId);
+        Query<Dish> query = session.createQuery(hql, Dish.class);
+        query.setParameter("oUser", user);
 
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Optional<Dish> dish = Optional.ofNullable(dishMapper.extractFromResultSet(rs));
-                dish.ifPresent(dishes::add);
-            }
-
-            rs.close();
-        } catch (SQLException e) {
-            log.error(e.getMessage() + Mess.LOG_DISH_GET_BY_USER);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
-        }
-        return dishes;
+        return query.getResultList();
     }
 
     /**
      * Delete array of dishes
      *
-     * @param array Integer[]
-     * @throws DataSqlException
+     * @param array List<Integer>
      */
     @Override
-    public void deleteArrayDishesById(Integer[] array) {
-        String deleteDish = DB_PROPERTIES.deleteArrayDishById();
-        deleteDish = QueryUtil.addParamAccordingToArrSize(deleteDish, array.length);
-        String deleteRationComposition = DB_PROPERTIES.deleteCompositionArrayByDish();
-        deleteRationComposition = QueryUtil.addParamAccordingToArrSize(deleteRationComposition, array.length);
+    public void deleteArrayDishesById(List<Integer> array) {
+        String hqlDeleteDish = DB_PROPERTIES.deleteArrayDishById();
+        String hqlDelRationCompos = DB_PROPERTIES.deleteCompositionArrayByDish();
 
-        try (PreparedStatement dd = connection.prepareStatement(deleteDish);
-             PreparedStatement drc = connection.prepareStatement(deleteRationComposition)) {
-            connection.setAutoCommit(false);
+        session.beginTransaction();
 
-            for (int i = 0; i < array.length; i++) {
-                drc.setInt((i + 1), array[i]);
-            }
-            drc.executeUpdate();
+        Query<RationComposition> queryDelRationCompos = session.createQuery(hqlDelRationCompos, RationComposition.class);
+        Query<Dish> queryDeleteDish = session.createQuery(hqlDeleteDish, Dish.class);
 
-            for (int i = 0; i < array.length; i++) {
-                dd.setInt((i + 1), array[i]);
-            }
-            dd.executeUpdate();
+        queryDelRationCompos.setParameter("idDish", array);
+        queryDeleteDish.setParameter("idDish", array);
 
-            connection.commit();
-        } catch (SQLException e) {
-            log.error(e.getMessage() + Mess.LOG_DISH_DELETE_BY_ID);
-            try {
-                connection.rollback();
-            } catch (SQLException r) {
-                log.error(r.getMessage() + Mess.LOG_DISH_DELETE_ROLLBACK);
-            }
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
-        }
+        session.getTransaction().commit();
     }
 
     /**
      * Delete array of dishes by user
      *
-     * @param array  Integer[]
+     * @param array  List<Integer>
      * @param userId Integer
-     * @throws DataSqlException
      */
     @Override
-    public void deleteArrayDishesByIdAndUser(Integer[] array, Integer userId) {
-        String deleteDish = DB_PROPERTIES.deleteArrayDishByIdAndUser();
-        String deleteComposition = DB_PROPERTIES.deleteCompositionArrayByDishAndUser();
-        deleteDish = QueryUtil.addParamAccordingToArrSize(deleteDish, array.length);
-        deleteComposition = QueryUtil.addParamAccordingToArrSize(deleteComposition, array.length);
+    public void deleteArrayDishesByIdAndUser(List<Integer> array, Integer userId) {
+        String hqlDeleteDish = DB_PROPERTIES.deleteArrayDishByIdAndUser();
+        String hqlDelRationCompos = DB_PROPERTIES.deleteCompositionArrayByDishAndUser();
+        User user = loadUserFromDataBase(userId);
 
-        try (PreparedStatement dd = connection.prepareStatement(deleteDish);
-             PreparedStatement dc = connection.prepareStatement(deleteComposition)) {
-            connection.setAutoCommit(false);
+        session.beginTransaction();
 
-            for (int i = 0; i < array.length; i++) {
-                dc.setInt((i + 1), array[i]);
-            }
-            dc.setInt(array.length + 1, userId);
-            dc.executeUpdate();
+        Query<RationComposition> queryDelRationCompos = session.createQuery(hqlDelRationCompos, RationComposition.class);
+        Query<Dish> queryDeleteDish = session.createQuery(hqlDeleteDish, Dish.class);
 
-            for (int i = 0; i < array.length; i++) {
-                dd.setInt((i + 1), array[i]);
-            }
-            dd.setInt(array.length + 1, userId);
-            dd.executeUpdate();
+        queryDelRationCompos.setParameter("idDish", array);
+        queryDelRationCompos.setParameter("oUser", user);
+        queryDeleteDish.setParameter("idDish", array);
+        queryDeleteDish.setParameter("oUser", user);
 
-            connection.commit();
-        } catch (SQLException e) {
-            log.error(e.getMessage() + Mess.LOG_DISH_DELETE_BY_ID);
-            try {
-                connection.rollback();
-            } catch (SQLException r) {
-                log.error(r.getMessage() + Mess.LOG_DISH_DELETE_ROLLBACK);
-            }
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
-        }
+        session.getTransaction().commit();
     }
 
     /**
@@ -307,51 +194,33 @@ public class HDishDao implements DishDao {
      *
      * @param userId Integer
      * @return counter Integer
-     * @throws DataSqlException
      */
     @Override
     public Integer countDishes(Integer userId) {
-        String query = DB_PROPERTIES.getCountDishesByUserId();
-        Integer counter = 0;
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, userId);
+        String hql = DB_PROPERTIES.getCountDishesByUserId();
+        User user = loadUserFromDataBase(userId);
 
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                counter = rs.getInt(Attributes.SQL_COUNTER);
-            }
+        Query query = session.createQuery(hql);
+        query.setParameter("oUser", user);
 
-            rs.close();
-        } catch (SQLException e) {
-            log.error(e.getMessage() + Mess.LOG_DISH_COUNT_BY_USER_ID);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
-        }
-        return counter;
+        return (Integer) query.getSingleResult();
     }
 
     /**
-     * Update dish parameters by user
+     * Load user from database by id
      *
-     * @param entity Dish
+     * @param userId Integer
      * @throws DataSqlException
      */
-    @Override
-    public void updateDishParametersByIdAndUser(Dish entity) {
-        String query = DB_PROPERTIES.updateDishParametersByIdAndUser();
-
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, entity.getWeight());
-            ps.setInt(2, entity.getCalories());
-            ps.setInt(3, entity.getProteins());
-            ps.setInt(4, entity.getFats());
-            ps.setInt(5, entity.getCarbohydrates());
-            ps.setInt(6, entity.getId());
-            ps.setInt(7, entity.getUser().getId());
-
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            log.error(e.getMessage() + Mess.LOG_DISH_NOT_UPDATE_PARAMETERS);
+    private User loadUserFromDataBase(Integer userId) {
+        User user;
+        try {
+            user = session.load(User.class, userId);
+        } catch (ObjectNotFoundException e) {
+            log.error(e.getMessage() + Mess.LOG_USER_GET_BY_ID);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
+
+        return user;
     }
 }

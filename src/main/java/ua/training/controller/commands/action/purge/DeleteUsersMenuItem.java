@@ -7,6 +7,7 @@ import ua.training.controller.commands.utility.CommandsUtil;
 import ua.training.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 
 /**
  * Description: This class delete users dishes
@@ -24,7 +25,7 @@ public class DeleteUsersMenuItem implements Command {
 
         Integer[] idDishes = CommandsUtil.stringArrayToInteger(arrDish);
 
-        DISH_SERVICE_IMP.deleteArrayDishesByIdAndUser(idDishes, user.getId());
+        DISH_SERVICE_IMP.deleteArrayDishesByIdAndUser(Arrays.asList(idDishes), user.getId());
 
         return Pages.MENU_USERS_EDIT_REDIRECT;
     }

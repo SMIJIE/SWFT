@@ -7,6 +7,7 @@ import ua.training.controller.commands.utility.CommandsUtil;
 import ua.training.model.entity.Dish;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ public class DeleteGeneralMenuItem implements Command {
 
         Integer[] idDishes = CommandsUtil.stringArrayToInteger(arrDish);
 
-        DISH_SERVICE_IMP.deleteArrayDishesById(idDishes);
+        DISH_SERVICE_IMP.deleteArrayDishesById(Arrays.asList(idDishes));
 
         List<Dish> general = DISH_SERVICE_IMP.getGeneralDishes();
         CommandsUtil.sortListByAnnotationFields(general);

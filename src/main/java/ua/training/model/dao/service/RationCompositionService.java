@@ -3,6 +3,7 @@ package ua.training.model.dao.service;
 import ua.training.model.entity.RationComposition;
 import ua.training.model.entity.enums.FoodIntake;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface RationCompositionService extends Service {
@@ -18,7 +19,7 @@ public interface RationCompositionService extends Service {
 
     void updateCompositionAmountOfDish(RationComposition entity);
 
-    void deleteArrayCompositionById(Integer[] compositionId);
+    void deleteArrayCompositionById(List<Integer> compositionId);
 
     Optional<RationComposition> getCompositionById(Integer compositionId);
 

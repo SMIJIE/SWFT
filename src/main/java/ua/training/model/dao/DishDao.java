@@ -13,12 +13,10 @@ public interface DishDao extends GenericDao<Dish> {
 
     List<Dish> getAllDishesByUserId(Integer userId);
 
-    void deleteArrayDishesById(Integer[] array);
+    void deleteArrayDishesById(List<Integer> array);
 
-    void deleteArrayDishesByIdAndUser(Integer[] array,
+    void deleteArrayDishesByIdAndUser(List<Integer> array,
                                       Integer userId);
 
     Integer countDishes(Integer userId);
-
-    void updateDishParametersByIdAndUser(Dish entity);
 }

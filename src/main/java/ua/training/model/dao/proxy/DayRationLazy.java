@@ -1,7 +1,6 @@
 package ua.training.model.dao.proxy;
 
 import ua.training.model.dao.DaoFactory;
-import ua.training.model.dao.implemation.JDBCRationCompositionDao;
 import ua.training.model.entity.DayRation;
 import ua.training.model.entity.RationComposition;
 

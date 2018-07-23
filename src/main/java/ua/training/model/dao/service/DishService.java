@@ -8,9 +8,9 @@ import java.util.Optional;
 public interface DishService extends Service {
     List<Dish> getGeneralDishes();
 
-    void deleteArrayDishesById(Integer[] array);
+    void deleteArrayDishesById(List<Integer> array);
 
-    void deleteArrayDishesByIdAndUser(Integer[] array,
+    void deleteArrayDishesByIdAndUser(List<Integer> array,
                                       Integer userId);
 
     Optional<Dish> getDishById(Integer id);

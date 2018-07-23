@@ -13,7 +13,10 @@ import ua.training.model.dao.utility.QueryUtil;
 import ua.training.model.entity.DayRation;
 import ua.training.model.entity.User;
 
-import java.sql.*;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -31,7 +34,7 @@ public class HUserDao implements UserDao {
     private UserMapper userMapper = new UserMapper();
     private DayRationServiceImp dayRationServiceImp = new DayRationServiceImp();
 
-    public HUserDao (Session session) {
+    public HUserDao(Session session) {
         this.session = session;
     }
 

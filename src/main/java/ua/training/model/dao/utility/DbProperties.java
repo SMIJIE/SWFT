@@ -94,12 +94,16 @@ public class DbProperties {
         return props.getProperty(Attributes.DB_SQL_DISH_BY_USER);
     }
 
-    public String getLimitDishByUserId() {
-        return props.getProperty(Attributes.DB_SQL_DISH_GET_LIMIT_BY_USER);
-    }
+//    public String getLimitDishByUserId() {
+//        return props.getProperty(Attributes.DB_SQL_DISH_GET_LIMIT_BY_USER);
+//    }
 
     public String getAllDishes() {
         return props.getProperty(Attributes.DB_SQL_DISH_GET_ALL);
+    }
+
+    public String getArrayOfDishes() {
+        return props.getProperty(Attributes.DB_SQL_DISH_GET_ARRAY);
     }
 
     public String getCountDishesByUserId() {

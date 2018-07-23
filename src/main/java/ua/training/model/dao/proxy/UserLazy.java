@@ -1,7 +1,6 @@
 package ua.training.model.dao.proxy;
 
 import ua.training.model.dao.DaoFactory;
-import ua.training.model.dao.implemation.JDBCDishDao;
 import ua.training.model.entity.Dish;
 import ua.training.model.entity.User;
 

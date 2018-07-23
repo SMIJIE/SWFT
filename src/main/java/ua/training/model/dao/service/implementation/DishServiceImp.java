@@ -16,12 +16,12 @@ public class DishServiceImp implements DishService {
     }
 
     @Override
-    public void deleteArrayDishesById(Integer[] array) {
+    public void deleteArrayDishesById(List<Integer> array) {
         dishDao.deleteArrayDishesById(array);
     }
 
     @Override
-    public void deleteArrayDishesByIdAndUser(Integer[] array,
+    public void deleteArrayDishesByIdAndUser(List<Integer> array,
                                              Integer userId) {
         dishDao.deleteArrayDishesByIdAndUser(array, userId);
     }

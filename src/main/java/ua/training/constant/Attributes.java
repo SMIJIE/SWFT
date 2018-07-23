@@ -105,6 +105,7 @@ public interface Attributes {
     String DB_SQL_DISH_BY_USER = "sql.dishGetByUserId";
     String DB_SQL_DISH_GET_LIMIT_BY_USER = "sql.dishGetLimitByUserId";
     String DB_SQL_DISH_GET_ALL = "sql.dishGetAll";
+    String DB_SQL_DISH_GET_ARRAY = "sql.dishGetArray";
     String DB_SQL_DISH_DELETE_BY_ID = "sql.dishDeleteById";
     String DB_SQL_DISH_DELETE_BY_USER_ID = "sql.dishDeleteByUserId";
     String DB_SQL_DISH_DELETE_BY_USER_EMAIL = "sql.dishDeleteByUserEmail";

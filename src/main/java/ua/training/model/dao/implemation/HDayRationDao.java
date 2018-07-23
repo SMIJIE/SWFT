@@ -1,20 +1,19 @@
 package ua.training.model.dao.implemation;
 
 import lombok.extern.log4j.Log4j2;
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
 import ua.training.controller.commands.exception.DataSqlException;
 import ua.training.model.dao.DayRationDao;
-import ua.training.model.dao.mapper.DayRationMapper;
 import ua.training.model.entity.DayRation;
+import ua.training.model.entity.RationComposition;
+import ua.training.model.entity.User;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.persistence.NoResultException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,125 +25,72 @@ public class HDayRationDao implements DayRationDao {
      * @see Session
      */
     private Session session;
-    private DayRationMapper dayRationMapper = new DayRationMapper();
 
-    public HDayRationDao(Session session) {
+    HDayRationDao(Session session) {
         this.session = session;
     }
 
     @Override
     public void create(DayRation entity) {
-        String query = DB_PROPERTIES.insertNewDayRation();
-
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setDate(1, Date.valueOf(entity.getDate()));
-            ps.setInt(2, entity.getUser().getId());
-            ps.setInt(3, entity.getUserCalories());
-            ps.setInt(4, entity.getUserCaloriesDesired());
-
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            log.error(e.getMessage() + Mess.LOG_DAY_RATION_NOT_INSERTED);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
-        }
+        session.beginTransaction();
+        session.save(entity);
+        session.getTransaction().commit();
     }
 
+    /**
+     * Load day ration from database by id
+     *
+     * @param id Integer
+     * @throws DataSqlException
+     */
     @Override
     public Optional<DayRation> findById(Integer id) {
-        Optional<DayRation> dayRation = Optional.empty();
-        String query = DB_PROPERTIES.getDayRationById();
-
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, id);
-
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                dayRation = Optional.ofNullable(dayRationMapper.extractFromResultSet(rs));
-            }
-
-            rs.close();
-        } catch (SQLException e) {
+        try {
+            return Optional.of(session.load(DayRation.class, id));
+        } catch (ObjectNotFoundException e) {
             log.error(e.getMessage() + Mess.LOG_DAY_RATION_GET_BY_ID);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
-
-        return dayRation;
     }
 
     @Override
     public List<DayRation> findAll() {
-        List<DayRation> dayRations = new ArrayList<>();
-        String query = DB_PROPERTIES.getGetAllDaRations();
+        String hql = DB_PROPERTIES.getGetAllDaRations();
+        Query<DayRation> dayRationQuery = session.createQuery(hql, DayRation.class);
 
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
-
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Optional<DayRation> dayRation = Optional.ofNullable(dayRationMapper.extractFromResultSet(rs));
-                dayRation.ifPresent(dayRations::add);
-            }
-
-            rs.close();
-        } catch (SQLException e) {
-            log.error(e.getMessage() + Mess.LOG_DAY_RATION_GET_BY_ID);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
-        }
-
-        return dayRations;
+        return dayRationQuery.getResultList();
     }
 
     @Override
     public void update(DayRation entity) {
-        String query = DB_PROPERTIES.updateDayRation();
-
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setDate(1, Date.valueOf(entity.getDate()));
-            ps.setInt(2, entity.getUserCalories());
-            ps.setInt(3, entity.getUserCaloriesDesired());
-            ps.setInt(4, entity.getId());
-
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            log.error(e.getMessage() + Mess.LOG_DAY_RATION_NOT_UPDATE_PARAMETERS);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
-        }
+        session.beginTransaction();
+        session.update(entity);
+        session.getTransaction().commit();
     }
 
+    /**
+     * Load and delete day ration from database by id
+     *
+     * @param id Integer
+     */
     @Override
     public void delete(Integer id) {
-        String deleteDayRation = DB_PROPERTIES.deleteDayRation();
-        String deleteRationComposition = DB_PROPERTIES.deleteCompositionByDayRationId();
+        String hqlDelRationCompos = DB_PROPERTIES.deleteCompositionByDayRationId();
+        Optional<DayRation> dayRation = findById(id);
+        dayRation.ifPresent(dr -> {
+            session.beginTransaction();
 
-        try (PreparedStatement ddr = connection.prepareStatement(deleteDayRation);
-             PreparedStatement drc = connection.prepareStatement(deleteRationComposition)) {
-            connection.setAutoCommit(false);
+            Query<RationComposition> query = session.createQuery(hqlDelRationCompos, RationComposition.class);
+            query.setParameter("oDayRation", dr);
 
-            drc.setInt(1, id);
-            drc.executeUpdate();
-
-            ddr.setInt(1, id);
-            ddr.executeUpdate();
-
-            connection.commit();
-        } catch (SQLException e) {
-            log.error(e.getMessage() + Mess.LOG_DAY_RATION_DELETE_BY_ID);
-            try {
-                connection.rollback();
-            } catch (SQLException r) {
-                log.error(r.getMessage() + Mess.LOG_DAY_RATION_DELETE_ROLLBACK);
-            }
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
-        }
+            session.delete(dr);
+            session.getTransaction().commit();
+        });
     }
 
     @Override
     public void close() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            log.error(e.getMessage() + Mess.LOG_CONNECTION_NOT_CLOSE);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
-        }
+        session.close();
     }
 
     /**
@@ -153,61 +99,59 @@ public class HDayRationDao implements DayRationDao {
      * @param localDate LocalDate
      * @param idUser    Integer
      * @return dayRation Optional<DayRation>
-     * @throws DataSqlException
      */
     @Override
     public Optional<DayRation> checkDayRationByDateAndUserId(LocalDate localDate, Integer idUser) {
-        Optional<DayRation> dayRation = Optional.empty();
-        String query = DB_PROPERTIES.getDayRationByDateAndUser();
+        String hql = DB_PROPERTIES.getDayRationByDateAndUser();
+        User user = loadUserFromDataBase(idUser);
 
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setDate(1, Date.valueOf(localDate));
-            ps.setInt(2, idUser);
+        Query<DayRation> query = session.createQuery(hql, DayRation.class);
+        query.setParameter("oDate", localDate);
+        query.setParameter("oUser", user);
 
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                dayRation = Optional.ofNullable(dayRationMapper.extractFromResultSet(rs));
-            }
-
-            rs.close();
-        } catch (SQLException e) {
+        try {
+            return Optional.of(query.getSingleResult());
+        } catch (NoResultException e) {
             log.error(e.getMessage() + Mess.LOG_DAY_RATION_GET_BY_ID);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
-        return dayRation;
     }
 
     /**
      * Get monthly DayRation for graphic
      *
-     * @param monthVal Integer
-     * @param year     Integer
-     * @param userId   Integer
+     * @param month  Integer
+     * @param year   Integer
+     * @param userId Integer
      * @return dayRationList List<DayRation>
-     * @throws DataSqlException
      */
     @Override
-    public List<DayRation> getMonthlyDayRationByUser(Integer monthVal, Integer year, Integer userId) {
-        String query = DB_PROPERTIES.getMonthlyDayRationByUser();
-        List<DayRation> dayRationList = new ArrayList<>();
+    public List<DayRation> getMonthlyDayRationByUser(Integer month, Integer year, Integer userId) {
+        String hql = DB_PROPERTIES.getMonthlyDayRationByUser();
+        User user = loadUserFromDataBase(userId);
 
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setInt(1, monthVal);
-            ps.setInt(2, year);
-            ps.setInt(3, userId);
+        Query<DayRation> query = session.createQuery(hql, DayRation.class);
+        query.setParameter("mDate", month);
+        query.setParameter("yDate", year);
+        query.setParameter("oUser", user);
 
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Optional<DayRation> dayRation = Optional.ofNullable(dayRationMapper.extractFromResultSet(rs));
-                dayRation.ifPresent(dayRationList::add);
-            }
+        return query.getResultList();
+    }
 
-            rs.close();
-        } catch (SQLException e) {
-            log.error(e.getMessage() + Mess.LOG_DAY_RATION_GET_MONTHLY_BY_USER);
+    /**
+     * Load user from database by id
+     *
+     * @param userId Integer
+     * @throws DataSqlException
+     */
+    private User loadUserFromDataBase(Integer userId) {
+        User user;
+        try {
+            user = session.load(User.class, userId);
+        } catch (ObjectNotFoundException e) {
+            log.error(e.getMessage() + Mess.LOG_USER_GET_BY_ID);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
-
-        return dayRationList;
+        return user;
     }
 }

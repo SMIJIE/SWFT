@@ -32,17 +32,17 @@ public class HSesssionFactory {
      */
     private static DbProperties dbProperties = new DbProperties();
     /**
-     * The main contract here is the creation of {@link Session} instances.
-     *
-     * @see SessionFactory
-     */
-    private static final SessionFactory SESSION_FACTORY = initializeSessionFactory();
-    /**
      * Represents one approach for bootstrapping Hibernate.
      *
      * @see Configuration
      */
     private static volatile Configuration CONFIG;
+    /**
+     * The main contract here is the creation of {@link Session} instances.
+     *
+     * @see SessionFactory
+     */
+    private static final SessionFactory SESSION_FACTORY = initializeSessionFactory();
 
     /**
      * Build and return Session Factory

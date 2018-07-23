@@ -1,6 +1,9 @@
 package ua.training.model.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ua.training.model.dao.proxy.DayRationLazy;
 
 import javax.persistence.*;

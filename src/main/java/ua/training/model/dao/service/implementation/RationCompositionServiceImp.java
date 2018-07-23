@@ -5,6 +5,7 @@ import ua.training.model.dao.service.RationCompositionService;
 import ua.training.model.entity.RationComposition;
 import ua.training.model.entity.enums.FoodIntake;
 
+import java.util.List;
 import java.util.Optional;
 
 public class RationCompositionServiceImp implements RationCompositionService {
@@ -38,7 +39,7 @@ public class RationCompositionServiceImp implements RationCompositionService {
     }
 
     @Override
-    public void deleteArrayCompositionById(Integer[] compositionId) {
+    public void deleteArrayCompositionById(List<Integer> compositionId) {
         rationCompositionDao.deleteArrayCompositionById(compositionId);
     }
 
