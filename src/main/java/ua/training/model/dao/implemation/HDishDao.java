@@ -10,7 +10,6 @@ import ua.training.controller.commands.exception.DataSqlException;
 import ua.training.model.dao.DishDao;
 import ua.training.model.entity.Dish;
 import ua.training.model.entity.RationComposition;
-import ua.training.model.entity.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -116,10 +115,9 @@ public class HDishDao implements DishDao {
     @Override
     public List<Dish> getLimitDishesByUserId(Integer userId, Integer limit, Integer skip) {
         String hql = DB_PROPERTIES.getDishByUserId();
-        User user = loadUserFromDataBase(userId);
 
         Query<Dish> query = session.createQuery(hql, Dish.class);
-        query.setParameter("oUser", user);
+        query.setParameter("idUser", userId);
         query.setFirstResult(skip);
         query.setMaxResults(limit);
 
@@ -135,10 +133,9 @@ public class HDishDao implements DishDao {
     @Override
     public List<Dish> getAllDishesByUserId(Integer userId) {
         String hql = DB_PROPERTIES.getDishByUserId();
-        User user = loadUserFromDataBase(userId);
 
         Query<Dish> query = session.createQuery(hql, Dish.class);
-        query.setParameter("oUser", user);
+        query.setParameter("idUser", userId);
 
         return query.getResultList();
     }
@@ -174,7 +171,6 @@ public class HDishDao implements DishDao {
     public void deleteArrayDishesByIdAndUser(List<Integer> array, Integer userId) {
         String hqlDeleteDish = DB_PROPERTIES.deleteArrayDishByIdAndUser();
         String hqlDelRationCompos = DB_PROPERTIES.deleteCompositionArrayByDishAndUser();
-        User user = loadUserFromDataBase(userId);
 
         session.beginTransaction();
 
@@ -182,9 +178,9 @@ public class HDishDao implements DishDao {
         Query<Dish> queryDeleteDish = session.createQuery(hqlDeleteDish, Dish.class);
 
         queryDelRationCompos.setParameter("idDish", array);
-        queryDelRationCompos.setParameter("oUser", user);
+        queryDelRationCompos.setParameter("idUser", userId);
         queryDeleteDish.setParameter("idDish", array);
-        queryDeleteDish.setParameter("oUser", user);
+        queryDeleteDish.setParameter("idUser", userId);
 
         session.getTransaction().commit();
     }
@@ -198,29 +194,10 @@ public class HDishDao implements DishDao {
     @Override
     public Integer countDishes(Integer userId) {
         String hql = DB_PROPERTIES.getCountDishesByUserId();
-        User user = loadUserFromDataBase(userId);
 
         Query query = session.createQuery(hql);
-        query.setParameter("oUser", user);
+        query.setParameter("idUser", userId);
 
         return (Integer) query.getSingleResult();
-    }
-
-    /**
-     * Load user from database by id
-     *
-     * @param userId Integer
-     * @throws DataSqlException
-     */
-    private User loadUserFromDataBase(Integer userId) {
-        User user;
-        try {
-            user = session.load(User.class, userId);
-        } catch (ObjectNotFoundException e) {
-            log.error(e.getMessage() + Mess.LOG_USER_GET_BY_ID);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
-        }
-
-        return user;
     }
 }

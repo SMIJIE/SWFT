@@ -8,8 +8,6 @@ import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
 import ua.training.controller.commands.exception.DataSqlException;
 import ua.training.model.dao.RationCompositionDao;
-import ua.training.model.entity.DayRation;
-import ua.training.model.entity.Dish;
 import ua.training.model.entity.RationComposition;
 import ua.training.model.entity.enums.FoodIntake;
 
@@ -92,11 +90,10 @@ public class HRationCompositionDao implements RationCompositionDao {
     @Override
     public Integer getSumCaloriesCompositionByRationId(Integer idDayRation) {
         String hql = DB_PROPERTIES.getSumCaloriesCompositionByRationId();
-        DayRation dayRation = loadDayRationFromDataBase(idDayRation);
         Integer sumCalories = 0;
 
         Query query = session.createQuery(hql);
-        query.setParameter("oDayRation", dayRation);
+        query.setParameter("idDayRation", idDayRation);
 
         Optional<Object> temp = Optional.ofNullable(query.getSingleResult());
         if (temp.isPresent()) {
@@ -120,19 +117,13 @@ public class HRationCompositionDao implements RationCompositionDao {
                                                                             FoodIntake foodIntake,
                                                                             Integer dishId) {
         String hql = DB_PROPERTIES.getCompositionByRationAndDish();
-        DayRation dayRation = loadDayRationFromDataBase(rationId);
-        Dish dish;
         try {
-            dish = session.load(Dish.class, dishId);
             Query<RationComposition> query = session.createQuery(hql, RationComposition.class);
-            query.setParameter("oDayRation", dayRation);
+            query.setParameter("idDayRation", rationId);
             query.setParameter("oFoodIntake", foodIntake);
-            query.setParameter("oDish", dish);
+            query.setParameter("idDish", dishId);
 
             return Optional.ofNullable(query.getSingleResult());
-        } catch (ObjectNotFoundException e) {
-            log.error(e.getMessage() + Mess.LOG_DISH_GET_BY_ID);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
         } catch (NoResultException e) {
             log.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_GET_BY_RATION_AND_DISH);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
@@ -148,10 +139,9 @@ public class HRationCompositionDao implements RationCompositionDao {
     @Override
     public List<RationComposition> getAllCompositionByRation(Integer rationId) {
         String hql = DB_PROPERTIES.getAllCompositionByRation();
-        DayRation dayRation = loadDayRationFromDataBase(rationId);
 
         Query<RationComposition> query = session.createQuery(hql, RationComposition.class);
-        query.setParameter("oDayRation", dayRation);
+        query.setParameter("idDayRation", rationId);
 
         return query.getResultList();
     }
@@ -168,23 +158,5 @@ public class HRationCompositionDao implements RationCompositionDao {
         Query<RationComposition> query = session.createQuery(hql, RationComposition.class);
         query.setParameter("idRC", compositionId);
         session.getTransaction().commit();
-    }
-
-    /**
-     * Load day ration from database by id
-     *
-     * @param id Integer
-     * @throws DataSqlException
-     */
-    private DayRation loadDayRationFromDataBase(Integer id) {
-        DayRation dayRation;
-        try {
-            dayRation = session.load(DayRation.class, id);
-        } catch (ObjectNotFoundException e) {
-            log.error(e.getMessage() + Mess.LOG_USER_GET_BY_ID);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
-        }
-
-        return dayRation;
     }
 }

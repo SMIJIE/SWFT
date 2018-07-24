@@ -14,7 +14,5 @@ public interface UserDao extends GenericDao<User> {
 
     Integer countUsers(Integer userId);
 
-    void deleteArrayUsersByEmail(String[] emails);
-
-    void updateUserParametersByAdmin(User entity);
+    void deleteArrayUsersByEmail(List<String> emails);
 }

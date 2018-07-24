@@ -45,6 +45,7 @@ public interface Mess {
     String LOG_DISH_HTTP_NOT_EXTRACT = "\n\tProblem to extract dish from HttpServletRequest";
 
     String LOG_DAY_RATION_GET_BY_ID = "\n\tProblem to get day ration by id";
+    String LOG_DAY_RATION_GET_BY_DATE_AND_USER = "\n\tProblem to get day ration by date and user";
     String LOG_DAY_RATION_GET_MONTHLY_BY_USER = "\n\tProblem to get monthly day rations by user";
     String LOG_DAY_RATION_DELETE_BY_ID = "\n\tProblem to delete day ration by id";
     String LOG_DAY_RATION_NOT_INSERTED = "\n\tProblem to insert new day ration";

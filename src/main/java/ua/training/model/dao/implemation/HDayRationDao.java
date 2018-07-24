@@ -10,7 +10,6 @@ import ua.training.controller.commands.exception.DataSqlException;
 import ua.training.model.dao.DayRationDao;
 import ua.training.model.entity.DayRation;
 import ua.training.model.entity.RationComposition;
-import ua.training.model.entity.User;
 
 import javax.persistence.NoResultException;
 import java.time.LocalDate;
@@ -81,7 +80,7 @@ public class HDayRationDao implements DayRationDao {
             session.beginTransaction();
 
             Query<RationComposition> query = session.createQuery(hqlDelRationCompos, RationComposition.class);
-            query.setParameter("oDayRation", dr);
+            query.setParameter("idDayRation", id);
 
             session.delete(dr);
             session.getTransaction().commit();
@@ -99,15 +98,15 @@ public class HDayRationDao implements DayRationDao {
      * @param localDate LocalDate
      * @param idUser    Integer
      * @return dayRation Optional<DayRation>
+     * @throws DataSqlException
      */
     @Override
     public Optional<DayRation> checkDayRationByDateAndUserId(LocalDate localDate, Integer idUser) {
         String hql = DB_PROPERTIES.getDayRationByDateAndUser();
-        User user = loadUserFromDataBase(idUser);
 
         Query<DayRation> query = session.createQuery(hql, DayRation.class);
         query.setParameter("oDate", localDate);
-        query.setParameter("oUser", user);
+        query.setParameter("idUser", idUser);
 
         try {
             return Optional.of(query.getSingleResult());
@@ -128,30 +127,12 @@ public class HDayRationDao implements DayRationDao {
     @Override
     public List<DayRation> getMonthlyDayRationByUser(Integer month, Integer year, Integer userId) {
         String hql = DB_PROPERTIES.getMonthlyDayRationByUser();
-        User user = loadUserFromDataBase(userId);
 
         Query<DayRation> query = session.createQuery(hql, DayRation.class);
         query.setParameter("mDate", month);
         query.setParameter("yDate", year);
-        query.setParameter("oUser", user);
+        query.setParameter("idUser", userId);
 
         return query.getResultList();
-    }
-
-    /**
-     * Load user from database by id
-     *
-     * @param userId Integer
-     * @throws DataSqlException
-     */
-    private User loadUserFromDataBase(Integer userId) {
-        User user;
-        try {
-            user = session.load(User.class, userId);
-        } catch (ObjectNotFoundException e) {
-            log.error(e.getMessage() + Mess.LOG_USER_GET_BY_ID);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
-        }
-        return user;
     }
 }
