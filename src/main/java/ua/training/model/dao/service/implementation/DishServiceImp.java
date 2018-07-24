@@ -37,11 +37,6 @@ public class DishServiceImp implements DishService {
     }
 
     @Override
-    public void updateDishParametersByIdAndUser(Dish entity) {
-        dishDao.updateDishParametersByIdAndUser(entity);
-    }
-
-    @Override
     public void insertNewDish(Dish entity) {
         dishDao.create(entity);
     }

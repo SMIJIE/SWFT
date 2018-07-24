@@ -17,8 +17,6 @@ public interface DishService extends Service {
 
     void updateDishParameters(Dish entity);
 
-    void updateDishParametersByIdAndUser(Dish entity);
-
     void insertNewDish(Dish entity);
 
     List<Dish> getLimitDishesByUserId(Integer userId,

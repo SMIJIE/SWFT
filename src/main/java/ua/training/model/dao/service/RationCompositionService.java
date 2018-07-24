@@ -17,8 +17,6 @@ public interface RationCompositionService extends Service {
 
     void updateCompositionById(RationComposition entity);
 
-    void updateCompositionAmountOfDish(RationComposition entity);
-
     void deleteArrayCompositionById(List<Integer> compositionId);
 
     Optional<RationComposition> getCompositionById(Integer compositionId);

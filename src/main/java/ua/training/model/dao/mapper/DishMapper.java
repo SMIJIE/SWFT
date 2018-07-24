@@ -5,14 +5,10 @@ import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
 import ua.training.constant.RegexExpress;
 import ua.training.controller.commands.exception.DataHttpException;
-import ua.training.controller.commands.exception.DataSqlException;
 import ua.training.model.entity.Dish;
 import ua.training.model.entity.enums.FoodCategory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Map;
 import java.util.Optional;
 
 import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
@@ -20,51 +16,6 @@ import static java.util.Objects.isNull;
 
 @Log4j2
 public class DishMapper implements ObjectMapper<Dish> {
-    /**
-     * @param rs ResultSet
-     * @return new Dish
-     */
-    @Override
-    public Dish extractFromResultSet(ResultSet rs) {
-        Integer id;
-        FoodCategory category;
-        String name;
-        Integer weight;
-        Integer calories;
-        Integer proteins;
-        Integer fats;
-        Integer carbohydrates;
-        Boolean generalFood;
-
-        try {
-            id = rs.getInt(Attributes.SQL_DISH_ID);
-            category = FoodCategory.valueOf(rs.getString(Attributes.REQUEST_CATEGORY));
-            name = rs.getString(Attributes.REQUEST_NAME);
-            weight = rs.getInt(Attributes.REQUEST_WEIGHT);
-            calories = rs.getInt(Attributes.REQUEST_CALORIES);
-            proteins = rs.getInt(Attributes.REQUEST_PROTEINS);
-            fats = rs.getInt(Attributes.REQUEST_FATS);
-            carbohydrates = rs.getInt(Attributes.REQUEST_CARBOHYDRATES);
-            generalFood = rs.getBoolean(Attributes.REQUEST_GENERAL_FOOD);
-
-        } catch (SQLException e) {
-            log.error(e.getMessage() + Mess.LOG_DISH_RS_NOT_EXTRACT);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
-        }
-
-        return Dish.builder()
-                .id(id)
-                .foodCategory(category)
-                .name(name)
-                .weight(weight)
-                .calories(calories)
-                .proteins(proteins)
-                .fats(fats)
-                .carbohydrates(carbohydrates)
-                .generalFood(generalFood)
-                .build();
-    }
-
     /**
      * @param req HttpServletRequest
      * @return new Dish
@@ -141,16 +92,5 @@ public class DishMapper implements ObjectMapper<Dish> {
         if (!flag) {
             throw new DataHttpException(Mess.LOG_DISH_HTTP_NOT_EXTRACT);
         }
-    }
-
-    /**
-     * @param cache Map<Integer, Dish>
-     * @param dish  Dish
-     * @return new Dish or exist Dish
-     */
-    @Override
-    public Dish makeUnique(Map<Integer, Dish> cache, Dish dish) {
-        cache.putIfAbsent(dish.getId(), dish);
-        return cache.get(dish.getId());
     }
 }

@@ -41,7 +41,7 @@ public class UpdateUsersDish implements Command {
             dishHttp.setFoodCategory(dishSQL.get().getFoodCategory());
             dishHttp.setName(dishSQL.get().getName());
             dishHttp.setUser(user);
-            DISH_SERVICE_IMP.updateDishParametersByIdAndUser(dishHttp);
+            DISH_SERVICE_IMP.updateDishParameters(dishHttp);
 
             Integer numPage = (Integer) request.getSession().getAttribute(Attributes.REQUEST_NUMBER_PAGE);
 

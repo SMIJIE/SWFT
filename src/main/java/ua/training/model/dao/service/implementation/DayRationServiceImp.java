@@ -26,6 +26,7 @@ public class DayRationServiceImp implements DayRationService {
     public List<DayRation> getMonthlyDayRationByUser(Integer monthVal,
                                                      Integer year,
                                                      Integer userId) {
+
         return dayRationDao.getMonthlyDayRationByUser(monthVal, year, userId);
     }
 }

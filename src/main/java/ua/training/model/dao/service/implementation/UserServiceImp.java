@@ -38,12 +38,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void deleteArrayUsersByEmail(String[] emails) {
+    public void deleteArrayUsersByEmail(List<String> emails) {
         userDao.deleteArrayUsersByEmail(emails);
-    }
-
-    @Override
-    public void updateUserParametersByAdmin(User entity) {
-        userDao.updateUserParametersByAdmin(entity);
     }
 }

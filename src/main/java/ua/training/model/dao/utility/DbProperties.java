@@ -50,32 +50,12 @@ public class DbProperties {
         return props.getProperty(Attributes.DB_SQL_USER_BY_EMAIL);
     }
 
-    public String registerNewUser() {
-        return props.getProperty(Attributes.DB_SQL_USER_NEW);
-    }
-
-    public String updateUserParameters() {
-        return props.getProperty(Attributes.DB_SQL_USER_UPDATE_PARAMETERS);
-    }
-
-    public String updateUserParametersByAdmin() {
-        return props.getProperty(Attributes.DB_SQL_USER_UPDATE_PARAMETERS_BY_ADMIN);
-    }
-
-    public String getUserById() {
-        return props.getProperty(Attributes.DB_SQL_USER_BY_ID);
-    }
-
     public String getAllUsers() {
         return props.getProperty(Attributes.DB_SQL_USER_GET_ALL);
     }
 
     public String getAllUsersWithoutAdmin() {
         return props.getProperty(Attributes.DB_SQL_USER_GET_LIMIT_WITHOUT_ADMIN);
-    }
-
-    public String deleteUserById() {
-        return props.getProperty(Attributes.DB_SQL_USER_DELETE_BY_ID);
     }
 
     public String deleteArrayUsersByEmail() {
@@ -86,36 +66,16 @@ public class DbProperties {
         return props.getProperty(Attributes.DB_SQL_USER_COUNT_FOR_PAGE);
     }
 
-    public String getDishById() {
-        return props.getProperty(Attributes.DB_SQL_DISH_BY_ID);
-    }
-
     public String getDishByUserId() {
         return props.getProperty(Attributes.DB_SQL_DISH_BY_USER);
     }
-
-//    public String getLimitDishByUserId() {
-//        return props.getProperty(Attributes.DB_SQL_DISH_GET_LIMIT_BY_USER);
-//    }
 
     public String getAllDishes() {
         return props.getProperty(Attributes.DB_SQL_DISH_GET_ALL);
     }
 
-    public String getArrayOfDishes() {
-        return props.getProperty(Attributes.DB_SQL_DISH_GET_ARRAY);
-    }
-
     public String getCountDishesByUserId() {
         return props.getProperty(Attributes.DB_SQL_DISH_COUNT);
-    }
-
-    public String insertNewDish() {
-        return props.getProperty(Attributes.DB_SQL_DISH_INSERT);
-    }
-
-    public String deleteDishById() {
-        return props.getProperty(Attributes.DB_SQL_DISH_DELETE_BY_ID);
     }
 
     public String deleteDishByUserId() {
@@ -134,24 +94,8 @@ public class DbProperties {
         return props.getProperty(Attributes.DB_SQL_DISH_DELETE_ARRAY_BY_ID_AND_USERS);
     }
 
-    public String updateDishParameters() {
-        return props.getProperty(Attributes.DB_SQL_DISH_UPDATE_PARAMETERS);
-    }
-
-    public String updateDishParametersByIdAndUser() {
-        return props.getProperty(Attributes.DB_SQL_DISH_UPDATE_PARAMETERS_BY_ID_AND_USER);
-    }
-
     public String getGeneralDishes() {
         return props.getProperty(Attributes.DB_SQL_DISH_GET_GENERAL);
-    }
-
-    public String insertNewDayRation() {
-        return props.getProperty(Attributes.DB_SQL_DAY_RATION_INSERT);
-    }
-
-    public String getDayRationById() {
-        return props.getProperty(Attributes.DB_SQL_DAY_RATION_GET_BY_ID);
     }
 
     public String getDayRationByDateAndUser() {
@@ -166,32 +110,12 @@ public class DbProperties {
         return props.getProperty(Attributes.DB_SQL_DAY_RATION_GET_ALL);
     }
 
-    public String updateDayRation() {
-        return props.getProperty(Attributes.DB_SQL_DAY_RATION_UPDATE_PARAMETERS);
-    }
-
-    public String updateDayRationByUser() {
-        return props.getProperty(Attributes.DB_SQL_DAY_RATION_UPDATE_PARAMETERS_BY_USER);
-    }
-
-    public String deleteDayRation() {
-        return props.getProperty(Attributes.DB_SQL_DAY_RATION_DELETE);
-    }
-
     public String deleteDayRationByUserId() {
         return props.getProperty(Attributes.DB_SQL_DAY_RATION_DELETE_BY_USER_ID);
     }
 
     public String deleteDayRationByUserEmail() {
         return props.getProperty(Attributes.DB_SQL_DAY_RATION_DELETE_BY_USER_EMAIL);
-    }
-
-    public String insertNewRationComposition() {
-        return props.getProperty(Attributes.DB_SQL_RATION_COMPOSITION_INSERT_NEW);
-    }
-
-    public String getDayCompositionById() {
-        return props.getProperty(Attributes.DB_SQL_RATION_COMPOSITION_GET_BY_ID);
     }
 
     public String getCompositionByRationAndDish() {
@@ -210,24 +134,12 @@ public class DbProperties {
         return props.getProperty(Attributes.DB_SQL_RATION_COMPOSITION_GET_ALL_BY_RATION);
     }
 
-    public String updateRationComposition() {
-        return props.getProperty(Attributes.DB_SQL_RATION_COMPOSITION_UPDATE_BY_ID);
-    }
-
-    public String deleteCompositionById() {
-        return props.getProperty(Attributes.DB_SQL_RATION_COMPOSITION_DELETE_BY_ID);
-    }
-
     public String deleteCompositionByDayRationId() {
         return props.getProperty(Attributes.DB_SQL_RATION_COMPOSITION_DELETE_BY_DAY_RATION_ID);
     }
 
     public String deleteArrayCompositionById() {
         return props.getProperty(Attributes.DB_SQL_RATION_COMPOSITION_DELETE_ARRAY_BY_ID);
-    }
-
-    public String updateCompositionAmountOfDish() {
-        return props.getProperty(Attributes.DB_SQL_RATION_COMPOSITION_UPDATE_AMOUNT_OF_DISH);
     }
 
     public String deleteCompositionByRationAndUser() {

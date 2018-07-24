@@ -34,11 +34,6 @@ public class RationCompositionServiceImp implements RationCompositionService {
     }
 
     @Override
-    public void updateCompositionAmountOfDish(RationComposition entity) {
-        rationCompositionDao.updateCompositionAmountOfDish(entity);
-    }
-
-    @Override
     public void deleteArrayCompositionById(List<Integer> compositionId) {
         rationCompositionDao.deleteArrayCompositionById(compositionId);
     }

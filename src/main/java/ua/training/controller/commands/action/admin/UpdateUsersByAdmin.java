@@ -46,7 +46,7 @@ public class UpdateUsersByAdmin implements Command {
         if (flag) {
             List<User> listUsers = (List<User>) request.getSession().getAttribute(Attributes.REQUEST_LIST_USERS);
             listUsers.removeIf(u -> u.getEmail().equalsIgnoreCase(emailUsers));
-            USER_SERVICE_IMP.updateUserParametersByAdmin(userSQL.get());
+            USER_SERVICE_IMP.updateUserParameters(userSQL.get());
             listUsers.add(userSQL.get());
             request.getSession().setAttribute(Attributes.REQUEST_LIST_USERS, listUsers);
         }

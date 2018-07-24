@@ -24,7 +24,7 @@ public class UpdateUsersComposition implements Command {
         rationCompositionSQL = RATION_COMPOSITION_SERVICE_IMP.getCompositionById(Integer.valueOf(numComposition));
         if (rationCompositionSQL.isPresent() && rationCompositionSQL.get().getNumberOfDish() != setAmount) {
             rationCompositionSQL.get().setNumberOfDish(setAmount);
-            RATION_COMPOSITION_SERVICE_IMP.updateCompositionAmountOfDish(rationCompositionSQL.get());
+            RATION_COMPOSITION_SERVICE_IMP.updateCompositionById(rationCompositionSQL.get());
         }
 
         return Pages.DAY_RATION_LIST_REDIRECT;

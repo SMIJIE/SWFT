@@ -18,8 +18,5 @@ public interface UserService extends Service {
 
     Integer countUsers(Integer userId);
 
-    void deleteArrayUsersByEmail(String[] emails);
-
-    void updateUserParametersByAdmin(User entity);
-
+    void deleteArrayUsersByEmail(List<String> emails);
 }
