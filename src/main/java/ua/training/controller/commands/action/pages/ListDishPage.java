@@ -28,8 +28,9 @@ public class ListDishPage implements Command {
         Integer numPage = isNullOrEmpty(attrPage) ? sessionPage : Integer.valueOf(attrPage);
 
         Integer numberDish = DISH_SERVICE_IMP.counterDishByUserId(user.getId());
-        Integer maxPage = (int) Math.round(((numberDish / 5) + 0.5));
-        Integer pageForSQL = numPage < 1 ? 1 : (numPage > maxPage ? maxPage : numPage);
+
+        Integer maxPage = CommandsUtil.getCountPages(numberDish, 5);
+        Integer pageForSQL = CommandsUtil.getPageForSQL(numPage, maxPage);
 
         List<Dish> listUsers = DISH_SERVICE_IMP.getLimitDishesByUserId(user.getId(), 5, 5 * (pageForSQL - 1));
         CommandsUtil.sortListByAnnotationFields(listUsers);

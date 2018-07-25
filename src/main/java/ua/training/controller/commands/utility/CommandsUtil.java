@@ -219,4 +219,26 @@ public abstract class CommandsUtil implements Command {
         }
         return userHttp;
     }
+
+    /**
+     * Count pages from the total number and quantity per page
+     *
+     * @param numberItem   Integer
+     * @param countPerPage Integer
+     * @return maxPage Integer
+     */
+    public static Integer getCountPages(Integer numberItem, Integer countPerPage) {
+        return (int) Math.round((numberItem / countPerPage) + ((numberItem % countPerPage) == 0 ? 0 : 0.5));
+    }
+
+    /**
+     * Define min/max/current page for SQL statement
+     *
+     * @param numPage   Integer
+     * @param maxPage Integer
+     * @return currentPage Integer
+     */
+    public static Integer getPageForSQL(Integer numPage, Integer maxPage) {
+        return numPage < 1 ? 1 : (numPage > maxPage ? maxPage : numPage);
+    }
 }

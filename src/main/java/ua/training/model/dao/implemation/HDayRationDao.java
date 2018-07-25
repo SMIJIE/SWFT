@@ -81,6 +81,7 @@ public class HDayRationDao implements DayRationDao {
 
             Query<RationComposition> query = session.createQuery(hqlDelRationCompos, RationComposition.class);
             query.setParameter("idDayRation", id);
+            query.executeUpdate();
 
             session.delete(dr);
             session.getTransaction().commit();

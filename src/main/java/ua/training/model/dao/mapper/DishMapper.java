@@ -9,7 +9,6 @@ import ua.training.model.entity.Dish;
 import ua.training.model.entity.enums.FoodCategory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
 
 import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
 import static java.util.Objects.isNull;
@@ -22,12 +21,16 @@ public class DishMapper implements ObjectMapper<Dish> {
      */
     @Override
     public Dish extractFromHttpServletRequest(HttpServletRequest req) throws DataHttpException {
+        String category;
+        String name;
         Double weight;
         Double calories;
         Double proteins;
         Double fats;
         Double carbohydrates;
 
+        name = req.getParameter(Attributes.REQUEST_NAME);
+        category = req.getParameter(Attributes.REQUEST_CATEGORY);
         weight = Double.valueOf(req.getParameter(Attributes.REQUEST_WEIGHT));
         calories = Double.valueOf(req.getParameter(Attributes.REQUEST_CALORIES));
         proteins = Double.valueOf(req.getParameter(Attributes.REQUEST_PROTEINS));
@@ -42,6 +45,13 @@ public class DishMapper implements ObjectMapper<Dish> {
                 .fats((int) (fats * 1000))
                 .carbohydrates((int) (carbohydrates * 1000))
                 .build();
+
+        if (!isNullOrEmpty(name)) {
+            dish.setName(name);
+        }
+        if (!isNullOrEmpty(category)) {
+            dish.setFoodCategory(FoodCategory.valueOf(category));
+        }
 
         checkByRegex(dish);
 

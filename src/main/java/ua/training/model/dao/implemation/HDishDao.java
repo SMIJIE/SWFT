@@ -9,7 +9,6 @@ import ua.training.constant.Mess;
 import ua.training.controller.commands.exception.DataSqlException;
 import ua.training.model.dao.DishDao;
 import ua.training.model.entity.Dish;
-import ua.training.model.entity.RationComposition;
 
 import java.util.List;
 import java.util.Optional;
@@ -76,8 +75,9 @@ public class HDishDao implements DishDao {
         dish.ifPresent(d -> {
             session.beginTransaction();
 
-            Query<RationComposition> queryDelRationCompos = session.createQuery(hqlDelRationCompos, RationComposition.class);
+            Query queryDelRationCompos = session.createQuery(hqlDelRationCompos);
             queryDelRationCompos.setParameter("idDish", id);
+            queryDelRationCompos.executeUpdate();
 
             session.delete(d);
             session.getTransaction().commit();
@@ -152,11 +152,14 @@ public class HDishDao implements DishDao {
 
         session.beginTransaction();
 
-        Query<RationComposition> queryDelRationCompos = session.createQuery(hqlDelRationCompos, RationComposition.class);
-        Query<Dish> queryDeleteDish = session.createQuery(hqlDeleteDish, Dish.class);
+        Query queryDelRationCompos = session.createQuery(hqlDelRationCompos);
+        Query queryDeleteDish = session.createQuery(hqlDeleteDish);
 
         queryDelRationCompos.setParameter("idDish", array);
         queryDeleteDish.setParameter("idDish", array);
+
+        queryDelRationCompos.executeUpdate();
+        queryDeleteDish.executeUpdate();
 
         session.getTransaction().commit();
     }
@@ -174,13 +177,16 @@ public class HDishDao implements DishDao {
 
         session.beginTransaction();
 
-        Query<RationComposition> queryDelRationCompos = session.createQuery(hqlDelRationCompos, RationComposition.class);
-        Query<Dish> queryDeleteDish = session.createQuery(hqlDeleteDish, Dish.class);
+        Query queryDelRationCompos = session.createQuery(hqlDelRationCompos);
+        Query queryDeleteDish = session.createQuery(hqlDeleteDish);
 
         queryDelRationCompos.setParameter("idDish", array);
         queryDelRationCompos.setParameter("idUser", userId);
         queryDeleteDish.setParameter("idDish", array);
         queryDeleteDish.setParameter("idUser", userId);
+
+        queryDelRationCompos.executeUpdate();
+        queryDeleteDish.executeUpdate();
 
         session.getTransaction().commit();
     }

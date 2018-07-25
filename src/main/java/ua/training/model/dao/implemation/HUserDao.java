@@ -116,6 +116,10 @@ public class HUserDao implements UserDao {
             dayRationQuery.setParameter("idUser", id);
             dishQuery.setParameter("idUser", id);
 
+            compositionQuery.executeUpdate();
+            dayRationQuery.executeUpdate();
+            dishQuery.executeUpdate();
+
             session.delete(u);
             session.getTransaction().commit();
         });
@@ -209,6 +213,11 @@ public class HUserDao implements UserDao {
         dayRationQuery.setParameter("emails", emails);
         dishQuery.setParameter("emails", emails);
         userQuery.setParameter("emails", emails);
+
+        compositionQuery.executeUpdate();
+        dayRationQuery.executeUpdate();
+        dishQuery.executeUpdate();
+        userQuery.executeUpdate();
 
         session.getTransaction().commit();
     }

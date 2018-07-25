@@ -17,6 +17,27 @@ import static java.util.Objects.isNull;
 @Log4j2
 public class DayRationMapper implements ObjectMapper<DayRation> {
     /**
+     * @param lifeStyleCoefficient Integer
+     * @param weight               Integer
+     * @param height               Integer
+     * @param age                  Integer
+     * @return amount of calories calculate by formula
+     */
+    public static Integer formulaMifflinSanJerura(Integer lifeStyleCoefficient,
+                                                  Integer weight,
+                                                  Integer height,
+                                                  Integer age) {
+
+        if (weight != 0) {
+            return Math.toIntExact(Math.round(((double) lifeStyleCoefficient / 1000) *
+                    ((double) 10 * ((double) weight / 1000) + 6.25 *
+                            ((double) height / 100) - ((double) 5 * age))));
+        }
+
+        return 0;
+    }
+
+    /**
      * @param req HttpServletRequest
      * @return new UserDayRation
      */
@@ -76,26 +97,5 @@ public class DayRationMapper implements ObjectMapper<DayRation> {
         if (!flag) {
             throw new DataHttpException(Mess.LOG_DAY_RATION_HTTP_NOT_EXTRACT);
         }
-    }
-
-    /**
-     * @param lifeStyleCoefficient Integer
-     * @param weight               Integer
-     * @param height               Integer
-     * @param age                  Integer
-     * @return amount of calories calculate by formula
-     */
-    public static Integer formulaMifflinSanJerura(Integer lifeStyleCoefficient,
-                                                  Integer weight,
-                                                  Integer height,
-                                                  Integer age) {
-
-        if (weight != 0) {
-            return Math.toIntExact(Math.round(((double) lifeStyleCoefficient / 1000) *
-                    ((double) 10 * ((double) weight / 1000) + 6.25 *
-                            ((double) height / 100) - ((double) 5 * age))));
-        }
-
-        return 0;
     }
 }

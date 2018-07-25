@@ -19,7 +19,8 @@ public class SessionListener implements HttpSessionListener {
     private HashSet<String> allUsers;
 
     @Override
-    public void sessionCreated(HttpSessionEvent httpSessionEvent) {}
+    public void sessionCreated(HttpSessionEvent httpSessionEvent) {
+    }
 
     @Override
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {

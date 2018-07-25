@@ -3,6 +3,7 @@ package ua.training.controller.commands.action.admin;
 import ua.training.constant.Attributes;
 import ua.training.constant.Pages;
 import ua.training.controller.commands.Command;
+import ua.training.controller.commands.utility.CommandsUtil;
 import ua.training.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,8 +28,8 @@ public class ListUsersPage implements Command {
         Integer numPage = isNullOrEmpty(attrPage) ? sessionPage : Integer.valueOf(attrPage);
 
         Integer numberUsers = USER_SERVICE_IMP.countUsers(user.getId());
-        Integer maxPage = (int) Math.round(((numberUsers / 6) + 0.5));
-        Integer pageForSQL = numPage < 1 ? 1 : (numPage > maxPage ? maxPage : numPage);
+        Integer maxPage = CommandsUtil.getCountPages(numberUsers, 6);
+        Integer pageForSQL = CommandsUtil.getPageForSQL(numPage, maxPage);
 
         List<User> listUsers = USER_SERVICE_IMP.getLimitUsersWithoutAdmin(user.getId(), 6, 6 * (pageForSQL - 1));
         listUsers.sort(Comparator.comparing(User::getEmail));

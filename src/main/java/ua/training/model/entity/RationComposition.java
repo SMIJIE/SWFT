@@ -25,7 +25,7 @@ public class RationComposition implements EntityObject<Integer> {
      */
     @Column(nullable = false)
     private FoodIntake foodIntake;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "idDish", nullable = false)
     private Dish dish;
     @Column(nullable = false)

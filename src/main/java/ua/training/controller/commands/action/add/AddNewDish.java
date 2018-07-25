@@ -25,7 +25,7 @@ public class AddNewDish implements Command {
         User user = (User) request.getSession().getAttribute(Attributes.REQUEST_USER);
 
         Optional<Dish> dishHttp = CommandsUtil.extractDishFromHTTP(request);
-        if (dishHttp.isPresent()) {
+        if (!dishHttp.isPresent()) {
             return Pages.MENU_USERS_EDIT_REDIRECT_WITH_ERROR;
         }
 

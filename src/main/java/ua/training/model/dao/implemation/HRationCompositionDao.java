@@ -157,6 +157,7 @@ public class HRationCompositionDao implements RationCompositionDao {
         session.beginTransaction();
         Query<RationComposition> query = session.createQuery(hql, RationComposition.class);
         query.setParameter("idRC", compositionId);
+        query.executeUpdate();
         session.getTransaction().commit();
     }
 }

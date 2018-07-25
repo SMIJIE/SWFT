@@ -29,15 +29,11 @@ public class UserDayRation implements Command {
         List<RationComposition> rationCompositions = new ArrayList<>();
         Optional<DayRation> dayRationSql;
 
-        List<Dish> usersDishes = new ArrayList<>();
-        Optional<List<Dish>> listOfDishes = Optional.ofNullable(user.getListDishes());
+        List<Dish> dishesPerPage = new ArrayList<>();
+        dishesPerPage.addAll(generalDishes);
+        dishesPerPage.addAll(user.getListDishes());
 
-        if (listOfDishes.isPresent()) {
-            usersDishes = listOfDishes.get();
-        }
-
-        usersDishes.addAll(generalDishes);
-        CommandsUtil.sortListByAnnotationFields(usersDishes);
+        CommandsUtil.sortListByAnnotationFields(dishesPerPage);
 
         dayRationSql = DAY_RATION_SERVICE_IMP.checkDayRationByDateAndUserId(LocalDate.now(), user.getId());
         if (dayRationSql.isPresent()) {
@@ -47,7 +43,7 @@ public class UserDayRation implements Command {
         request.getSession().setAttribute(Attributes.REQUEST_NUMBER_PAGE, 0);
         request.getSession().setAttribute(Attributes.REQUEST_LOCALE_DATE, LocalDate.now());
         request.getSession().setAttribute(Attributes.REQUEST_USERS_COMPOSITION, rationCompositions);
-        request.getSession().setAttribute(Attributes.REQUEST_USERS_DISHES, usersDishes);
+        request.getSession().setAttribute(Attributes.REQUEST_USERS_DISHES, dishesPerPage);
         request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_DATA, Attributes.PAGE_USER_NON_ERROR_DATA);
         request.getSession().setAttribute(Attributes.PAGE_NAME, Attributes.PAGE_RATION);
 

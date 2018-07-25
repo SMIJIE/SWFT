@@ -20,7 +20,8 @@ import java.util.Optional;
 public abstract class AbstractFilter implements Filter {
 
     @Override
-    public void init(FilterConfig filterConfig) {}
+    public void init(FilterConfig filterConfig) {
+    }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -33,7 +34,8 @@ public abstract class AbstractFilter implements Filter {
     }
 
     @Override
-    public void destroy() {}
+    public void destroy() {
+    }
 
     protected abstract void filter(HttpServletRequest request,
                                    HttpServletResponse response,
