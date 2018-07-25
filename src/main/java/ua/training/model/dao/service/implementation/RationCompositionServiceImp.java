@@ -25,6 +25,7 @@ public class RationCompositionServiceImp implements RationCompositionService {
     public Optional<RationComposition> getCompositionByRationDishFoodIntake(Integer rationId,
                                                                             FoodIntake foodIntake,
                                                                             Integer dishId) {
+
         return rationCompositionDao.getCompositionByRationDishFoodIntake(rationId, foodIntake, dishId);
     }
 

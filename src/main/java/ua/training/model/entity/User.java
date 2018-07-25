@@ -50,11 +50,11 @@ public class User implements EntityObject<Integer> {
     /**
      * All dishes of the user
      */
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user")
     private List<Dish> listDishes;
     /**
      * All day rations of the user
      */
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user")
     private List<DayRation> dayRations;
 }

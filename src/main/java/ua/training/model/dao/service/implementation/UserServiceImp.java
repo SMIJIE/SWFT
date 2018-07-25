@@ -29,6 +29,7 @@ public class UserServiceImp implements UserService {
     public List<User> getLimitUsersWithoutAdmin(Integer userId,
                                                 Integer limit,
                                                 Integer skip) {
+
         return userDao.getLimitUsersWithoutAdmin(userId, limit, skip);
     }
 

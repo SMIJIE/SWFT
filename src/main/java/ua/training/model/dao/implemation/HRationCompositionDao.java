@@ -90,17 +90,17 @@ public class HRationCompositionDao implements RationCompositionDao {
     @Override
     public Integer getSumCaloriesCompositionByRationId(Integer idDayRation) {
         String hql = DB_PROPERTIES.getSumCaloriesCompositionByRationId();
-        Integer sumCalories = 0;
+        Long sumCalories = 0L;
 
         Query query = session.createQuery(hql);
         query.setParameter("idDayRation", idDayRation);
 
         Optional<Object> temp = Optional.ofNullable(query.getSingleResult());
         if (temp.isPresent()) {
-            sumCalories = (Integer) temp.get();
+            sumCalories = (Long) temp.get();
         }
 
-        return sumCalories;
+        return sumCalories.intValue();
     }
 
     /**

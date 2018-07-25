@@ -103,17 +103,18 @@ public class HDayRationDao implements DayRationDao {
     @Override
     public Optional<DayRation> checkDayRationByDateAndUserId(LocalDate localDate, Integer idUser) {
         String hql = DB_PROPERTIES.getDayRationByDateAndUser();
+        Optional<DayRation> dayRation;
 
         Query<DayRation> query = session.createQuery(hql, DayRation.class);
         query.setParameter("oDate", localDate);
         query.setParameter("idUser", idUser);
 
         try {
-            return Optional.of(query.getSingleResult());
+            dayRation = Optional.of(query.getSingleResult());
         } catch (NoResultException e) {
-            log.error(e.getMessage() + Mess.LOG_DAY_RATION_GET_BY_ID);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
+            dayRation = Optional.empty();
         }
+        return dayRation;
     }
 
     /**

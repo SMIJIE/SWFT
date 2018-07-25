@@ -24,6 +24,7 @@ import ua.training.controller.commands.action.update.UpdateUsersComposition;
 import ua.training.controller.commands.action.update.UpdateUsersDish;
 import ua.training.controller.commands.action.update.UpdateUsersParameters;
 import ua.training.controller.commands.direction.*;
+import ua.training.controller.commands.exception.DataHttpException;
 import ua.training.controller.commands.exception.DataSqlException;
 import ua.training.model.dao.utility.DishComparator;
 import ua.training.model.dao.utility.SortAnnotation;
@@ -40,7 +41,7 @@ import java.util.*;
  * @author Zakusylo Pavlo
  */
 @Log4j2
-public class CommandsUtil {
+public abstract class CommandsUtil implements Command {
     /**
      * Initialize all commands
      *
@@ -182,5 +183,40 @@ public class CommandsUtil {
         if (!fieldsForSort.isEmpty()) {
             dishes.sort(comparator);
         }
+    }
+
+    /**
+     * Extract entity 'Dish' from HTTP request
+     *
+     * @param request HttpServletRequest
+     * @return dishHttp Optional<Dish>
+     */
+    public static Optional<Dish> extractDishFromHTTP(HttpServletRequest request) {
+        Optional<Dish> dishHttp;
+        try {
+            dishHttp = Optional.ofNullable(DISH_MAPPER.extractFromHttpServletRequest(request));
+        } catch (DataHttpException e) {
+            request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_DATA, Attributes.PAGE_USER_WRONG_DATA);
+            log.error(e.getMessage());
+            dishHttp = Optional.empty();
+        }
+        return dishHttp;
+    }
+
+    /**
+     * Extract entity 'User' from HTTP request
+     *
+     * @param request HttpServletRequest
+     * @return userHttp Optional<User>
+     */
+    public static Optional<User> extractUserFromHTTP(HttpServletRequest request) {
+        Optional<User> userHttp;
+        try {
+            userHttp = Optional.ofNullable(USER_MAPPER.extractFromHttpServletRequest(request));
+        } catch (DataHttpException e) {
+            log.error(e.getMessage());
+            userHttp = Optional.empty();
+        }
+        return userHttp;
     }
 }

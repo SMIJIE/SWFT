@@ -15,7 +15,6 @@ public interface Mess {
     String LOG_USER_LOGGED_OUT = "User logged out";
     String LOG_USER_REGISTERED = "User registered";
     String LOG_USER_UPDATE_PARAMETERS = "User update parameters";
-    String LOG_USER_GET_OR_CHECK = "\n\tProblem to get user by email";
     String LOG_USER_GET_BY_ID = "\n\tProblem to get user by id";
     String LOG_USER_HTTP_NOT_EXTRACT = "\n\tProblem to extract user from HttpServletRequest";
     String LOG_USER_GO_ADMIN_URL = "\n\tTries to go by admin urls";

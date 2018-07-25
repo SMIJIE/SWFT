@@ -5,7 +5,6 @@ import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
 import ua.training.constant.Pages;
 import ua.training.controller.commands.Command;
-import ua.training.controller.commands.exception.DataHttpException;
 import ua.training.controller.commands.utility.CommandsUtil;
 import ua.training.model.entity.User;
 
@@ -24,20 +23,17 @@ public class RegisterNewUser implements Command {
     public String execute(HttpServletRequest request) {
         String returnPage = Pages.SIGN_OR_REGISTER_WITH_ERROR;
 
-        User userHttp;
-        try {
-            userHttp = USER_MAPPER.extractFromHttpServletRequest(request);
-        } catch (DataHttpException e) {
+        Optional<User> userHttp = CommandsUtil.extractUserFromHTTP(request);
+        if (!userHttp.isPresent()) {
             request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_EMAIL, Attributes.PAGE_USER_WRONG_DATA);
-            log.error(e.getMessage());
             return returnPage;
         }
 
-        Optional<User> userSQL = USER_SERVICE_IMP.getOrCheckUserByEmail(userHttp.getEmail());
+        Optional<User> userSQL = USER_SERVICE_IMP.getOrCheckUserByEmail(userHttp.get().getEmail());
 
         if (!userSQL.isPresent()) {
-            USER_SERVICE_IMP.registerNewUser(userHttp);
-            userSQL = USER_SERVICE_IMP.getOrCheckUserByEmail(userHttp.getEmail());
+            USER_SERVICE_IMP.registerNewUser(userHttp.get());
+            userSQL = USER_SERVICE_IMP.getOrCheckUserByEmail(userHttp.get().getEmail());
             log.info(Mess.LOG_USER_REGISTERED + "[" + userSQL.get().getEmail() + "]");
             returnPage = CommandsUtil.openUsersSession(request, userSQL.get());
         } else {

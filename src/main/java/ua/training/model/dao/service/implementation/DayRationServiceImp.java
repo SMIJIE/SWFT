@@ -19,6 +19,7 @@ public class DayRationServiceImp implements DayRationService {
     @Override
     public Optional<DayRation> checkDayRationByDateAndUserId(LocalDate localDate,
                                                              Integer idUser) {
+
         return dayRationDao.checkDayRationByDateAndUserId(localDate, idUser);
     }
 

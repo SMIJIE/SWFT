@@ -48,7 +48,6 @@ public class UserMapper implements ObjectMapper<User> {
         weightDesired = Double.valueOf(wd);
         lifeStyleCoefficient = Double.valueOf(req.getParameter(Attributes.REQUEST_LIFESTYLE));
 
-
         User user = User.builder()
                 .name(name)
                 .dob(dob)

@@ -36,8 +36,6 @@ public interface Attributes {
     String REQUEST_USER = "user";
     String REQUEST_USERS_ALL = "allUsers";
     String REQUEST_USER_ROLE = "role";
-    String REQUEST_USER_CALORIES = "userCalories";
-    String REQUEST_USER_CALORIES_DESIRED = "userCaloriesDesired";
     String REQUEST_USERS_DISHES = "usersDishes";
     String REQUEST_USERS_COMPOSITION = "usersComposition";
     String REQUEST_ARR_DISH = "arrDish";
@@ -53,7 +51,6 @@ public interface Attributes {
     String REQUEST_SELECT_DINNER = "selectDinner";
     String REQUEST_SELECT_SUPPER = "selectSupper";
     String REQUEST_NAME = "name";
-    String REQUEST_FOOD_INTAKE = "foodIntake";
     String REQUEST_CATEGORY = "category";
     String REQUEST_DATE_OF_BIRTHDAY = "dob";
     String REQUEST_EMAIL = "email";
@@ -64,7 +61,6 @@ public interface Attributes {
     String REQUEST_PROTEINS = "proteins";
     String REQUEST_FATS = "fats";
     String REQUEST_CARBOHYDRATES = "carbohydrates";
-    String REQUEST_GENERAL_FOOD = "generalFood";
     String REQUEST_WEIGHT_DESIRED = "weightDesired";
     String REQUEST_LIFESTYLE = "lifestyle";
     String REQUEST_GENERAL_DISHES = "generalDishes";
@@ -75,13 +71,6 @@ public interface Attributes {
     String REQUEST_MONTHLY_DAY_RATION = "monthlyDR";
 
 
-    String SQL_LIFESTYLE_COEFFICIENT = "lifeStyleCoefficient";
-    String SQL_USER_ID = "idU";
-    String SQL_DISH_ID = "idD";
-    String SQL_DR_ID = "idDR";
-    String SQL_RC_ID = "idRC";
-    String SQL_NUMBER_OF_DISH = "numberOfDish";
-    String SQL_CALORIES_OF_DISH = "caloriesOfDish";
     String SQL_EXCEPTION = "page.wrong.work.server";
 
     String DB_PROPERTIES = "db.properties";

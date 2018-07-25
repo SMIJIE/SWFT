@@ -194,10 +194,10 @@ public class HDishDao implements DishDao {
     @Override
     public Integer countDishes(Integer userId) {
         String hql = DB_PROPERTIES.getCountDishesByUserId();
-
         Query query = session.createQuery(hql);
         query.setParameter("idUser", userId);
 
-        return (Integer) query.getSingleResult();
+        Long counter = (Long) query.getSingleResult();
+        return counter.intValue();
     }
 }

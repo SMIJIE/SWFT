@@ -136,16 +136,17 @@ public class HUserDao implements UserDao {
     @Override
     public Optional<User> getOrCheckUserByEmail(String email) {
         String hql = DB_PROPERTIES.getOrCheckUserByEmail();
+        Optional<User> user;
 
         Query<User> query = session.createQuery(hql, User.class);
         query.setParameter("email", email);
 
         try {
-            return Optional.ofNullable(query.getSingleResult());
-        } catch (ObjectNotFoundException e) {
-            log.error(e.getMessage() + Mess.LOG_USER_GET_OR_CHECK);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
+            user = Optional.ofNullable(query.getSingleResult());
+        } catch (NoResultException e) {
+            user = Optional.empty();
         }
+        return user;
     }
 
     /**
@@ -181,7 +182,8 @@ public class HUserDao implements UserDao {
         Query query = session.createQuery(hql);
         query.setParameter("idUser", userId);
 
-        return (Integer) query.getSingleResult();
+        Long counter = (Long) query.getSingleResult();
+        return counter.intValue();
     }
 
     /**

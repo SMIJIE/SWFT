@@ -5,7 +5,7 @@ import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
 import ua.training.constant.Pages;
 import ua.training.controller.commands.Command;
-import ua.training.controller.commands.exception.DataHttpException;
+import ua.training.controller.commands.utility.CommandsUtil;
 import ua.training.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,33 +24,25 @@ public class UpdateUsersParameters implements Command {
     public String execute(HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute(Attributes.REQUEST_USER);
         String returnPage = Pages.USER_SETTINGS_REDIRECT;
-        User userHttp;
 
-        try {
-            userHttp = USER_MAPPER.extractFromHttpServletRequest(request);
-        } catch (DataHttpException e) {
+        Optional<User> userHttp = CommandsUtil.extractUserFromHTTP(request);
+        if (!userHttp.isPresent()) {
             request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_DATA, Attributes.PAGE_USER_WRONG_DATA);
-            log.error(e.getMessage());
             return Pages.USER_SETTINGS_REDIRECT_WITH_ERROR;
         }
 
-        Optional<User> userSQL = USER_SERVICE_IMP.getOrCheckUserByEmail(userHttp.getEmail());
-
+        Optional<User> userSQL = USER_SERVICE_IMP.getOrCheckUserByEmail(userHttp.get().getEmail());
         if (!userSQL.isPresent() ||
                 userSQL.get().getEmail().equalsIgnoreCase(user.getEmail())) {
 
-            userHttp.setId(user.getId());
-            boolean flagPassword = userHttp.getPassword().isEmpty();
-            userHttp.setPassword(flagPassword ? user.getPassword() : userHttp.getPassword());
-
-            USER_SERVICE_IMP.updateUserParameters(userHttp);
+            updateUserParameters(userHttp.get(), user);
             log.info(Mess.LOG_USER_UPDATE_PARAMETERS + "[" + user.getEmail() + "]");
 
             HashSet<String> allUsers = (HashSet<String>) request.getServletContext().getAttribute(Attributes.REQUEST_USERS_ALL);
             allUsers.remove(user.getEmail());
-            allUsers.add(userHttp.getEmail());
+            allUsers.add(userHttp.get().getEmail());
 
-            request.getSession().setAttribute(Attributes.REQUEST_USER, userHttp);
+            request.getSession().setAttribute(Attributes.REQUEST_USER, user);
             request.getServletContext().setAttribute(Attributes.REQUEST_USERS_ALL, allUsers);
         } else {
             request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_DATA, Attributes.PAGE_USER_EXIST);
@@ -58,5 +50,22 @@ public class UpdateUsersParameters implements Command {
         }
 
         return returnPage;
+    }
+
+    private void updateUserParameters(User userHttp, User userCurrent) {
+        userCurrent.setName(userHttp.getName());
+        userCurrent.setDob(userHttp.getDob());
+        userCurrent.setEmail(userHttp.getEmail());
+        userCurrent.setRole(userHttp.getRole());
+        userCurrent.setHeight(userHttp.getHeight());
+        userCurrent.setWeight(userHttp.getWeight());
+        userCurrent.setWeightDesired(userHttp.getWeightDesired());
+        userCurrent.setLifeStyleCoefficient(userHttp.getLifeStyleCoefficient());
+
+        boolean flagPassword = userHttp.getPassword().isEmpty();
+        userCurrent.setPassword(flagPassword ?
+                userCurrent.getPassword() : userHttp.getPassword());
+
+        USER_SERVICE_IMP.updateUserParameters(userCurrent);
     }
 }

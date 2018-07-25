@@ -23,6 +23,7 @@ public class DishServiceImp implements DishService {
     @Override
     public void deleteArrayDishesByIdAndUser(List<Integer> array,
                                              Integer userId) {
+
         dishDao.deleteArrayDishesByIdAndUser(array, userId);
     }
 
@@ -45,6 +46,7 @@ public class DishServiceImp implements DishService {
     public List<Dish> getLimitDishesByUserId(Integer userId,
                                              Integer limit,
                                              Integer skip) {
+
         return dishDao.getLimitDishesByUserId(userId, limit, skip);
     }
 

@@ -22,35 +22,26 @@ public class DishMapper implements ObjectMapper<Dish> {
      */
     @Override
     public Dish extractFromHttpServletRequest(HttpServletRequest req) throws DataHttpException {
-        FoodCategory category;
-        String name;
         Double weight;
         Double calories;
         Double proteins;
         Double fats;
         Double carbohydrates;
 
-        name = req.getParameter(Attributes.REQUEST_NAME);
         weight = Double.valueOf(req.getParameter(Attributes.REQUEST_WEIGHT));
         calories = Double.valueOf(req.getParameter(Attributes.REQUEST_CALORIES));
         proteins = Double.valueOf(req.getParameter(Attributes.REQUEST_PROTEINS));
         fats = Double.valueOf(req.getParameter(Attributes.REQUEST_FATS));
         carbohydrates = Double.valueOf(req.getParameter(Attributes.REQUEST_CARBOHYDRATES));
 
+
         Dish dish = Dish.builder()
-                .name(name)
                 .weight((int) (weight * 1000))
                 .calories((int) (calories * 1000))
                 .proteins((int) (proteins * 1000))
                 .fats((int) (fats * 1000))
                 .carbohydrates((int) (carbohydrates * 1000))
                 .build();
-
-        Optional<String> tempCategory = Optional.ofNullable(req.getParameter(Attributes.REQUEST_CATEGORY));
-        if (tempCategory.isPresent() && !isNullOrEmpty(tempCategory.get())) {
-            category = FoodCategory.valueOf(req.getParameter(Attributes.REQUEST_CATEGORY));
-            dish.setFoodCategory(category);
-        }
 
         checkByRegex(dish);
 
