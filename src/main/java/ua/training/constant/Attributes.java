@@ -103,7 +103,7 @@ public interface Attributes {
     String DB_SQL_RATION_COMPOSITION_DELETE_BY_DAY_RATION_ID = "sql.rationCompositionDeleteByDayRationId";
     String DB_SQL_RATION_COMPOSITION_DELETE_ARRAY_BY_ID = "sql.rationCompositionDeleteArrayById";
     String DB_SQL_RATION_COMPOSITION_DELETE_BY_RATION_AND_USER = "sql.rationCompositionDeleteByRationIdAndUserId";
-    String SQL_RATION_COMPOSITION_DELETE_ARRAY_BY_DISH_AND_USER = "sql.rationCompositionDeleteArrayByDishAndUser";
+    String DB_SQL_RATION_COMPOSITION_DELETE_ARRAY_BY_DISH_AND_USER = "sql.rationCompositionDeleteArrayByDishAndUser";
     String DB_SQL_RATION_COMPOSITION_DELETE_ARRAY_BY_DISH = "sql.rationCompositionDeleteArrayByDish";
     String DB_SQL_RATION_COMPOSITION_DELETE_ARRAY_BY_USER_EMAIL = "sql.rationCompositionDeleteArrayByUserEmail";
 

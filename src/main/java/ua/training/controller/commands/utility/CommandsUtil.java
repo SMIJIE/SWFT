@@ -234,7 +234,7 @@ public abstract class CommandsUtil implements Command {
     /**
      * Define min/max/current page for SQL statement
      *
-     * @param numPage   Integer
+     * @param numPage Integer
      * @param maxPage Integer
      * @return currentPage Integer
      */

@@ -79,6 +79,7 @@ public class HRationCompositionDao implements RationCompositionDao {
 
     @Override
     public void close() {
+        session.flush();
         session.close();
     }
 
@@ -105,7 +106,7 @@ public class HRationCompositionDao implements RationCompositionDao {
     }
 
     /**
-     * Get RationComposition
+     * Get RationComposition by DayRation & Dish & FoodIntake
      *
      * @param rationId   Integer
      * @param foodIntake FoodIntake
@@ -129,6 +130,7 @@ public class HRationCompositionDao implements RationCompositionDao {
         } catch (NoResultException e) {
             rationComposition = Optional.empty();
         }
+
         return rationComposition;
     }
 

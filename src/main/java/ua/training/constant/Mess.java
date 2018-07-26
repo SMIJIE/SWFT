@@ -29,5 +29,4 @@ public interface Mess {
     String LOG_DAY_RATION_HTTP_NOT_EXTRACT = "\n\tProblem to extract day ration from HttpServletRequest";
 
     String LOG_RATION_COMPOSITION_GET_BY_ID = "\n\tProblem to get composition by id";
-    String LOG_RATION_COMPOSITION_GET_BY_RATION_AND_DISH = "\n\tProblem to get composition by ration and dish";
 }

@@ -68,7 +68,7 @@ public class HDayRationDao implements DayRationDao {
     }
 
     /**
-     * Load and delete day ration from database by id
+     * Load and delete DayRation from database by id
      *
      * @param id Integer
      */
@@ -91,6 +91,7 @@ public class HDayRationDao implements DayRationDao {
 
     @Override
     public void close() {
+        session.flush();
         session.close();
     }
 
@@ -111,10 +112,11 @@ public class HDayRationDao implements DayRationDao {
         query.setParameter("idUser", idUser);
 
         try {
-            dayRation = Optional.of(query.getSingleResult());
+            dayRation = Optional.ofNullable(query.getSingleResult());
         } catch (NoResultException e) {
             dayRation = Optional.empty();
         }
+
         return dayRation;
     }
 

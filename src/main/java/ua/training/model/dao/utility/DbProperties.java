@@ -147,7 +147,7 @@ public class DbProperties {
     }
 
     public String deleteCompositionArrayByDishAndUser() {
-        return props.getProperty(Attributes.SQL_RATION_COMPOSITION_DELETE_ARRAY_BY_DISH_AND_USER);
+        return props.getProperty(Attributes.DB_SQL_RATION_COMPOSITION_DELETE_ARRAY_BY_DISH_AND_USER);
     }
 
     public String deleteCompositionArrayByDish() {

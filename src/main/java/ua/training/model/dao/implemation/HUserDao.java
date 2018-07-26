@@ -10,8 +10,6 @@ import ua.training.controller.commands.exception.DataSqlException;
 import ua.training.model.dao.UserDao;
 import ua.training.model.dao.mapper.DayRationMapper;
 import ua.training.model.entity.DayRation;
-import ua.training.model.entity.Dish;
-import ua.training.model.entity.RationComposition;
 import ua.training.model.entity.User;
 
 import javax.persistence.NoResultException;
@@ -91,10 +89,11 @@ public class HUserDao implements UserDao {
                         entity.getWeightDesired(), entity.getHeight(), period.getYears());
                 dr.setUserCalories(userCalories * 1000);
                 dr.setUserCaloriesDesired(userCaloriesDesired * 1000);
+
                 session.update(dr);
             });
         } catch (NoResultException e) {
-            log.error(e.getMessage() + Mess.LOG_DAY_RATION_GET_BY_DATE_AND_USER);
+            log.info(e.getMessage() + Mess.LOG_DAY_RATION_GET_BY_DATE_AND_USER);
         }
 
         session.getTransaction().commit();
@@ -110,9 +109,9 @@ public class HUserDao implements UserDao {
         user.ifPresent(u -> {
             session.beginTransaction();
 
-            Query<RationComposition> compositionQuery = session.createQuery(hqlDelRationCompos, RationComposition.class);
-            Query<DayRation> dayRationQuery = session.createQuery(hqlDelDayRation, DayRation.class);
-            Query<Dish> dishQuery = session.createQuery(hqlDelDish, Dish.class);
+            Query compositionQuery = session.createQuery(hqlDelRationCompos);
+            Query dayRationQuery = session.createQuery(hqlDelDayRation);
+            Query dishQuery = session.createQuery(hqlDelDish);
 
             compositionQuery.setParameter("idUser", id);
             dayRationQuery.setParameter("idUser", id);
@@ -130,6 +129,7 @@ public class HUserDao implements UserDao {
 
     @Override
     public void close() {
+        session.flush();
         session.close();
     }
 
@@ -152,6 +152,7 @@ public class HUserDao implements UserDao {
         } catch (NoResultException e) {
             user = Optional.empty();
         }
+
         return user;
     }
 
@@ -206,10 +207,10 @@ public class HUserDao implements UserDao {
 
         session.beginTransaction();
 
-        Query<RationComposition> compositionQuery = session.createQuery(hqlDelRationCompos, RationComposition.class);
-        Query<DayRation> dayRationQuery = session.createQuery(hqlDelDayRation, DayRation.class);
-        Query<Dish> dishQuery = session.createQuery(hqlDelDish, Dish.class);
-        Query<User> userQuery = session.createQuery(hqlDelUser, User.class);
+        Query compositionQuery = session.createQuery(hqlDelRationCompos);
+        Query dayRationQuery = session.createQuery(hqlDelDayRation);
+        Query dishQuery = session.createQuery(hqlDelDish);
+        Query userQuery = session.createQuery(hqlDelUser);
 
         compositionQuery.setParameter("emails", emails);
         dayRationQuery.setParameter("emails", emails);

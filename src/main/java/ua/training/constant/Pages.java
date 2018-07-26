@@ -29,7 +29,6 @@ public interface Pages {
     String MENU_USERS_EDIT_REDIRECT_WITH_ERROR = "redirect:/menuUsersEditWithError";
     String MENU_USERS_EDIT_AFTER_UPDATE_REDIRECT = "redirect:/menuUsersEditAfterUpdate";
 
-
     String SHOW_USERS = "/WEB-INF/admin/showUsers.jsp";
     String SHOW_USERS_REDIRECT = "redirect:/showUsers";
     String SHOW_USERS_AFTER_UPDATE_OR_SEARCH_REDIRECT = "redirect:/showUsersAfterUpdateOrSearch";

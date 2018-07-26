@@ -53,6 +53,7 @@ public class HDishDao implements DishDao {
     public List<Dish> findAll() {
         String hql = DB_PROPERTIES.getAllDishes();
         Query<Dish> query = session.createQuery(hql, Dish.class);
+
         return query.getResultList();
     }
 
@@ -87,6 +88,7 @@ public class HDishDao implements DishDao {
 
     @Override
     public void close() {
+        session.flush();
         session.close();
     }
 
@@ -126,7 +128,7 @@ public class HDishDao implements DishDao {
     }
 
     /**
-     * Return all users dishes
+     * Return all dishes by user
      *
      * @param userId Integer
      * @return list List<Dish>
@@ -195,7 +197,7 @@ public class HDishDao implements DishDao {
     }
 
     /**
-     * Count number of users dishes for page
+     * Count number of dishes by user for page
      *
      * @param userId Integer
      * @return counter Integer
@@ -203,6 +205,7 @@ public class HDishDao implements DishDao {
     @Override
     public Integer countDishes(Integer userId) {
         String hql = DB_PROPERTIES.getCountDishesByUserId();
+
         Query query = session.createQuery(hql);
         query.setParameter("idUser", userId);
 
