@@ -96,6 +96,7 @@ public class HUserDao implements UserDao {
         } catch (NoResultException e) {
             log.error(e.getMessage() + Mess.LOG_DAY_RATION_GET_BY_DATE_AND_USER);
         }
+
         session.getTransaction().commit();
     }
 
@@ -108,6 +109,7 @@ public class HUserDao implements UserDao {
         Optional<User> user = findById(id);
         user.ifPresent(u -> {
             session.beginTransaction();
+
             Query<RationComposition> compositionQuery = session.createQuery(hqlDelRationCompos, RationComposition.class);
             Query<DayRation> dayRationQuery = session.createQuery(hqlDelDayRation, DayRation.class);
             Query<Dish> dishQuery = session.createQuery(hqlDelDish, Dish.class);
@@ -122,6 +124,7 @@ public class HUserDao implements UserDao {
 
             session.delete(u);
             session.getTransaction().commit();
+            session.clear();
         });
     }
 
@@ -135,7 +138,6 @@ public class HUserDao implements UserDao {
      *
      * @param email String
      * @return user Optional<User>
-     * @throws DataSqlException
      */
     @Override
     public Optional<User> getOrCheckUserByEmail(String email) {
@@ -220,5 +222,6 @@ public class HUserDao implements UserDao {
         userQuery.executeUpdate();
 
         session.getTransaction().commit();
+        session.clear();
     }
 }

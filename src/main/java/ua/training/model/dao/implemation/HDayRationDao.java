@@ -85,6 +85,7 @@ public class HDayRationDao implements DayRationDao {
 
             session.delete(dr);
             session.getTransaction().commit();
+            session.clear();
         });
     }
 
@@ -99,7 +100,6 @@ public class HDayRationDao implements DayRationDao {
      * @param localDate LocalDate
      * @param idUser    Integer
      * @return dayRation Optional<DayRation>
-     * @throws DataSqlException
      */
     @Override
     public Optional<DayRation> checkDayRationByDateAndUserId(LocalDate localDate, Integer idUser) {

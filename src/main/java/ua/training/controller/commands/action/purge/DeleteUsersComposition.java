@@ -4,9 +4,11 @@ import ua.training.constant.Attributes;
 import ua.training.constant.Pages;
 import ua.training.controller.commands.Command;
 import ua.training.controller.commands.utility.CommandsUtil;
+import ua.training.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 /**
  * Description: This class delete users ration composition
@@ -16,13 +18,13 @@ import java.util.Arrays;
 public class DeleteUsersComposition implements Command {
     @Override
     public String execute(HttpServletRequest request) {
-        String[] arrDish = request
+        String[] arrCompositions = request
                 .getParameter(Attributes.REQUEST_ARR_COMPOSITION)
                 .split(",");
 
-        Integer[] idDishes = CommandsUtil.stringArrayToInteger(arrDish);
+        Integer[] idCompositions = CommandsUtil.stringArrayToInteger(arrCompositions);
 
-        RATION_COMPOSITION_SERVICE_IMP.deleteArrayCompositionById(Arrays.asList(idDishes));
+        RATION_COMPOSITION_SERVICE_IMP.deleteArrayCompositionById(Arrays.asList(idCompositions));
 
         return Pages.DAY_RATION_REDIRECT;
     }

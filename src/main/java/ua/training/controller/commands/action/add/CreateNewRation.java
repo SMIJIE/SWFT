@@ -12,6 +12,7 @@ import ua.training.model.entity.RationComposition;
 import ua.training.model.entity.enums.FoodIntake;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
@@ -54,6 +55,7 @@ public class CreateNewRation implements Command {
                 DAY_RATION_SERVICE_IMP.insertNewDayRation(dayRationHttp);
                 dayRationSql = DAY_RATION_SERVICE_IMP.checkDayRationByDateAndUserId(dayRationHttp.getDate(),
                         dayRationHttp.getUser().getId());
+                dayRationSql.ifPresent(dr -> dr.setCompositions(new ArrayList<>()));
             }
 
             createRationComposition(breakfast, dayRationSql.get(), FoodIntake.BREAKFAST);
@@ -100,6 +102,7 @@ public class CreateNewRation implements Command {
                         rationComposition.setDish(dish.get());
                         rationComposition.setNumberOfDish(Math.toIntExact(countDishes.get(dish.get().getId())));
                         rationComposition.setCaloriesOfDish(dish.get().getCalories());
+                        dayRation.getCompositions().add(rationComposition);
                         RATION_COMPOSITION_SERVICE_IMP.insertNewDayRation(rationComposition);
                     }
                 }

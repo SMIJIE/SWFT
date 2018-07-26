@@ -73,6 +73,7 @@ public class HRationCompositionDao implements RationCompositionDao {
             session.beginTransaction();
             session.delete(c);
             session.getTransaction().commit();
+            session.clear();
         });
     }
 
@@ -110,24 +111,25 @@ public class HRationCompositionDao implements RationCompositionDao {
      * @param foodIntake FoodIntake
      * @param dishId     Integer
      * @return rationComposition Optional<RationComposition>
-     * @throws DataSqlException
      */
     @Override
     public Optional<RationComposition> getCompositionByRationDishFoodIntake(Integer rationId,
                                                                             FoodIntake foodIntake,
                                                                             Integer dishId) {
+        Optional<RationComposition> rationComposition;
         String hql = DB_PROPERTIES.getCompositionByRationAndDish();
+
         try {
             Query<RationComposition> query = session.createQuery(hql, RationComposition.class);
             query.setParameter("idDayRation", rationId);
             query.setParameter("oFoodIntake", foodIntake);
             query.setParameter("idDish", dishId);
 
-            return Optional.ofNullable(query.getSingleResult());
+            rationComposition = Optional.ofNullable(query.getSingleResult());
         } catch (NoResultException e) {
-            log.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_GET_BY_RATION_AND_DISH);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
+            rationComposition = Optional.empty();
         }
+        return rationComposition;
     }
 
     /**
@@ -154,10 +156,14 @@ public class HRationCompositionDao implements RationCompositionDao {
     @Override
     public void deleteArrayCompositionById(List<Integer> compositionId) {
         String hql = DB_PROPERTIES.deleteArrayCompositionById();
+
         session.beginTransaction();
-        Query<RationComposition> query = session.createQuery(hql, RationComposition.class);
+
+        Query query = session.createQuery(hql);
         query.setParameter("idRC", compositionId);
         query.executeUpdate();
+
         session.getTransaction().commit();
+        session.clear();
     }
 }

@@ -81,6 +81,7 @@ public class HDishDao implements DishDao {
 
             session.delete(d);
             session.getTransaction().commit();
+            session.clear();
         });
     }
 
@@ -162,6 +163,7 @@ public class HDishDao implements DishDao {
         queryDeleteDish.executeUpdate();
 
         session.getTransaction().commit();
+        session.clear();
     }
 
     /**
@@ -189,6 +191,7 @@ public class HDishDao implements DishDao {
         queryDeleteDish.executeUpdate();
 
         session.getTransaction().commit();
+        session.clear();
     }
 
     /**
