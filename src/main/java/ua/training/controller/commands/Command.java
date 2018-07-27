@@ -20,6 +20,7 @@ public interface Command {
     DishServiceImp DISH_SERVICE_IMP = new DishServiceImp();
     DayRationServiceImp DAY_RATION_SERVICE_IMP = new DayRationServiceImp();
     RationCompositionServiceImp RATION_COMPOSITION_SERVICE_IMP = new RationCompositionServiceImp();
+
     UserMapper USER_MAPPER = new UserMapper();
     DishMapper DISH_MAPPER = new DishMapper();
     DayRationMapper DAY_RATION = new DayRationMapper();

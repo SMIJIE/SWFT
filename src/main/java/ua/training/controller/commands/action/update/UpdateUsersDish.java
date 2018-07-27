@@ -23,16 +23,15 @@ public class UpdateUsersDish implements Command {
     public String execute(HttpServletRequest request) {
         User user = (User) request.getSession().getAttribute(Attributes.REQUEST_USER);
         String numDish = request.getParameter(Attributes.REQUEST_NUMBER_DISH);
+        Integer numPage = (Integer) request.getSession().getAttribute(Attributes.REQUEST_NUMBER_PAGE);
 
         Optional<Dish> dishHttp = CommandsUtil.extractDishFromHTTP(request);
         if (!dishHttp.isPresent()) {
             return Pages.MENU_USERS_EDIT_REDIRECT_WITH_ERROR;
         }
 
-        Optional<Dish> dishSQL = DISH_SERVICE_IMP.getDishById(Integer.valueOf(numDish));
-        dishSQL.ifPresent(d -> updateDishParameters(dishHttp.get(), d));
-
-        Integer numPage = (Integer) request.getSession().getAttribute(Attributes.REQUEST_NUMBER_PAGE);
+        DISH_SERVICE_IMP.getDishById(Integer.valueOf(numDish))
+                .ifPresent(d -> updateDishParameters(dishHttp.get(), d));
 
         List<Dish> listUsers = DISH_SERVICE_IMP.getLimitDishesByUserId(user.getId(), 5, 5 * (numPage - 1));
         CommandsUtil.sortListByAnnotationFields(listUsers);

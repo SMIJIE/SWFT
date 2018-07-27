@@ -51,14 +51,6 @@ public class HDishDao implements DishDao {
     }
 
     @Override
-    public List<Dish> findAll() {
-        String hql = DB_PROPERTIES.getAllDishes();
-        Query<Dish> query = session.createQuery(hql, Dish.class);
-
-        return query.getResultList();
-    }
-
-    @Override
     public void update(Dish entity) {
         session.beginTransaction();
         session.update(entity);
@@ -124,22 +116,6 @@ public class HDishDao implements DishDao {
         query.setParameter("idUser", userId);
         query.setFirstResult(skip);
         query.setMaxResults(limit);
-
-        return query.getResultList();
-    }
-
-    /**
-     * Return all dishes by user
-     *
-     * @param userId Integer
-     * @return list List<Dish>
-     */
-    @Override
-    public List<Dish> getAllDishesByUserId(Integer userId) {
-        String hql = DB_PROPERTIES.getDishByUserId();
-
-        Query<Dish> query = session.createQuery(hql, Dish.class);
-        query.setParameter("idUser", userId);
 
         return query.getResultList();
     }

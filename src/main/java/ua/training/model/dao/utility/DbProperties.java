@@ -50,10 +50,6 @@ public class DbProperties {
         return props.getProperty(Attributes.DB_SQL_USER_BY_EMAIL);
     }
 
-    public String getAllUsers() {
-        return props.getProperty(Attributes.DB_SQL_USER_GET_ALL);
-    }
-
     public String getAllUsersWithoutAdmin() {
         return props.getProperty(Attributes.DB_SQL_USER_GET_LIMIT_WITHOUT_ADMIN);
     }
@@ -68,10 +64,6 @@ public class DbProperties {
 
     public String getDishByUserId() {
         return props.getProperty(Attributes.DB_SQL_DISH_BY_USER);
-    }
-
-    public String getAllDishes() {
-        return props.getProperty(Attributes.DB_SQL_DISH_GET_ALL);
     }
 
     public String getCountDishesByUserId() {
@@ -106,10 +98,6 @@ public class DbProperties {
         return props.getProperty(Attributes.DB_SQL_DAY_RATION_GET_MONTHLY_BY_USER);
     }
 
-    public String getGetAllDaRations() {
-        return props.getProperty(Attributes.DB_SQL_DAY_RATION_GET_ALL);
-    }
-
     public String deleteDayRationByUserId() {
         return props.getProperty(Attributes.DB_SQL_DAY_RATION_DELETE_BY_USER_ID);
     }
@@ -124,14 +112,6 @@ public class DbProperties {
 
     public String getSumCaloriesCompositionByRationId() {
         return props.getProperty(Attributes.DB_SQL_RATION_COMPOSITION_SUM_CALORIES_BY_RATION);
-    }
-
-    public String getAllComposition() {
-        return props.getProperty(Attributes.DB_SQL_RATION_COMPOSITION_GET_ALL);
-    }
-
-    public String getAllCompositionByRation() {
-        return props.getProperty(Attributes.DB_SQL_RATION_COMPOSITION_GET_ALL_BY_RATION);
     }
 
     public String deleteCompositionByDayRationId() {

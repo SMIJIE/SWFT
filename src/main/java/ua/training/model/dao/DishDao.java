@@ -11,8 +11,6 @@ public interface DishDao extends GenericDao<Dish> {
                                       Integer limit,
                                       Integer skip);
 
-    List<Dish> getAllDishesByUserId(Integer userId);
-
     void deleteArrayDishesById(List<Integer> array);
 
     void deleteArrayDishesByIdAndUser(List<Integer> array,

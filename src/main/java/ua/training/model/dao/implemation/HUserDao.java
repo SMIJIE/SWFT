@@ -34,7 +34,8 @@ public class HUserDao implements UserDao {
     @Override
     public void create(User entity) {
         session.beginTransaction();
-        session.save(entity);
+        Integer id = (Integer) session.save(entity);
+        entity.setId(id);
         session.getTransaction().commit();
     }
 
@@ -52,14 +53,6 @@ public class HUserDao implements UserDao {
             log.error(e.getMessage() + Mess.LOG_USER_GET_BY_ID);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
-    }
-
-    @Override
-    public List<User> findAll() {
-        String hql = DB_PROPERTIES.getAllUsers();
-        Query<User> query = session.createQuery(hql, User.class);
-
-        return query.getResultList();
     }
 
     /**

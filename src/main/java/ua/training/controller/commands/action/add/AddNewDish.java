@@ -9,6 +9,7 @@ import ua.training.model.entity.Dish;
 import ua.training.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,12 @@ public class AddNewDish implements Command {
         dishHttp.get().setUser(user);
         dishHttp.get().setGeneralFood(false);
         DISH_SERVICE_IMP.insertNewDish(dishHttp.get());
-        user.getListDishes().add(dishHttp.get());
+
+        List<Dish> tempList = new ArrayList<>();
+        Optional.ofNullable(user.getListDishes())
+                .ifPresent(tempList::addAll);
+        tempList.add(dishHttp.get());
+        user.setListDishes(tempList);
 
         List<Dish> listUsers = DISH_SERVICE_IMP.getLimitDishesByUserId(user.getId(), 6, 0);
         CommandsUtil.sortListByAnnotationFields(listUsers);

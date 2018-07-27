@@ -26,7 +26,9 @@ public class DeleteUsersComposition implements Command {
         Integer[] idCompositions = CommandsUtil.stringArrayToInteger(arrCompositions);
 
         RATION_COMPOSITION_SERVICE_IMP.deleteArrayCompositionById(Arrays.asList(idCompositions));
-        user.getDayRations().removeIf(dayRation -> Arrays.asList(idCompositions).contains(dayRation.getId()));
+        user.getDayRations()
+                .forEach(dr -> dr.getCompositions()
+                        .removeIf(rc -> Arrays.asList(idCompositions).contains(rc.getId())));
 
         return Pages.DAY_RATION_REDIRECT;
     }

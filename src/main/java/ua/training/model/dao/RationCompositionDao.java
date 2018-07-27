@@ -13,7 +13,5 @@ public interface RationCompositionDao extends GenericDao<RationComposition> {
                                                                      FoodIntake foodIntake,
                                                                      Integer dishId);
 
-    List<RationComposition> getAllCompositionByRation(Integer rationId);
-
     void deleteArrayCompositionById(List<Integer> compositionId);
 }

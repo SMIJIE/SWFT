@@ -33,9 +33,8 @@ public class RegisterNewUser implements Command {
 
         if (!userSQL.isPresent()) {
             USER_SERVICE_IMP.registerNewUser(userHttp.get());
-            userSQL = USER_SERVICE_IMP.getOrCheckUserByEmail(userHttp.get().getEmail());
-            log.info(Mess.LOG_USER_REGISTERED + "[" + userSQL.get().getEmail() + "]");
-            returnPage = CommandsUtil.openUsersSession(request, userSQL.get());
+            log.info(Mess.LOG_USER_REGISTERED + "[" + userHttp.get().getEmail() + "]");
+            returnPage = CommandsUtil.openUsersSession(request, userHttp.get());
         } else {
             request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_EMAIL, Attributes.PAGE_USER_EXIST);
         }

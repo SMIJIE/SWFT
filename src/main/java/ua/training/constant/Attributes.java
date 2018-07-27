@@ -70,7 +70,6 @@ public interface Attributes {
     String REQUEST_DATE = "date";
     String REQUEST_MONTHLY_DAY_RATION = "monthlyDR";
 
-
     String SQL_EXCEPTION = "page.wrong.work.server";
 
     String DB_PROPERTIES = "db.properties";
@@ -79,12 +78,10 @@ public interface Attributes {
     String DB_PASSWORD = "db.password";
 
     String DB_SQL_USER_BY_EMAIL = "sql.userGetOrCheckByEmail";
-    String DB_SQL_USER_GET_ALL = "sql.userGetAll";
     String DB_SQL_USER_GET_LIMIT_WITHOUT_ADMIN = "sql.userGetLimitWithoutAdmin";
     String DB_SQL_USER_DELETE_ARRAY_BY_EMAIL = "sql.userDeleteArrayByEmail";
     String DB_SQL_USER_COUNT_FOR_PAGE = "sql.userCountForPage";
     String DB_SQL_DISH_BY_USER = "sql.dishGetByUserId";
-    String DB_SQL_DISH_GET_ALL = "sql.dishGetAll";
     String DB_SQL_DISH_DELETE_BY_USER_ID = "sql.dishDeleteByUserId";
     String DB_SQL_DISH_DELETE_BY_USER_EMAIL = "sql.dishDeleteByUserEmail";
     String DB_SQL_DISH_DELETE_ARRAY_BY_ID = "sql.dishDeleteArrayById";
@@ -93,20 +90,16 @@ public interface Attributes {
     String DB_SQL_DISH_COUNT = "sql.dishGetCountForPage";
     String DB_SQL_DAY_RATION_GET_BY_DATE_AND_USER = "sql.dayRationGetByDateAndUser";
     String DB_SQL_DAY_RATION_GET_MONTHLY_BY_USER = "sql.dayRationGetMonthlyByUser";
-    String DB_SQL_DAY_RATION_GET_ALL = "sql.dayRationGetAll";
     String DB_SQL_DAY_RATION_DELETE_BY_USER_ID = "sql.dayRationDeleteByUserId";
     String DB_SQL_DAY_RATION_DELETE_BY_USER_EMAIL = "sql.dayRationDeleteByUserEmail";
     String DB_SQL_RATION_COMPOSITION_GET_BY_RATION_AND_DISH = "sql.rationCompositionGetByRationDishFoodIntake";
     String DB_SQL_RATION_COMPOSITION_SUM_CALORIES_BY_RATION = "sql.rationCompositionSumCaloriesByRationId";
-    String DB_SQL_RATION_COMPOSITION_GET_ALL = "sql.rationCompositionGetAll";
-    String DB_SQL_RATION_COMPOSITION_GET_ALL_BY_RATION = "sql.rationCompositionGetAllByRation";
     String DB_SQL_RATION_COMPOSITION_DELETE_BY_DAY_RATION_ID = "sql.rationCompositionDeleteByDayRationId";
     String DB_SQL_RATION_COMPOSITION_DELETE_ARRAY_BY_ID = "sql.rationCompositionDeleteArrayById";
     String DB_SQL_RATION_COMPOSITION_DELETE_BY_RATION_AND_USER = "sql.rationCompositionDeleteByRationIdAndUserId";
     String DB_SQL_RATION_COMPOSITION_DELETE_ARRAY_BY_DISH_AND_USER = "sql.rationCompositionDeleteArrayByDishAndUser";
     String DB_SQL_RATION_COMPOSITION_DELETE_ARRAY_BY_DISH = "sql.rationCompositionDeleteArrayByDish";
     String DB_SQL_RATION_COMPOSITION_DELETE_ARRAY_BY_USER_EMAIL = "sql.rationCompositionDeleteArrayByUserEmail";
-
 
     String COMMAND_SIGN_OR_REGISTER = "signInOrRegister";
     String COMMAND_SIGN_OR_REGISTER_WITH_ERROR = "signInOrRegisterWithError";

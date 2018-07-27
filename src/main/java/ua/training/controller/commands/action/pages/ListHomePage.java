@@ -29,6 +29,7 @@ public class ListHomePage implements Command {
         User user = (User) request.getSession().getAttribute(Attributes.REQUEST_USER);
         String attrPage = request.getParameter(Attributes.REQUEST_NUMBER_PAGE);
         Integer sessionPage = (Integer) request.getSession().getAttribute(Attributes.REQUEST_NUMBER_PAGE);
+
         Integer page = isNullOrEmpty(attrPage) ? sessionPage : Integer.valueOf(attrPage);
         LocalDate localDate = LocalDate.now().plusMonths(page);
 
@@ -45,6 +46,7 @@ public class ListHomePage implements Command {
         request.getSession().setAttribute(Attributes.REQUEST_NUMBER_MONTH, localDate.getMonthValue());
         request.getSession().setAttribute(Attributes.REQUEST_MONTHLY_DAY_RATION, rationsWithCalories);
         request.getSession().setAttribute(Attributes.PAGE_NAME, Attributes.PAGE_GENERAL);
+
         return Pages.HOME;
     }
 }

@@ -7,7 +7,6 @@ import ua.training.controller.commands.Command;
 import ua.training.controller.commands.exception.DataHttpException;
 import ua.training.controller.commands.utility.CommandsUtil;
 import ua.training.model.entity.DayRation;
-import ua.training.model.entity.Dish;
 import ua.training.model.entity.RationComposition;
 import ua.training.model.entity.enums.FoodIntake;
 
@@ -53,9 +52,8 @@ public class CreateNewRation implements Command {
 
             if (!dayRationSql.isPresent()) {
                 DAY_RATION_SERVICE_IMP.insertNewDayRation(dayRationHttp);
-                dayRationSql = DAY_RATION_SERVICE_IMP.checkDayRationByDateAndUserId(dayRationHttp.getDate(),
-                        dayRationHttp.getUser().getId());
-                dayRationSql.ifPresent(dr -> dr.setCompositions(new ArrayList<>()));
+                dayRationHttp.setCompositions(new ArrayList<>());
+                dayRationSql = Optional.of(dayRationHttp);
             }
 
             createRationComposition(breakfast, dayRationSql.get(), FoodIntake.BREAKFAST);
@@ -81,31 +79,30 @@ public class CreateNewRation implements Command {
                     .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 
             for (Integer id : countDishes.keySet()) {
-                Optional<Dish> dish = DISH_SERVICE_IMP.getDishById(id);
-                Optional<RationComposition> rationCompositionSql;
 
-                if (dish.isPresent()) {
-                    rationCompositionSql = RATION_COMPOSITION_SERVICE_IMP.getCompositionByRationDishFoodIntake(
+                DISH_SERVICE_IMP.getDishById(id).ifPresent(dish -> {
+
+                    Optional<RationComposition> rcSql = RATION_COMPOSITION_SERVICE_IMP.getCompositionByRationDishFoodIntake(
                             dayRation.getId(), foodIntake, id);
 
-                    if (rationCompositionSql.isPresent()) {
-                        rationCompositionSql.get().setDayRation(dayRation);
-                        rationCompositionSql.get().setDish(dish.get());
-                        Integer sumNumber = rationCompositionSql.get().getNumberOfDish()
-                                + Math.toIntExact(countDishes.get(dish.get().getId()));
-                        rationCompositionSql.get().setNumberOfDish(sumNumber);
-                        RATION_COMPOSITION_SERVICE_IMP.updateCompositionById(rationCompositionSql.get());
+                    if (rcSql.isPresent()) {
+                        rcSql.get().setDayRation(dayRation);
+                        rcSql.get().setDish(dish);
+                        Integer sumNumber = rcSql.get().getNumberOfDish()
+                                + Math.toIntExact(countDishes.get(dish.getId()));
+                        rcSql.get().setNumberOfDish(sumNumber);
+                        RATION_COMPOSITION_SERVICE_IMP.updateCompositionById(rcSql.get());
                     } else {
                         RationComposition rationComposition = new RationComposition();
                         rationComposition.setDayRation(dayRation);
                         rationComposition.setFoodIntake(foodIntake);
-                        rationComposition.setDish(dish.get());
-                        rationComposition.setNumberOfDish(Math.toIntExact(countDishes.get(dish.get().getId())));
-                        rationComposition.setCaloriesOfDish(dish.get().getCalories());
+                        rationComposition.setDish(dish);
+                        rationComposition.setNumberOfDish(Math.toIntExact(countDishes.get(dish.getId())));
+                        rationComposition.setCaloriesOfDish(dish.getCalories());
                         dayRation.getCompositions().add(rationComposition);
                         RATION_COMPOSITION_SERVICE_IMP.insertNewDayRation(rationComposition);
                     }
-                }
+                });
             }
         }
     }

@@ -26,8 +26,8 @@ public class SearchUsersByEmail implements Command {
         List<User> listUsers = new ArrayList<>();
 
         if (!user.getEmail().equalsIgnoreCase(email)) {
-            Optional<User> userSQL = USER_SERVICE_IMP.getOrCheckUserByEmail(email);
-            userSQL.ifPresent(listUsers::add);
+            USER_SERVICE_IMP.getOrCheckUserByEmail(email)
+                    .ifPresent(listUsers::add);
         }
 
         listUsers.sort(Comparator.comparing(User::getEmail));

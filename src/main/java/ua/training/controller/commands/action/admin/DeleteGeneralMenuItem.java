@@ -18,6 +18,7 @@ import java.util.List;
 public class DeleteGeneralMenuItem implements Command {
     @Override
     public String execute(HttpServletRequest request) {
+        List<Dish> generalDishes = (List<Dish>) request.getServletContext().getAttribute(Attributes.REQUEST_GENERAL_DISHES);
 
         String[] arrDish = request
                 .getParameter(Attributes.REQUEST_ARR_DISH)
@@ -27,9 +28,10 @@ public class DeleteGeneralMenuItem implements Command {
 
         DISH_SERVICE_IMP.deleteArrayDishesById(Arrays.asList(idDishes));
 
-        List<Dish> general = DISH_SERVICE_IMP.getGeneralDishes();
-        CommandsUtil.sortListByAnnotationFields(general);
-        request.getServletContext().setAttribute(Attributes.REQUEST_GENERAL_DISHES, general);
+        generalDishes.removeIf(dish -> Arrays.asList(idDishes).contains(dish.getId()));
+        CommandsUtil.sortListByAnnotationFields(generalDishes);
+
+        request.getServletContext().setAttribute(Attributes.REQUEST_GENERAL_DISHES, generalDishes);
 
         return Pages.MENU_GENERAL_EDIT_REDIRECT;
     }

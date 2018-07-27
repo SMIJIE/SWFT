@@ -52,14 +52,6 @@ public class HRationCompositionDao implements RationCompositionDao {
     }
 
     @Override
-    public List<RationComposition> findAll() {
-        String hql = DB_PROPERTIES.getAllComposition();
-        Query<RationComposition> query = session.createQuery(hql, RationComposition.class);
-
-        return query.getResultList();
-    }
-
-    @Override
     public void update(RationComposition entity) {
         session.beginTransaction();
         session.update(entity);
@@ -132,22 +124,6 @@ public class HRationCompositionDao implements RationCompositionDao {
         }
 
         return rationComposition;
-    }
-
-    /**
-     * Get all RationComposition by DayRation
-     *
-     * @param rationId Integer
-     * @return rationCompositions List<RationComposition>
-     */
-    @Override
-    public List<RationComposition> getAllCompositionByRation(Integer rationId) {
-        String hql = DB_PROPERTIES.getAllCompositionByRation();
-
-        Query<RationComposition> query = session.createQuery(hql, RationComposition.class);
-        query.setParameter("idDayRation", rationId);
-
-        return query.getResultList();
     }
 
     /**

@@ -32,7 +32,8 @@ public class HDayRationDao implements DayRationDao {
     @Override
     public void create(DayRation entity) {
         session.beginTransaction();
-        session.save(entity);
+        Integer id = (Integer) session.save(entity);
+        entity.setId(id);
         session.getTransaction().commit();
     }
 
@@ -50,14 +51,6 @@ public class HDayRationDao implements DayRationDao {
             log.error(e.getMessage() + Mess.LOG_DAY_RATION_GET_BY_ID);
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
-    }
-
-    @Override
-    public List<DayRation> findAll() {
-        String hql = DB_PROPERTIES.getGetAllDaRations();
-        Query<DayRation> dayRationQuery = session.createQuery(hql, DayRation.class);
-
-        return dayRationQuery.getResultList();
     }
 
     @Override

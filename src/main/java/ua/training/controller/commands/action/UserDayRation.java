@@ -27,17 +27,15 @@ public class UserDayRation implements Command {
         User user = (User) request.getSession().getAttribute(Attributes.REQUEST_USER);
         List<Dish> generalDishes = (List<Dish>) request.getServletContext().getAttribute(Attributes.REQUEST_GENERAL_DISHES);
         List<RationComposition> rationCompositions = new ArrayList<>();
-        Optional<DayRation> dayRationSql;
 
         List<Dish> dishesPerPage = new ArrayList<>();
         dishesPerPage.addAll(generalDishes);
-        dishesPerPage.addAll(user.getListDishes());
+        Optional.ofNullable(user.getListDishes())
+                .ifPresent(dishesPerPage::addAll);
         CommandsUtil.sortListByAnnotationFields(dishesPerPage);
 
-        dayRationSql = DAY_RATION_SERVICE_IMP.checkDayRationByDateAndUserId(LocalDate.now(), user.getId());
-        if (dayRationSql.isPresent()) {
-            rationCompositions = dayRationSql.get().getCompositions();
-        }
+        DAY_RATION_SERVICE_IMP.checkDayRationByDateAndUserId(LocalDate.now(), user.getId())
+                .ifPresent(dayRation -> rationCompositions.addAll(dayRation.getCompositions()));
 
         request.getSession().setAttribute(Attributes.REQUEST_NUMBER_PAGE, 0);
         request.getSession().setAttribute(Attributes.REQUEST_LOCALE_DATE, LocalDate.now());

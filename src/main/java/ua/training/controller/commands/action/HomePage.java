@@ -40,6 +40,7 @@ public class HomePage implements Command {
         request.getSession().setAttribute(Attributes.REQUEST_NUMBER_MONTH, localDate.getMonthValue());
         request.getSession().setAttribute(Attributes.REQUEST_MONTHLY_DAY_RATION, rationsWithCalories);
         request.getSession().setAttribute(Attributes.PAGE_NAME, Attributes.PAGE_GENERAL);
+
         return Pages.HOME;
     }
 }

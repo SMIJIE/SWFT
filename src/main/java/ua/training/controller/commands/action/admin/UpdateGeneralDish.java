@@ -10,7 +10,6 @@ import ua.training.model.entity.Dish;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Description: This class update general menu item
@@ -32,18 +31,18 @@ public class UpdateGeneralDish implements Command {
             return Pages.MENU_GENERAL_EDIT_WITH_ERROR_REDIRECT;
         }
 
-        Optional<Dish> dishSQL = DISH_SERVICE_IMP.getDishById(Integer.valueOf(numDish));
+        DISH_SERVICE_IMP.getDishById(Integer.valueOf(numDish))
+                .ifPresent(dishSQL -> {
+                    dishHttp.setId(dishSQL.getId());
+                    dishHttp.setFoodCategory(dishSQL.getFoodCategory());
+                    dishHttp.setName(dishSQL.getName());
+                    DISH_SERVICE_IMP.updateDishParameters(dishHttp);
 
-        if (dishSQL.isPresent()) {
-            dishHttp.setId(dishSQL.get().getId());
-            dishHttp.setFoodCategory(dishSQL.get().getFoodCategory());
-            dishHttp.setName(dishSQL.get().getName());
-            DISH_SERVICE_IMP.updateDishParameters(dishHttp);
+                });
 
-            List<Dish> general = DISH_SERVICE_IMP.getGeneralDishes();
-            CommandsUtil.sortListByAnnotationFields(general);
-            request.getServletContext().setAttribute(Attributes.REQUEST_GENERAL_DISHES, general);
-        }
+        List<Dish> general = DISH_SERVICE_IMP.getGeneralDishes();
+        CommandsUtil.sortListByAnnotationFields(general);
+        request.getServletContext().setAttribute(Attributes.REQUEST_GENERAL_DISHES, general);
 
         return Pages.MENU_GENERAL_EDIT_REDIRECT;
     }

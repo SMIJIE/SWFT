@@ -247,7 +247,7 @@ public abstract class CommandsUtil implements Command {
      * Define min/max/current page for SQL statement
      *
      * @param currentNumber Integer
-     * @param maxNumber Integer
+     * @param maxNumber     Integer
      * @return currentPage Integer
      */
     public static Integer getPageOrAmountForSQL(Integer currentNumber, Integer maxNumber) {
