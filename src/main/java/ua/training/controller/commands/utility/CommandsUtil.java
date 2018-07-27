@@ -116,6 +116,18 @@ public abstract class CommandsUtil implements Command {
     }
 
     /**
+     * Add users to ServletContextListener
+     *
+     * @param request HttpServletRequest
+     * @param emails  String...
+     */
+    public static void addUsersToContext(HttpServletRequest request, String... emails) {
+        HashSet<String> allUsers = (HashSet<String>) request.getServletContext().getAttribute(Attributes.REQUEST_USERS_ALL);
+        allUsers.addAll(Arrays.asList(emails));
+        request.getServletContext().setAttribute(Attributes.REQUEST_USERS_ALL, allUsers);
+    }
+
+    /**
      * Delete users from ServletContextListener
      *
      * @param request HttpServletRequest
@@ -234,11 +246,11 @@ public abstract class CommandsUtil implements Command {
     /**
      * Define min/max/current page for SQL statement
      *
-     * @param numPage Integer
-     * @param maxPage Integer
+     * @param currentNumber Integer
+     * @param maxNumber Integer
      * @return currentPage Integer
      */
-    public static Integer getPageForSQL(Integer numPage, Integer maxPage) {
-        return numPage < 1 ? 1 : (numPage > maxPage ? maxPage : numPage);
+    public static Integer getPageOrAmountForSQL(Integer currentNumber, Integer maxNumber) {
+        return currentNumber <= 1 ? 1 : (currentNumber > maxNumber ? maxNumber : currentNumber);
     }
 }

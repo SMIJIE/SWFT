@@ -29,7 +29,7 @@ public class ListUsersPage implements Command {
 
         Integer numberUsers = USER_SERVICE_IMP.countUsers(user.getId());
         Integer maxPage = CommandsUtil.getCountPages(numberUsers, 6);
-        Integer pageForSQL = CommandsUtil.getPageForSQL(numPage, maxPage);
+        Integer pageForSQL = CommandsUtil.getPageOrAmountForSQL(numPage, maxPage);
 
         List<User> listUsers = USER_SERVICE_IMP.getLimitUsersWithoutAdmin(user.getId(), 6, 6 * (pageForSQL - 1));
         listUsers.sort(Comparator.comparing(User::getEmail));

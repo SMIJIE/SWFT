@@ -32,7 +32,6 @@ public class UserDayRation implements Command {
         List<Dish> dishesPerPage = new ArrayList<>();
         dishesPerPage.addAll(generalDishes);
         dishesPerPage.addAll(user.getListDishes());
-
         CommandsUtil.sortListByAnnotationFields(dishesPerPage);
 
         dayRationSql = DAY_RATION_SERVICE_IMP.checkDayRationByDateAndUserId(LocalDate.now(), user.getId());

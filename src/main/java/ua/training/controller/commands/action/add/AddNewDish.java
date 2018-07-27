@@ -32,6 +32,7 @@ public class AddNewDish implements Command {
         dishHttp.get().setUser(user);
         dishHttp.get().setGeneralFood(false);
         DISH_SERVICE_IMP.insertNewDish(dishHttp.get());
+        user.getListDishes().add(dishHttp.get());
 
         List<Dish> listUsers = DISH_SERVICE_IMP.getLimitDishesByUserId(user.getId(), 6, 0);
         CommandsUtil.sortListByAnnotationFields(listUsers);

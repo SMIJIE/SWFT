@@ -26,6 +26,7 @@ public class DeleteUsersMenuItem implements Command {
         Integer[] idDishes = CommandsUtil.stringArrayToInteger(arrDish);
 
         DISH_SERVICE_IMP.deleteArrayDishesByIdAndUser(Arrays.asList(idDishes), user.getId());
+        user.getListDishes().removeIf(dish -> Arrays.asList(idDishes).contains(dish.getId()));
 
         return Pages.MENU_USERS_EDIT_REDIRECT;
     }

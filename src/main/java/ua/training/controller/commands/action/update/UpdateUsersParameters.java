@@ -9,7 +9,6 @@ import ua.training.controller.commands.utility.CommandsUtil;
 import ua.training.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashSet;
 import java.util.Optional;
 
 /**
@@ -38,12 +37,10 @@ public class UpdateUsersParameters implements Command {
             updateUserParameters(userHttp.get(), user);
             log.info(Mess.LOG_USER_UPDATE_PARAMETERS + "[" + user.getEmail() + "]");
 
-            HashSet<String> allUsers = (HashSet<String>) request.getServletContext().getAttribute(Attributes.REQUEST_USERS_ALL);
-            allUsers.remove(user.getEmail());
-            allUsers.add(userHttp.get().getEmail());
+            CommandsUtil.deleteUsersFromContext(request, user.getEmail());
+            CommandsUtil.addUsersToContext(request, userHttp.get().getEmail());
 
             request.getSession().setAttribute(Attributes.REQUEST_USER, user);
-            request.getServletContext().setAttribute(Attributes.REQUEST_USERS_ALL, allUsers);
         } else {
             request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_DATA, Attributes.PAGE_USER_EXIST);
             returnPage = Pages.USER_SETTINGS_REDIRECT_WITH_ERROR;

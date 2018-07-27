@@ -12,11 +12,13 @@ public class Main {
     public static void main(String[] args) throws ClassNotFoundException {
         Session session = HSesssionFactory.getSession();
 
-        List<Integer> aaa = Arrays.asList(94, 95, 96);
+        List<String> aaa = Arrays.asList("qwerty@gmail.com");
         session.beginTransaction();
-        Query sss = session.createQuery("DELETE FROM RationComposition WHERE id IN (:iaa)");
-        sss.setParameter("iaa", aaa);
+//        Query sss = session.createQuery("SELECT src.id FROM RationComposition src WHERE src.dayRation.user.email IN (:emails)");
+        Query sss = session.createQuery("DELETE FROM RationComposition drc WHERE drc.id IN(SELECT src.id FROM RationComposition src WHERE src.dayRation.user.email IN (:emails))");
+        sss.setParameter("emails", aaa);
         sss.executeUpdate();
         session.getTransaction().commit();
+//        sss.getResultList().stream().forEach(System.out::println);
     }
 }

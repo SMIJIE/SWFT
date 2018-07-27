@@ -29,7 +29,8 @@ public class HDishDao implements DishDao {
     @Override
     public void create(Dish entity) {
         session.beginTransaction();
-        session.save(entity);
+        Integer id = (Integer) session.save(entity);
+        entity.setId(id);
         session.getTransaction().commit();
     }
 
