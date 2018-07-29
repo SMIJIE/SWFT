@@ -31,7 +31,7 @@ public class UpdateUsersDish implements Command {
         }
 
         DISH_SERVICE_IMP.getDishById(Integer.valueOf(numDish))
-                .ifPresent(d -> updateDishParameters(dishHttp.get(), d));
+                .ifPresent(dishSQL -> CommandsUtil.updateDishParameters(dishHttp.get(), dishSQL));
 
         List<Dish> listUsers = DISH_SERVICE_IMP.getLimitDishesByUserId(user.getId(), 5, 5 * (numPage - 1));
         CommandsUtil.sortListByAnnotationFields(listUsers);
@@ -42,15 +42,5 @@ public class UpdateUsersDish implements Command {
         request.getSession().setAttribute(Attributes.REQUEST_USERS_DISHES, listUsers);
 
         return Pages.MENU_USERS_EDIT_AFTER_UPDATE_REDIRECT;
-    }
-
-    private void updateDishParameters(Dish dishHttp, Dish currentDish) {
-        currentDish.setWeight(dishHttp.getWeight());
-        currentDish.setCalories(dishHttp.getCalories());
-        currentDish.setProteins(dishHttp.getProteins());
-        currentDish.setFats(dishHttp.getFats());
-        currentDish.setCarbohydrates(dishHttp.getCarbohydrates());
-
-        DISH_SERVICE_IMP.updateDishParameters(currentDish);
     }
 }

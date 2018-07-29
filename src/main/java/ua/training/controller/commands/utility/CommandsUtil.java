@@ -233,6 +233,22 @@ public abstract class CommandsUtil implements Command {
     }
 
     /**
+     * Extract entity 'User' from HTTP request
+     *
+     * @param dishHttp Dish
+     * @param dishSQL  Dish
+     */
+    public static void updateDishParameters(Dish dishHttp, Dish dishSQL) {
+        dishSQL.setWeight(dishHttp.getWeight());
+        dishSQL.setCalories(dishHttp.getCalories());
+        dishSQL.setProteins(dishHttp.getProteins());
+        dishSQL.setFats(dishHttp.getFats());
+        dishSQL.setCarbohydrates(dishHttp.getCarbohydrates());
+
+        DISH_SERVICE_IMP.updateDishParameters(dishSQL);
+    }
+
+    /**
      * Count pages from the total number and quantity per page
      *
      * @param numberItem   Integer

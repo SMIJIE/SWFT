@@ -4,7 +4,6 @@ import ua.training.constant.Attributes;
 import ua.training.constant.Pages;
 import ua.training.controller.commands.Command;
 import ua.training.controller.commands.utility.CommandsUtil;
-import ua.training.model.entity.DayRation;
 import ua.training.model.entity.Dish;
 import ua.training.model.entity.RationComposition;
 import ua.training.model.entity.User;

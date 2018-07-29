@@ -4,7 +4,6 @@ import ua.training.constant.Attributes;
 import ua.training.constant.Pages;
 import ua.training.controller.commands.Command;
 import ua.training.controller.commands.utility.CommandsUtil;
-import ua.training.model.entity.DayRation;
 import ua.training.model.entity.Dish;
 import ua.training.model.entity.RationComposition;
 import ua.training.model.entity.User;
@@ -44,7 +43,7 @@ public class ListUserDayRation implements Command {
         CommandsUtil.sortListByAnnotationFields(dishesPerPage);
 
         DAY_RATION_SERVICE_IMP.checkDayRationByDateAndUserId(localDate, user.getId())
-        .ifPresent(dayRation -> rationCompositions.addAll(dayRation.getCompositions()));
+                .ifPresent(dayRation -> rationCompositions.addAll(dayRation.getCompositions()));
 
         request.getSession().setAttribute(Attributes.REQUEST_NUMBER_PAGE, page);
         request.getSession().setAttribute(Attributes.REQUEST_LOCALE_DATE, localDate);

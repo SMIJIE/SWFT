@@ -49,20 +49,20 @@ public class UpdateUsersParameters implements Command {
         return returnPage;
     }
 
-    private void updateUserParameters(User userHttp, User userCurrent) {
-        userCurrent.setName(userHttp.getName());
-        userCurrent.setDob(userHttp.getDob());
-        userCurrent.setEmail(userHttp.getEmail());
-        userCurrent.setRole(userHttp.getRole());
-        userCurrent.setHeight(userHttp.getHeight());
-        userCurrent.setWeight(userHttp.getWeight());
-        userCurrent.setWeightDesired(userHttp.getWeightDesired());
-        userCurrent.setLifeStyleCoefficient(userHttp.getLifeStyleCoefficient());
+    private void updateUserParameters(User userHttp, User userSQL) {
+        userSQL.setName(userHttp.getName());
+        userSQL.setDob(userHttp.getDob());
+        userSQL.setEmail(userHttp.getEmail());
+        userSQL.setRole(userHttp.getRole());
+        userSQL.setHeight(userHttp.getHeight());
+        userSQL.setWeight(userHttp.getWeight());
+        userSQL.setWeightDesired(userHttp.getWeightDesired());
+        userSQL.setLifeStyleCoefficient(userHttp.getLifeStyleCoefficient());
 
         boolean flagPassword = userHttp.getPassword().isEmpty();
-        userCurrent.setPassword(flagPassword ?
-                userCurrent.getPassword() : userHttp.getPassword());
+        userSQL.setPassword(flagPassword ?
+                userSQL.getPassword() : userHttp.getPassword());
 
-        USER_SERVICE_IMP.updateUserParameters(userCurrent);
+        USER_SERVICE_IMP.updateUserParameters(userSQL);
     }
 }

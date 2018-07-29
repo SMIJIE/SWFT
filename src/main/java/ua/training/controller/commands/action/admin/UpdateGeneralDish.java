@@ -4,12 +4,12 @@ import lombok.extern.log4j.Log4j2;
 import ua.training.constant.Attributes;
 import ua.training.constant.Pages;
 import ua.training.controller.commands.Command;
-import ua.training.controller.commands.exception.DataHttpException;
 import ua.training.controller.commands.utility.CommandsUtil;
 import ua.training.model.entity.Dish;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Description: This class update general menu item
@@ -20,29 +20,20 @@ import java.util.List;
 public class UpdateGeneralDish implements Command {
     @Override
     public String execute(HttpServletRequest request) {
+        List<Dish> generalDishes = (List<Dish>) request.getServletContext().getAttribute(Attributes.REQUEST_GENERAL_DISHES);
         String numDish = request.getParameter(Attributes.REQUEST_NUMBER_DISH);
 
-        Dish dishHttp;
-        try {
-            dishHttp = DISH_MAPPER.extractFromHttpServletRequest(request);
-        } catch (DataHttpException e) {
+        Optional<Dish> dishHttp = CommandsUtil.extractDishFromHTTP(request);
+        if (!dishHttp.isPresent()) {
             request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_DATA, Attributes.PAGE_USER_WRONG_DATA);
-            log.error(e.getMessage());
             return Pages.MENU_GENERAL_EDIT_WITH_ERROR_REDIRECT;
         }
 
         DISH_SERVICE_IMP.getDishById(Integer.valueOf(numDish))
-                .ifPresent(dishSQL -> {
-                    dishHttp.setId(dishSQL.getId());
-                    dishHttp.setFoodCategory(dishSQL.getFoodCategory());
-                    dishHttp.setName(dishSQL.getName());
-                    DISH_SERVICE_IMP.updateDishParameters(dishHttp);
+                .ifPresent(dishSQL -> CommandsUtil.updateDishParameters(dishHttp.get(), dishSQL));
 
-                });
-
-        List<Dish> general = DISH_SERVICE_IMP.getGeneralDishes();
-        CommandsUtil.sortListByAnnotationFields(general);
-        request.getServletContext().setAttribute(Attributes.REQUEST_GENERAL_DISHES, general);
+        CommandsUtil.sortListByAnnotationFields(generalDishes);
+        request.getServletContext().setAttribute(Attributes.REQUEST_GENERAL_DISHES, generalDishes);
 
         return Pages.MENU_GENERAL_EDIT_REDIRECT;
     }
