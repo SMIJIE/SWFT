@@ -65,8 +65,7 @@ public class HDishDao implements DishDao {
     @Override
     public void delete(Integer id) {
         String hqlDelRationCompos = DB_PROPERTIES.deleteCompositionArrayByDish();
-        Optional<Dish> dish = findById(id);
-        dish.ifPresent(d -> {
+        findById(id).ifPresent(d -> {
             session.beginTransaction();
 
             Query queryDelRationCompos = session.createQuery(hqlDelRationCompos);

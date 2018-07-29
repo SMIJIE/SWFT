@@ -135,11 +135,7 @@ public abstract class CommandsUtil implements Command {
      */
     public static void deleteUsersFromContext(HttpServletRequest request, String... emails) {
         HashSet<String> allUsers = (HashSet<String>) request.getServletContext().getAttribute(Attributes.REQUEST_USERS_ALL);
-
-        for (int i = 0; i < emails.length; i++) {
-            allUsers.remove(emails[i]);
-        }
-
+        Arrays.asList(emails).forEach(allUsers::remove);
         request.getServletContext().setAttribute(Attributes.REQUEST_USERS_ALL, allUsers);
     }
 

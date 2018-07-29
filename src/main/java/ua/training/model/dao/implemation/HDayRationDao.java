@@ -68,8 +68,7 @@ public class HDayRationDao implements DayRationDao {
     @Override
     public void delete(Integer id) {
         String hqlDelRationCompos = DB_PROPERTIES.deleteCompositionByDayRationId();
-        Optional<DayRation> dayRation = findById(id);
-        dayRation.ifPresent(dr -> {
+        findById(id).ifPresent(dr -> {
             session.beginTransaction();
 
             Query<RationComposition> query = session.createQuery(hqlDelRationCompos, RationComposition.class);

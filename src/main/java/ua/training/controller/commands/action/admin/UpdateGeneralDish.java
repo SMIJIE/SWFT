@@ -25,7 +25,6 @@ public class UpdateGeneralDish implements Command {
 
         Optional<Dish> dishHttp = CommandsUtil.extractDishFromHTTP(request);
         if (!dishHttp.isPresent()) {
-            request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_DATA, Attributes.PAGE_USER_WRONG_DATA);
             return Pages.MENU_GENERAL_EDIT_WITH_ERROR_REDIRECT;
         }
 

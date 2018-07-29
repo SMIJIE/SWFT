@@ -60,8 +60,7 @@ public class HRationCompositionDao implements RationCompositionDao {
 
     @Override
     public void delete(Integer id) {
-        Optional<RationComposition> composition = findById(id);
-        composition.ifPresent(c -> {
+        findById(id).ifPresent(c -> {
             session.beginTransaction();
             session.delete(c);
             session.getTransaction().commit();

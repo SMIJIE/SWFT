@@ -36,7 +36,6 @@ public class CreateNewRation implements Command {
         String[] dinner = request.getParameterValues(Attributes.REQUEST_SELECT_DINNER);
         String[] supper = request.getParameterValues(Attributes.REQUEST_SELECT_SUPPER);
 
-
         if (!(isNull(breakfast) && isNull(dinner) && isNull(supper))) {
             DayRation dayRationHttp;
             try {

@@ -24,9 +24,9 @@ public class SessionListener implements HttpSessionListener {
 
     @Override
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
-        Optional<User> user = Optional.ofNullable((User) httpSessionEvent.getSession().getAttribute(Attributes.REQUEST_USER));
         allUsers = (HashSet<String>) httpSessionEvent.getSession().getServletContext().getAttribute(Attributes.REQUEST_USERS_ALL);
-        user.ifPresent(u -> allUsers.remove(u.getEmail()));
+        Optional.ofNullable((User) httpSessionEvent.getSession().getAttribute(Attributes.REQUEST_USER))
+                .ifPresent(u -> allUsers.remove(u.getEmail()));
         httpSessionEvent.getSession().getServletContext().setAttribute(Attributes.REQUEST_USERS_ALL, allUsers);
     }
 }

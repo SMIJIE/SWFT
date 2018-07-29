@@ -74,17 +74,17 @@ public class HUserDao implements UserDao {
         query.setParameter("idUser", entity.getId());
 
         try {
-            Optional<DayRation> dayRation = Optional.ofNullable(query.getSingleResult());
-            dayRation.ifPresent(dr -> {
-                Integer userCalories = DayRationMapper.formulaMifflinSanJerura(entity.getLifeStyleCoefficient(),
-                        entity.getWeight(), entity.getHeight(), period.getYears());
-                Integer userCaloriesDesired = DayRationMapper.formulaMifflinSanJerura(entity.getLifeStyleCoefficient(),
-                        entity.getWeightDesired(), entity.getHeight(), period.getYears());
-                dr.setUserCalories(userCalories * 1000);
-                dr.setUserCaloriesDesired(userCaloriesDesired * 1000);
+            Optional.ofNullable(query.getSingleResult())
+                    .ifPresent(dr -> {
+                        Integer userCalories = DayRationMapper.formulaMifflinSanJerura(entity.getLifeStyleCoefficient(),
+                                entity.getWeight(), entity.getHeight(), period.getYears());
+                        Integer userCaloriesDesired = DayRationMapper.formulaMifflinSanJerura(entity.getLifeStyleCoefficient(),
+                                entity.getWeightDesired(), entity.getHeight(), period.getYears());
+                        dr.setUserCalories(userCalories * 1000);
+                        dr.setUserCaloriesDesired(userCaloriesDesired * 1000);
 
-                session.update(dr);
-            });
+                        session.update(dr);
+                    });
         } catch (NoResultException e) {
             log.info(e.getMessage() + Mess.LOG_DAY_RATION_GET_BY_DATE_AND_USER);
         }
@@ -98,8 +98,7 @@ public class HUserDao implements UserDao {
         String hqlDelDayRation = DB_PROPERTIES.deleteDayRationByUserId();
         String hqlDelDish = DB_PROPERTIES.deleteDishByUserId();
 
-        Optional<User> user = findById(id);
-        user.ifPresent(u -> {
+        findById(id).ifPresent(u -> {
             session.beginTransaction();
 
             Query compositionQuery = session.createQuery(hqlDelRationCompos);

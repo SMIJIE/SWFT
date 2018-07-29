@@ -1,5 +1,6 @@
 package ua.training.controller.commands.direction;
 
+import ua.training.constant.Attributes;
 import ua.training.constant.Pages;
 import ua.training.controller.commands.Command;
 
@@ -14,6 +15,7 @@ public class MenuUsersEditWithError implements Command {
 
     @Override
     public String execute(HttpServletRequest request) {
+        request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_DATA, Attributes.PAGE_USER_WRONG_DATA);
         return Pages.MENU_USERS_EDIT;
     }
 }

@@ -34,13 +34,13 @@ public class UpdateUsersParameters implements Command {
         if (!userSQL.isPresent() ||
                 userSQL.get().getEmail().equalsIgnoreCase(user.getEmail())) {
 
-            updateUserParameters(userHttp.get(), user);
-            log.info(Mess.LOG_USER_UPDATE_PARAMETERS + "[" + user.getEmail() + "]");
-
             CommandsUtil.deleteUsersFromContext(request, user.getEmail());
             CommandsUtil.addUsersToContext(request, userHttp.get().getEmail());
 
-            request.getSession().setAttribute(Attributes.REQUEST_USER, userHttp.get());
+            updateUserParameters(userHttp.get(), user);
+            log.info(Mess.LOG_USER_UPDATE_PARAMETERS + "[" + user.getEmail() + "]");
+
+            request.getSession().setAttribute(Attributes.REQUEST_USER, user);
         } else {
             request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_DATA, Attributes.PAGE_USER_EXIST);
             returnPage = Pages.USER_SETTINGS_REDIRECT_WITH_ERROR;

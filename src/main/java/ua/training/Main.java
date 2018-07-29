@@ -1,28 +1,53 @@
 package ua.training;
 
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 import ua.training.model.dao.implemation.HSesssionFactory;
+import ua.training.model.dao.utility.DishComparator;
+import ua.training.model.dao.utility.SortAnnotation;
+import ua.training.model.entity.Dish;
+import ua.training.model.entity.enums.FoodCategory;
 
-import java.util.Arrays;
-import java.util.List;
+import java.lang.reflect.Field;
 
 public class Main {
 
-    public static void main(String[] args) throws ClassNotFoundException {
+    public static void main(String[] args) {
         Session session = HSesssionFactory.getSession();
 
-        List<String> aaa = Arrays.asList("qwerty@gmail.com");
-        Integer id = 10;
-        session.beginTransaction();
-        Query sss = session.createQuery("DELETE FROM RationComposition WHERE dayRation IN " +
-                "(FROM DayRation WHERE user.id = :idUser)");
-//        Query sss = session.createQuery("DELETE FROM RationComposition WHERE dayRation IN" +
-//                "(FROM DayRation WHERE user IN (FROM User WHERE email IN (:emails)))");
-//        sss.setParameter("emails", aaa);
-        sss.setParameter("idUser", id);
-        sss.executeUpdate();
-        session.getTransaction().commit();
-//        sss.getResultList().forEach(System.out::println);
+        Dish dish1 = Dish.builder()
+                .foodCategory(FoodCategory.HOT)
+                .calories(1000)
+                .build();
+        Dish dish2 = Dish.builder()
+                .foodCategory(FoodCategory.HOT)
+                .calories(2000)
+                .build();
+
+        Class<?> cl = Dish.class;
+        Field[] fields = cl.getDeclaredFields();
+
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(SortAnnotation.class) && field.getName().equalsIgnoreCase("calories")) {
+                field.setAccessible(true);
+                DishComparator dishComparator = new DishComparator(field);
+                System.out.println(dishComparator.compare(dish1, dish2));
+            }
+        }
+
+//        for (Field field : fieldsForSort) {
+//            if (flag) {
+//                comparator = new DishComparator(field);
+//                flag = false;
+//                continue;
+//            }
+//            comparator = comparator.thenComparing(new DishComparator(field));
+//        }
+
+
+//        if (!fieldsForSort.isEmpty()) {
+//            dishes.sort(comparator);
+//        }
+//
+//        dishes.forEach(System.out::println);
     }
 }
