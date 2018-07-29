@@ -13,9 +13,6 @@ import ua.training.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -31,11 +28,8 @@ public class DayRationMapperTest {
     private HttpSession session;
     @Mock
     private User user;
-    @Mock
-    private ResultSet resultSet;
 
     private DayRationMapper dayRationMapper;
-    private Integer id;
     private LocalDate date;
     private LocalDate dateWrong;
     private LocalDate dob;
@@ -49,7 +43,6 @@ public class DayRationMapperTest {
     @Before
     public void setUp() {
         dayRationMapper = new DayRationMapper();
-        id = 1;
         date = LocalDate.now();
         dateWrong = LocalDate.parse("2018-05-01");
         dob = LocalDate.parse("1993-05-03");
@@ -64,7 +57,6 @@ public class DayRationMapperTest {
     @After
     public void tearDown() {
         dayRationMapper = null;
-        id = null;
         date = null;
         dateWrong = null;
         dob = null;
@@ -74,31 +66,6 @@ public class DayRationMapperTest {
         weight = null;
         weightDesired = null;
         lifestyle = null;
-    }
-
-    @Test
-    public void formulaMifflinSanJerura() {
-        Period period = Period.between(dob, date);
-        Integer tempCalories = dayRationMapper.formulaMifflinSanJerura(Integer.valueOf(lifestyle),
-                Integer.valueOf(weight), Integer.valueOf(height), period.getYears());
-        Integer tempUserCalories = Integer.valueOf(userCalories) / 1000;
-        Integer tempCaloriesDesired = dayRationMapper.formulaMifflinSanJerura(Integer.valueOf(lifestyle),
-                Integer.valueOf(weightDesired), Integer.valueOf(height), period.getYears());
-        Integer tempUserCaloriesDesired = Integer.valueOf(userCaloriesDesired) / 1000;
-
-        assertEquals(tempUserCalories, tempCalories);
-        assertEquals(tempUserCaloriesDesired, tempCaloriesDesired);
-    }
-
-    @Test
-    public void extractFromResultSet() throws SQLException {
-        when(resultSet.getInt(Attributes.SQL_DR_ID)).thenReturn(id);
-        when(resultSet.getDate(Attributes.REQUEST_DATE)).thenReturn(Date.valueOf(date));
-        when(resultSet.getInt(Attributes.REQUEST_USER_CALORIES)).thenReturn(Integer.valueOf(userCalories));
-        when(resultSet.getInt(Attributes.REQUEST_USER_CALORIES_DESIRED)).thenReturn(Integer.valueOf(userCaloriesDesired));
-
-        DayRation dayRation = dayRationMapper.extractFromResultSet(resultSet);
-        assertNotNull(dayRation);
     }
 
     @Test
@@ -132,5 +99,19 @@ public class DayRationMapperTest {
 
         when(request.getParameter(Attributes.REQUEST_DATE)).thenReturn(dateWrong.toString());
         dayRationMapper.extractFromHttpServletRequest(request);
+    }
+
+    @Test
+    public void formulaMifflinSanJerura() {
+        Period period = Period.between(dob, date);
+        Integer tempCalories = dayRationMapper.formulaMifflinSanJerura(Integer.valueOf(lifestyle),
+                Integer.valueOf(weight), Integer.valueOf(height), period.getYears());
+        Integer tempUserCalories = Integer.valueOf(userCalories) / 1000;
+        Integer tempCaloriesDesired = dayRationMapper.formulaMifflinSanJerura(Integer.valueOf(lifestyle),
+                Integer.valueOf(weightDesired), Integer.valueOf(height), period.getYears());
+        Integer tempUserCaloriesDesired = Integer.valueOf(userCaloriesDesired) / 1000;
+
+        assertEquals(tempUserCalories, tempCalories);
+        assertEquals(tempUserCaloriesDesired, tempCaloriesDesired);
     }
 }
