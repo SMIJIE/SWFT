@@ -152,7 +152,7 @@ public abstract class CommandsUtil implements Command {
             intArr = Arrays.stream(strArr)
                     .map(Integer::parseInt)
                     .toArray(Integer[]::new);
-        } catch (NumberFormatException e) {
+        } catch (ClassCastException | NumberFormatException e) {
             log.error(e.getMessage());
             throw new DataSqlException(Attributes.SQL_EXCEPTION);
         }
@@ -240,8 +240,6 @@ public abstract class CommandsUtil implements Command {
         dishSQL.setProteins(dishHttp.getProteins());
         dishSQL.setFats(dishHttp.getFats());
         dishSQL.setCarbohydrates(dishHttp.getCarbohydrates());
-
-        DISH_SERVICE_IMP.updateDishParameters(dishSQL);
     }
 
     /**

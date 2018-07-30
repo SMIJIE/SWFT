@@ -31,7 +31,10 @@ public class UpdateUsersDish implements Command {
         }
 
         DISH_SERVICE_IMP.getDishById(Integer.valueOf(numDish))
-                .ifPresent(dishSQL -> CommandsUtil.updateDishParameters(dishHttp.get(), dishSQL));
+                .ifPresent(dishSQL -> {
+                    CommandsUtil.updateDishParameters(dishHttp.get(), dishSQL);
+                    DISH_SERVICE_IMP.updateDishParameters(dishSQL);
+                });
 
         List<Dish> listUsers = DISH_SERVICE_IMP.getLimitDishesByUserId(user.getId(), 5, 5 * (numPage - 1));
         CommandsUtil.sortListByAnnotationFields(listUsers);

@@ -9,7 +9,6 @@ import ua.training.constant.Mess;
 import ua.training.controller.commands.exception.DataSqlException;
 import ua.training.model.dao.DayRationDao;
 import ua.training.model.entity.DayRation;
-import ua.training.model.entity.RationComposition;
 
 import javax.persistence.NoResultException;
 import java.time.LocalDate;
@@ -71,7 +70,7 @@ public class HDayRationDao implements DayRationDao {
         findById(id).ifPresent(dr -> {
             session.beginTransaction();
 
-            Query<RationComposition> query = session.createQuery(hqlDelRationCompos, RationComposition.class);
+            Query query = session.createQuery(hqlDelRationCompos);
             query.setParameter("idDayRation", id);
             query.executeUpdate();
 
