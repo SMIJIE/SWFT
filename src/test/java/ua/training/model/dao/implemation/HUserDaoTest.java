@@ -13,7 +13,6 @@ import ua.training.model.entity.User;
 import ua.training.model.entity.enums.Roles;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -71,7 +70,7 @@ public class HUserDaoTest {
         user.setId(id);
 
         User tempUser = session.load(User.class, user.getId());
-        assertNotNull(tempUser);
+        assertEquals(user, tempUser);
 
         session.getTransaction().rollback();
     }
@@ -120,7 +119,6 @@ public class HUserDaoTest {
         session.getTransaction().rollback();
     }
 
-    //ToDO: Check user from database when call method session.delete
     @Test
     public void delete() {
         String hqlDelRationCompos = dbProperties.deleteCompositionByRationAndUser();
@@ -129,7 +127,7 @@ public class HUserDaoTest {
 
         session.beginTransaction();
 
-        User tempUser = session.load(User.class, 8);
+        User tempUser = session.load(User.class, workId);
         assertNotNull(tempUser);
 
         Query compositionQuery = session.createQuery(hqlDelRationCompos);
@@ -145,6 +143,7 @@ public class HUserDaoTest {
         dishQuery.executeUpdate();
 
         session.delete(tempUser);
+        assertNull(session.get(User.class, workId));
 
         session.getTransaction().rollback();
     }
@@ -156,10 +155,7 @@ public class HUserDaoTest {
 
     @Test
     public void getLimitUsersWithoutAdmin() {
-        List<User> users = new ArrayList<>();
-        assertTrue(users.isEmpty());
-
-        users = hUserDao.getLimitUsersWithoutAdmin(workId, 6, 0);
+        List<User> users = hUserDao.getLimitUsersWithoutAdmin(workId, 6, 0);
         assertFalse(users.isEmpty());
     }
 

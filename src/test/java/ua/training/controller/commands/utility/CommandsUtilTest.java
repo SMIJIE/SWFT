@@ -35,6 +35,8 @@ public class CommandsUtilTest {
     private HttpSession session;
     @Mock
     private User user;
+    @Mock
+    private Dish dish;
 
     private Map<String, Command> commandMap;
     private HashSet<String> allUsers;
@@ -87,6 +89,17 @@ public class CommandsUtilTest {
     }
 
     @Test
+    public void addUsersToContext() {
+        allUsers = new HashSet<>();
+        assertTrue(allUsers.isEmpty());
+        when(request.getServletContext()).thenReturn(context);
+        when(context.getAttribute(Attributes.REQUEST_USERS_ALL)).thenReturn(allUsers);
+        CommandsUtil.addUsersToContext(request, "Zakusylo@gmail.com", "Sasha@gmail.com");
+        assertFalse(allUsers.isEmpty());
+
+    }
+
+    @Test
     public void deleteUsersFromContext() {
         assertFalse(allUsers.isEmpty());
         when(request.getServletContext()).thenReturn(context);
@@ -123,5 +136,46 @@ public class CommandsUtilTest {
         CommandsUtil.sortListByAnnotationFields(generalDish);
 
         assertEquals("Second", generalDish.getFirst().getName());
+    }
+
+    @Test
+    public void updateDishParameters() {
+        Dish from = Dish.builder()
+                .foodCategory(FoodCategory.HOT)
+                .weight(1000)
+                .calories(1000)
+                .proteins(1000)
+                .fats(1000)
+                .carbohydrates(1000)
+                .build();
+
+        Dish to = new Dish();
+        CommandsUtil.updateDishParameters(from, to);
+
+        assertEquals(from.getCalories(), to.getCalories());
+    }
+
+    @Test
+    public void getCountPages() {
+        int count = CommandsUtil.getCountPages(3, 5);
+        assertEquals(1, count);
+
+        count = CommandsUtil.getCountPages(10, 5);
+        assertEquals(2, count);
+
+        count = CommandsUtil.getCountPages(12, 5);
+        assertEquals(3, count);
+    }
+
+    @Test
+    public void getPageOrAmountForSQL() {
+        int count = CommandsUtil.getPageOrAmountForSQL(0, 5);
+        assertEquals(1, count);
+
+        count = CommandsUtil.getPageOrAmountForSQL(3, 5);
+        assertEquals(3, count);
+
+        count = CommandsUtil.getPageOrAmountForSQL(12, 5);
+        assertEquals(5, count);
     }
 }

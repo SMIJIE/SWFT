@@ -8,8 +8,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import ua.training.constant.Attributes;
 import ua.training.controller.commands.exception.DataSqlException;
+import ua.training.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import static org.mockito.Mockito.when;
 
@@ -17,6 +19,10 @@ import static org.mockito.Mockito.when;
 public class DeleteUsersCompositionTest {
     @Mock
     private HttpServletRequest request;
+    @Mock
+    private HttpSession session;
+    @Mock
+    private User user;
     private String idRC;
 
     @Before
@@ -32,7 +38,11 @@ public class DeleteUsersCompositionTest {
     @Test(expected = DataSqlException.class)
     public void execute() {
         DeleteUsersComposition deleteUsersComposition = new DeleteUsersComposition();
+
+        when(request.getSession()).thenReturn(session);
+        when(session.getAttribute(Attributes.REQUEST_USER)).thenReturn(user);
         when(request.getParameter(Attributes.REQUEST_ARR_COMPOSITION)).thenReturn(idRC);
+
         deleteUsersComposition.execute(request);
     }
 }

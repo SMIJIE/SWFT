@@ -8,9 +8,13 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import ua.training.constant.Attributes;
 import ua.training.constant.Pages;
+import ua.training.model.entity.Dish;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
+import java.util.List;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.mockito.Mockito.when;
@@ -20,8 +24,12 @@ public class UpdateGeneralDishTest {
     @Mock
     private HttpServletRequest request;
     @Mock
+    private ServletContext servletContext;
+    @Mock
     private HttpSession session;
-
+    @Mock
+    private Dish dish;
+    private List<Dish> dishes;
     private String path;
     private String numDish;
     private String name;
@@ -34,6 +42,7 @@ public class UpdateGeneralDishTest {
 
     @Before
     public void setUp() {
+        dishes = Arrays.asList(dish);
         name = "Scramble2";
         numDish = "1";
         weight = "300";
@@ -46,6 +55,7 @@ public class UpdateGeneralDishTest {
 
     @After
     public void tearDown() {
+        dishes = null;
         path = null;
         numDish = null;
         name = null;
@@ -60,6 +70,9 @@ public class UpdateGeneralDishTest {
     @Test
     public void execute() {
         UpdateGeneralDish updateGeneralDish = new UpdateGeneralDish();
+
+        when(request.getServletContext()).thenReturn(servletContext);
+        when(servletContext.getAttribute(Attributes.REQUEST_GENERAL_DISHES)).thenReturn(dishes);
 
         when(request.getParameter(Attributes.REQUEST_NUMBER_DISH)).thenReturn(numDish);
         when(request.getSession()).thenReturn(session);

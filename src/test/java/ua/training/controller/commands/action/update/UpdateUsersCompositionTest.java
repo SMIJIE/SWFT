@@ -26,7 +26,7 @@ public class UpdateUsersCompositionTest {
 
     @Before
     public void setUp() {
-        numComposition = "0";
+        numComposition = "1";
         amount = "5";
     }
 
