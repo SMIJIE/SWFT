@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "dayration")
-public class DayRation implements EntityObject<Integer> {
+public class DayRation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idDR", nullable = false)

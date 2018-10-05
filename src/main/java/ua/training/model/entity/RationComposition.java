@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "rationcomposition")
-public class RationComposition implements EntityObject<Integer> {
+public class RationComposition {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idRC", nullable = false)
