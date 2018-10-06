@@ -1,4 +1,4 @@
-package ua.training.controller.servlet.context;
+package ua.training.controller.servlet.listener;
 
 import ua.training.constant.Attributes;
 import ua.training.controller.commands.utility.CommandsUtil;
@@ -8,9 +8,8 @@ import ua.training.model.entity.Dish;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * Description: First initialization of data before Servlets
@@ -18,24 +17,28 @@ import java.util.Locale;
  * @author Zakusylo Pavlo
  */
 @WebListener
-public class ServletContext implements ServletContextListener {
-    private HashSet<String> allUsers = new HashSet<>();
+public class ServContListener implements ServletContextListener {
+    private CopyOnWriteArraySet allUsers = new CopyOnWriteArraySet();
     private DishServiceImp dishServiceImp = new DishServiceImp();
 
+    /**
+     * Initialize 'set' of users and 'list' of general dishes
+     */
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         servletContextEvent.getServletContext().setAttribute(Attributes.REQUEST_USERS_ALL, allUsers);
-        servletContextEvent.getServletContext().setAttribute(Attributes.PAGE_NAME, Attributes.PAGE_DEMONSTRATION);
+
         List<Dish> general = dishServiceImp.getGeneralDishes();
 
         if (!general.isEmpty()) {
             CommandsUtil.sortListByAnnotationFields(general);
             servletContextEvent.getServletContext().setAttribute(Attributes.REQUEST_GENERAL_DISHES, general);
         }
-
-        servletContextEvent.getServletContext().setAttribute(Attributes.REQUEST_LOCALE_LANGUAGE, new Locale("en", "US"));
     }
 
+    /**
+     * Destroy 'set' of users and 'list' of general dishes
+     */
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
         allUsers = null;
