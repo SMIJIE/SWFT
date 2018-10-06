@@ -44,7 +44,7 @@
         <div class="card bg-transparent">
             <div class="card-header">
                 <a class="card-link text-danger" data-toggle="collapse" href="#luncheon">
-                    <fmt:message key="page.category.luncheon"/>
+                    <spring:message code="page.category.luncheon"/>
                 </a>
             </div>
 
@@ -55,24 +55,24 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">
-                                <fmt:message key="page.dish.name"/>
+                                <spring:message code="page.dish.name"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.weight"/>,
-                                <fmt:message key="page.dish.gr"/>
+                                <spring:message code="page.dish.weight"/>,
+                                <spring:message code="page.dish.gr"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.calories"/> /
-                                100 <fmt:message key="page.dish.gr"/>
+                                <spring:message code="page.dish.calories"/> /
+                                100 <spring:message code="page.dish.gr"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.proteins"/>
+                                <spring:message code="page.dish.proteins"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.fats"/>
+                                <spring:message code="page.dish.fats"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.carbohydrates"/>
+                                <spring:message code="page.dish.carbohydrates"/>
                             </th>
                         </tr>
                         </thead>
@@ -86,7 +86,7 @@
                                 <tr class="${dishGeneral.foodCategory}" id="${dishGeneral.foodCategory}${countLuncheon}"
                                     style="display: none">
                                     <th scope="row">${countLuncheon}</th>
-                                    <td><fmt:message key="${dishGeneral.name}"/></td>
+                                    <td><spring:message code="${dishGeneral.name}"/></td>
                                     <td>${dishGeneral.weight/1000}</td>
                                     <td>${dishGeneral.calories/1000}</td>
                                     <td>${dishGeneral.proteins/1000}</td>
@@ -116,7 +116,7 @@
         <div class="card bg-transparent">
             <div class="card-header">
                 <a class="card-link text-danger" data-toggle="collapse" href="#soup">
-                    <fmt:message key="page.category.soup"/>
+                    <spring:message code="page.category.soup"/>
                 </a>
             </div>
 
@@ -127,24 +127,24 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">
-                                <fmt:message key="page.dish.name"/>
+                                <spring:message code="page.dish.name"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.weight"/>,
-                                <fmt:message key="page.dish.gr"/>
+                                <spring:message code="page.dish.weight"/>,
+                                <spring:message code="page.dish.gr"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.calories"/> /
-                                100 <fmt:message key="page.dish.gr"/>
+                                <spring:message code="page.dish.calories"/> /
+                                100 <spring:message code="page.dish.gr"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.proteins"/>
+                                <spring:message code="page.dish.proteins"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.fats"/>
+                                <spring:message code="page.dish.fats"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.carbohydrates"/>
+                                <spring:message code="page.dish.carbohydrates"/>
                             </th>
                         </tr>
                         </thead>
@@ -158,7 +158,7 @@
                                 <tr class="${dishGeneral.foodCategory}" id="${dishGeneral.foodCategory}${countSoup}"
                                     style="display: none">
                                     <th scope="row">${countSoup}</th>
-                                    <td><fmt:message key="${dishGeneral.name}"/></td>
+                                    <td><spring:message code="${dishGeneral.name}"/></td>
                                     <td>${dishGeneral.weight/1000}</td>
                                     <td>${dishGeneral.calories/1000}</td>
                                     <td>${dishGeneral.proteins/1000}</td>
@@ -188,7 +188,7 @@
         <div class="card bg-transparent">
             <div class="card-header">
                 <a class="card-link text-danger" data-toggle="collapse" href="#hot">
-                    <fmt:message key="page.category.hot"/>
+                    <spring:message code="page.category.hot"/>
                 </a>
             </div>
 
@@ -199,24 +199,24 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">
-                                <fmt:message key="page.dish.name"/>
+                                <spring:message code="page.dish.name"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.weight"/>,
-                                <fmt:message key="page.dish.gr"/>
+                                <spring:message code="page.dish.weight"/>,
+                                <spring:message code="page.dish.gr"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.calories"/> /
-                                100 <fmt:message key="page.dish.gr"/>
+                                <spring:message code="page.dish.calories"/> /
+                                100 <spring:message code="page.dish.gr"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.proteins"/>
+                                <spring:message code="page.dish.proteins"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.fats"/>
+                                <spring:message code="page.dish.fats"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.carbohydrates"/>
+                                <spring:message code="page.dish.carbohydrates"/>
                             </th>
                         </tr>
                         </thead>
@@ -230,7 +230,7 @@
                                 <tr class="${dishGeneral.foodCategory}" id="${dishGeneral.foodCategory}${countHot}"
                                     style="display: none">
                                     <th scope="row">${countHot}</th>
-                                    <td><fmt:message key="${dishGeneral.name}"/></td>
+                                    <td><spring:message code="${dishGeneral.name}"/></td>
                                     <td>${dishGeneral.weight/1000}</td>
                                     <td>${dishGeneral.calories/1000}</td>
                                     <td>${dishGeneral.proteins/1000}</td>
@@ -260,7 +260,7 @@
         <div class="card bg-transparent">
             <div class="card-header">
                 <a class="card-link text-danger" data-toggle="collapse" href="#dessert">
-                    <fmt:message key="page.category.dessert"/>
+                    <spring:message code="page.category.dessert"/>
                 </a>
             </div>
 
@@ -271,24 +271,24 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">
-                                <fmt:message key="page.dish.name"/>
+                                <spring:message code="page.dish.name"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.weight"/>,
-                                <fmt:message key="page.dish.gr"/>
+                                <spring:message code="page.dish.weight"/>,
+                                <spring:message code="page.dish.gr"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.calories"/> /
-                                100 <fmt:message key="page.dish.gr"/>
+                                <spring:message code="page.dish.calories"/> /
+                                100 <spring:message code="page.dish.gr"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.proteins"/>
+                                <spring:message code="page.dish.proteins"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.fats"/>
+                                <spring:message code="page.dish.fats"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.carbohydrates"/>
+                                <spring:message code="page.dish.carbohydrates"/>
                             </th>
                         </tr>
                         </thead>
@@ -302,7 +302,7 @@
                                 <tr class="${dishGeneral.foodCategory}" id="${dishGeneral.foodCategory}${countDessert}"
                                     style="display: none">
                                     <th scope="row">${countDessert}</th>
-                                    <td><fmt:message key="${dishGeneral.name}"/></td>
+                                    <td><spring:message code="${dishGeneral.name}"/></td>
                                     <td>${dishGeneral.weight/1000}</td>
                                     <td>${dishGeneral.calories/1000}</td>
                                     <td>${dishGeneral.proteins/1000}</td>

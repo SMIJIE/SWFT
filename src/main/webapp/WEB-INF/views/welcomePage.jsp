@@ -1,8 +1,8 @@
-<%@ include file="WEB-INF/components/allImports.jsp" %>
+<%@ include file="components/allImports.jsp" %>
 
-<jsp:include page="WEB-INF/components/header.jsp"/>
-<jsp:include page="WEB-INF/components/sidePanel.jsp"/>
-<jsp:include page="WEB-INF/components/footer.jsp"/>
+<jsp:include page="components/header.jsp"/>
+<jsp:include page="components/sidePanel.jsp"/>
+<jsp:include page="components/footer.jsp"/>
 
 <div id="content">
     <script type="text/javascript">
@@ -12,7 +12,7 @@
         function drawVisualization() {
 
             var data = google.visualization.arrayToDataTable([
-                ['Month', '<fmt:message key="calories.currentWeight"/>', '<fmt:message key="calories.desireWeight"/>', '<fmt:message key="calories.daily"/>'],
+                ['Month', '<spring:message code="calories.currentWeight"/>', '<spring:message code="calories.desireWeight"/>', '<spring:message code="calories.daily"/>'],
                 ['1', 2000, 938, 2137],
                 ['2', 2000, 938, 2137],
                 ['3', 2145, 1167, 2137],
@@ -44,7 +44,7 @@
             ]);
 
             var options = {
-                title: '<fmt:message key="page.charts.caloriesPerMonth"/>',
+                title: '<spring:message code="page.charts.caloriesPerMonth"/>',
                 seriesType: 'line',
                 series: {2: {type: 'bars'}},
                 colors: ['#007bff', '#28a745', '#ffc107'],

@@ -1,4 +1,5 @@
 <%@ include file="allImports.jsp" %>
+
 <%--Shows link for users--%>
 <script type="text/javascript">
     function showUsersLinks() {
@@ -14,7 +15,6 @@
         $('#linkMenuCollapse').css({display: 'none'});
         $('#showUsers').css({display: 'none'});
         </c:if>
-
     }
 </script>
 <%--Shows link for users--%>
@@ -23,17 +23,19 @@
     <ul class="text-danger">
         <li>
             <a class="text-light" href="${pageContext.request.contextPath}/swft/homePage">
-                <fmt:message key="page.general"/>
+                <spring:message code="page.general"/>
             </a>
         </li>
+
         <li id="showUsers">
             <a class="text-light" href="${pageContext.request.contextPath}/swft/showUsers">
-                <fmt:message key="page.users"/>
+                <spring:message code="page.users"/>
             </a>
         </li>
+
         <li>
             <a class="text-light" href="${pageContext.request.contextPath}/swft/menu">
-                <fmt:message key="page.menu"/>
+                <spring:message code="page.menu"/>
             </a>
 
             <a style="font-size: 20px" class="text-danger" href="#" data-toggle="collapse"
@@ -47,20 +49,22 @@
                 <ul class="nav navbar-nav" style="list-style: none">
                     <li>&#8211;
                         <a class="text-light" href="${pageContext.request.contextPath}/swft/menuGeneralEdit">
-                            <fmt:message key="page.menu.edit"/>
+                            <spring:message code="page.menu.edit"/>
                         </a>
                     </li>
                 </ul>
             </div>
         </li>
+
         <li id="menuUsers">
             <a class="text-light" href="${pageContext.request.contextPath}/swft/menuUsersEdit">
-                <fmt:message key="page.menu.own"/>
+                <spring:message code="page.menu.own"/>
             </a>
         </li>
+
         <li id="rationUsers">
             <a class="text-light" href="${pageContext.request.contextPath}/swft/dayRation">
-                <fmt:message key="page.ration"/>
+                <spring:message code="page.ration"/>
             </a>
         </li>
     </ul>
