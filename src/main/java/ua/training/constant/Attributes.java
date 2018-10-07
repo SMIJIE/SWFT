@@ -11,9 +11,12 @@ public interface Attributes {
 
     String PAGE_PATH = "/swft/";
     String PAGE_NAME = "pageName";
+    String PAGE_VALUE_EMAIL = "valueEmail";
+    String PAGE_VALUE_PASSWORD = "valuePassword";
     String PAGE_GENERAL = "page.general";
     String PAGE_RATION = "page.ration";
     String PAGE_MENU = "page.menu";
+    String PAGE_SIGN_IN_OR_UP = "page.signInOrRegistration";
     String PAGE_USERS_LIST = "page.menu.users.list";
     String PAGE_MENU_EDIT = "page.menu.edit.mess";
     String PAGE_DEMONSTRATION = "page.demonstration";
@@ -24,9 +27,10 @@ public interface Attributes {
     String PAGE_USER_NOT_EXIST = "page.user.email.not.exist";
     String PAGE_USER_WRONG_PASSWORD = "page.user.wrong.password";
     String PAGE_USER_LOGGED = "page.user.email.logged";
-    String PAGE_USER_ERROR_EMAIL = "userErrorEmail";
+    String PAGE_USER_ERROR_EMAIL = "page.email.wrong";
     String PAGE_USER_ERROR_DATA = "userErrorData";
-    String PAGE_USER_NON_EMAIL = "nonEmail";
+    String PAGE_NON_ERROR = "nonError";
+    String PAGE_USER_ERROR = "userError";
     String PAGE_USER_NON_ERROR_DATA = "nonErrorData";
 
     String REQUEST_LANGUAGE = "lang";
