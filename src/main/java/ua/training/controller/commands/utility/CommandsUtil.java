@@ -1,6 +1,8 @@
 package ua.training.controller.commands.utility;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
 import ua.training.constant.Pages;
@@ -34,6 +36,7 @@ import ua.training.model.entity.User;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * Description: This util class for commands
@@ -50,8 +53,6 @@ public abstract class CommandsUtil implements Command {
     public static Map<String, Command> commandMapInitialize() {
         Map<String, Command> commandMap = new HashMap<>();
 
-        commandMap.put(Attributes.COMMAND_SIGN_OR_REGISTER, new SignInOrRegister());
-        commandMap.put(Attributes.COMMAND_SIGN_OR_REGISTER_WITH_ERROR, new SignInOrRegisterWithError());
         commandMap.put(Attributes.COMMAND_LOG_IN, new LogIn());
         commandMap.put(Attributes.COMMAND_REGISTER_NEW_USER, new RegisterNewUser());
         commandMap.put(Attributes.COMMAND_HOME_PAGE, new HomePage());
@@ -60,7 +61,6 @@ public abstract class CommandsUtil implements Command {
         commandMap.put(Attributes.COMMAND_USER_SETTINGS, new UsersSettings());
         commandMap.put(Attributes.COMMAND_USER_SETTINGS_WITH_ERROR, new UsersSettingsWithError());
         commandMap.put(Attributes.COMMAND_USER_UPDATE_PARAMETERS, new UpdateUsersParameters());
-        commandMap.put(Attributes.COMMAND_MENU, new Menu());
         commandMap.put(Attributes.COMMAND_MENU_GENERAL_EDIT, new MenuGeneralEdit());
         commandMap.put(Attributes.COMMAND_MENU_GENERAL_DELETE, new DeleteGeneralMenuItem());
         commandMap.put(Attributes.COMMAND_MENU_GENERAL_UPDATE, new UpdateGeneralDish());
@@ -91,28 +91,36 @@ public abstract class CommandsUtil implements Command {
     /**
      * Open session for users and return page
      *
-     * @param request HttpServletRequest
-     * @param user    User
-     * @return page String
+     * @param request            HttpServletRequest
+     * @param user               User
+     * @param modelAndView       ModelAndView
+     * @param redirectAttributes RedirectAttributes
      */
-    public static String openUsersSession(HttpServletRequest request, User user) {
+    public static ModelAndView openUsersSession(HttpServletRequest request,
+                                                User user,
+                                                ModelAndView modelAndView,
+                                                RedirectAttributes redirectAttributes) {
 
-        HashSet<String> allUsers = (HashSet<String>) request.getServletContext().getAttribute(Attributes.REQUEST_USERS_ALL);
+        CopyOnWriteArraySet<String> allUsers = (CopyOnWriteArraySet<String>) request
+                .getServletContext()
+                .getAttribute(Attributes.REQUEST_USERS_ALL);
 
         if (allUsers.contains(user.getEmail())) {
             log.warn(Mess.LOG_USER_DOUBLE_AUTH + " [" + user.getEmail() + "]");
-            request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_EMAIL, Attributes.PAGE_USER_LOGGED);
-            return Pages.SIGN_OR_REGISTER_WITH_ERROR;
+            redirectAttributes.addFlashAttribute(Attributes.PAGE_USER_ERROR, Attributes.PAGE_USER_LOGGED);
+            modelAndView.setViewName(Pages.SIGN_OR_REGISTER_REDIRECT);
+        } else {
+            allUsers.add(user.getEmail());
+            request.getServletContext().setAttribute(Attributes.REQUEST_USERS_ALL, allUsers);
+            log.info(Mess.LOG_USER_LOGGED + "[" + user.getEmail() + "]");
+
+            redirectAttributes.addAttribute(Attributes.PAGE_NAME, Attributes.PAGE_GENERAL);
+            redirectAttributes.addAttribute(Attributes.REQUEST_USER, user);
+
+            modelAndView.setViewName(Pages.HOME);
         }
 
-        request.getSession().setAttribute(Attributes.REQUEST_USER, user);
-        request.getSession().setAttribute(Attributes.PAGE_NAME, Attributes.PAGE_GENERAL);
-
-        allUsers.add(user.getEmail());
-        request.getServletContext().setAttribute(Attributes.REQUEST_USERS_ALL, allUsers);
-        log.info(Mess.LOG_USER_LOGGED + "[" + user.getEmail() + "]");
-
-        return Pages.HOME_REDIRECT;
+        return modelAndView;
     }
 
     /**
