@@ -11,7 +11,7 @@
 
         function drawVisualization() {
             var data = google.visualization.arrayToDataTable([
-                ['Month', '<fmt:message key="calories.currentWeight"/>', '<fmt:message key="calories.desireWeight"/>', '<fmt:message key="calories.daily"/>'],
+                ['Month', '<spring:message code="calories.currentWeight"/>', '<spring:message code="calories.desireWeight"/>', '<spring:message code="calories.daily"/>'],
                 <c:if test="${not empty monthlyDR}">
                 <c:forEach items="${monthlyDR}" var="monthlyDR">
                 ['${monthlyDR.key.date.getDayOfMonth()}', ${(monthlyDR.key.userCalories)/1000},
@@ -25,7 +25,7 @@
             ]);
 
             var options = {
-                title: '<fmt:message key="page.charts.caloriesPerMonth"/>: <fmt:message key="month.${numMonth}"/>',
+                title: '<spring:message code="page.charts.caloriesPerMonth"/>: <spring:message code="month.${numMonth}"/>',
                 seriesType: 'line',
                 series: {2: {type: 'bars'}},
                 colors: ['#007bff', '#28a745', '#ffc107'],
