@@ -23,6 +23,8 @@ public class ServContListener implements ServletContextListener {
 
     /**
      * Initialize 'set' of users and 'list' of general dishes
+     *
+     * @param servletContextEvent ServletContextEvent
      */
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -38,6 +40,8 @@ public class ServContListener implements ServletContextListener {
 
     /**
      * Destroy 'set' of users and 'list' of general dishes
+     *
+     * @param servletContextEvent ServletContextEvent
      */
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {

@@ -32,6 +32,8 @@ public class AppConfig implements WebMvcConfigurer {
 
     /**
      * Register static resources such as *.ccs,*.js etc.
+     *
+     * @param registry ResourceHandlerRegistry
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -42,6 +44,8 @@ public class AppConfig implements WebMvcConfigurer {
 
     /**
      * Register (i.e. Servlets and JSPs)
+     *
+     * @return viewResolver InternalResourceViewResolver
      */
     @Bean
     public InternalResourceViewResolver viewResolver() {
@@ -55,6 +59,8 @@ public class AppConfig implements WebMvcConfigurer {
 
     /**
      * Register resource bundle message source
+     *
+     * @return messageSource MessageSource
      */
     @Bean
     public MessageSource messageSource() {
@@ -68,6 +74,8 @@ public class AppConfig implements WebMvcConfigurer {
 
     /**
      * Set default locale
+     *
+     * @return localeResolver SessionLocaleResolver
      */
     @Bean
     public SessionLocaleResolver localeResolver() {
@@ -79,6 +87,8 @@ public class AppConfig implements WebMvcConfigurer {
 
     /**
      * Add locale change interceptor
+     *
+     * @param registry InterceptorRegistry
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
