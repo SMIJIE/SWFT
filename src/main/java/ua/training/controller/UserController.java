@@ -1,9 +1,7 @@
 package ua.training.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.training.constant.Api;
@@ -15,7 +13,6 @@ import ua.training.model.entity.DayRation;
 import ua.training.model.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Function;
@@ -52,6 +49,7 @@ public class UserController implements GeneralController {
     @RequestMapping(value = Api.SIGN_IN_OR_REGISTER, method = RequestMethod.GET)
     public ModelAndView getSignInOrRegisterPage(ModelAndView modelAndView) {
         modelAndView.addObject(Attributes.PAGE_NAME, Attributes.PAGE_SIGN_IN_OR_UP);
+        modelAndView.addObject(Attributes.REQUEST_FORM_USER, new User());
         modelAndView.setViewName(Pages.SIGN_OR_REGISTER);
 
         return modelAndView;
@@ -74,8 +72,9 @@ public class UserController implements GeneralController {
                                     RedirectAttributes redirectAttributes,
                                     HttpServletRequest request) {
 
-        redirectAttributes.addFlashAttribute(Attributes.PAGE_VALUE_EMAIL, email);
-        redirectAttributes.addFlashAttribute(Attributes.PAGE_VALUE_PASSWORD, password);
+        modelAndView.setViewName(Pages.SIGN_OR_REGISTER_REDIRECT);
+        redirectAttributes.addFlashAttribute(Attributes.PAGE_VALUE_EMAIL_LOG_IN, email);
+        redirectAttributes.addFlashAttribute(Attributes.PAGE_VALUE_PASSWORD_LOG_IN, password);
 
         String emailSQL = email.toLowerCase();
         String passwordSQL = PasswordEncoder.encodePassword(password);
@@ -90,31 +89,65 @@ public class UserController implements GeneralController {
             redirectAttributes.addFlashAttribute(Attributes.PAGE_USER_ERROR, Attributes.PAGE_USER_NOT_EXIST);
         }
 
-        modelAndView.setViewName(Pages.SIGN_OR_REGISTER_REDIRECT);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = Api.REGISTER_NEW_USER, method = RequestMethod.POST)
+    public ModelAndView actionRegisterNewUser(@ModelAttribute(Attributes.REQUEST_FORM_USER) User user,
+                                              ModelAndView modelAndView) {
+//        String returnPage = Pages.SIGN_OR_REGISTER_WITH_ERROR;
+//
+//        Optional<User> userHttp = CommandsUtil.extractUserFromHTTP(request);
+//        if (!userHttp.isPresent()) {
+//            request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_EMAIL, Attributes.PAGE_USER_WRONG_DATA);
+//            return returnPage;
+//        }
+//
+//        Optional<User> userSQL = USER_SERVICE_IMP.getOrCheckUserByEmail(userHttp.get().getEmail());
+//
+//        if (!userSQL.isPresent()) {
+//            USER_SERVICE_IMP.registerNewUser(userHttp.get());
+//            log.info(Mess.LOG_USER_REGISTERED + "[" + userHttp.get().getEmail() + "]");
+////            returnPage = CommandsUtil.openUsersSession(request, userHttp.get());
+//        } else {
+//            request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_EMAIL, Attributes.PAGE_USER_EXIST);
+//        }
+        System.out.println("=====================================================================================");
+        System.out.println(user);
+        modelAndView.addObject(Attributes.PAGE_NAME, Attributes.PAGE_SIGN_IN_OR_UP);
 
         return modelAndView;
     }
 
+    /**
+     * Display home page
+     *
+     * @param user         User
+     * @param modelAndView ModelAndView
+     * @return modelAndView ModelAndView
+     */
     @RequestMapping(value = Api.HOME_PAGE, method = RequestMethod.GET)
-    public String getHomePage(HttpSession httpSession,ModelAndView modelAndView) {
-        System.out.println(modelAndView.getModel().get(Attributes.REQUEST_USER));
-        //        User user = (User) httpSession.getAttribute(Attributes.REQUEST_USER);
-//        LocalDate localDate = LocalDate.now();
-//
-//        List<DayRation> dayRations = DAY_RATION_SERVICE_IMP.getMonthlyDayRationByUser(localDate.getMonthValue(),
-//                localDate.getYear(), user.getId());
-//
-//        Map<DayRation, Integer> rationsWithCalories = dayRations.stream()
-//                .sorted(Comparator.comparing(rwc -> rwc.getDate().getDayOfMonth()))
-//                .collect(Collectors.toMap(Function.identity(),
-//                        dr -> RATION_COMPOSITION_SERVICE_IMP.sumCaloriesCompositionByRationId(dr.getId()),
-//                        (e1, e2) -> e1, LinkedHashMap::new));
-//
-//        request.getSession().setAttribute(Attributes.REQUEST_NUMBER_PAGE, 0);
-//        request.getSession().setAttribute(Attributes.REQUEST_NUMBER_MONTH, localDate.getMonthValue());
-//        request.getSession().setAttribute(Attributes.REQUEST_MONTHLY_DAY_RATION, rationsWithCalories);
-//        request.getSession().setAttribute(Attributes.PAGE_NAME, Attributes.PAGE_GENERAL);
+    public ModelAndView getHomePage(@SessionAttribute(Attributes.REQUEST_USER) User user,
+                                    ModelAndView modelAndView) {
 
-        return Pages.HOME;
+        LocalDate localDate = LocalDate.now();
+
+        List<DayRation> dayRations = DAY_RATION_SERVICE_IMP.getMonthlyDayRationByUser(localDate.getMonthValue(),
+                localDate.getYear(), user.getId());
+
+        Map<DayRation, Integer> rationsWithCalories = dayRations.stream()
+                .sorted(Comparator.comparing(rwc -> rwc.getDate().getDayOfMonth()))
+                .collect(Collectors.toMap(Function.identity(),
+                        dr -> RATION_COMPOSITION_SERVICE_IMP.sumCaloriesCompositionByRationId(dr.getId()),
+                        (e1, e2) -> e1, LinkedHashMap::new));
+
+
+        modelAndView.setViewName(Pages.HOME);
+        modelAndView.addObject(Attributes.PAGE_NAME, Attributes.PAGE_GENERAL);
+        modelAndView.addObject(Attributes.REQUEST_NUMBER_PAGE, 0);
+        modelAndView.addObject(Attributes.REQUEST_NUMBER_MONTH, localDate.getMonthValue());
+        modelAndView.addObject(Attributes.REQUEST_MONTHLY_DAY_RATION, rationsWithCalories);
+
+        return modelAndView;
     }
 }

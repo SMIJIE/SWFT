@@ -7,8 +7,6 @@ import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
 import ua.training.constant.Pages;
 import ua.training.controller.commands.Command;
-import ua.training.controller.commands.action.ChangeLanguage;
-import ua.training.controller.commands.action.HomePage;
 import ua.training.controller.commands.action.MenuUsersEdit;
 import ua.training.controller.commands.action.UserDayRation;
 import ua.training.controller.commands.action.add.AddNewDish;
@@ -19,7 +17,6 @@ import ua.training.controller.commands.action.pages.ListHomePage;
 import ua.training.controller.commands.action.pages.ListUserDayRation;
 import ua.training.controller.commands.action.purge.DeleteUsersComposition;
 import ua.training.controller.commands.action.purge.DeleteUsersMenuItem;
-import ua.training.controller.commands.action.statement.LogIn;
 import ua.training.controller.commands.action.statement.LogOut;
 import ua.training.controller.commands.action.statement.RegisterNewUser;
 import ua.training.controller.commands.action.update.UpdateUsersComposition;
@@ -53,11 +50,11 @@ public abstract class CommandsUtil implements Command {
     public static Map<String, Command> commandMapInitialize() {
         Map<String, Command> commandMap = new HashMap<>();
 
-        commandMap.put(Attributes.COMMAND_LOG_IN, new LogIn());
+//        commandMap.put(Attributes.COMMAND_LOG_IN, new LogIn());
         commandMap.put(Attributes.COMMAND_REGISTER_NEW_USER, new RegisterNewUser());
-        commandMap.put(Attributes.COMMAND_HOME_PAGE, new HomePage());
+//        commandMap.put(Attributes.COMMAND_HOME_PAGE, new HomePage());
         commandMap.put(Attributes.COMMAND_LOG_OUT, new LogOut());
-        commandMap.put(Attributes.COMMAND_CHANGE_LANGUAGE, new ChangeLanguage());
+//        commandMap.put(Attributes.COMMAND_CHANGE_LANGUAGE, new ChangeLanguage());
         commandMap.put(Attributes.COMMAND_USER_SETTINGS, new UsersSettings());
         commandMap.put(Attributes.COMMAND_USER_SETTINGS_WITH_ERROR, new UsersSettingsWithError());
         commandMap.put(Attributes.COMMAND_USER_UPDATE_PARAMETERS, new UpdateUsersParameters());
@@ -101,23 +98,21 @@ public abstract class CommandsUtil implements Command {
                                                 ModelAndView modelAndView,
                                                 RedirectAttributes redirectAttributes) {
 
-        CopyOnWriteArraySet<String> allUsers = (CopyOnWriteArraySet<String>) request
-                .getServletContext()
+        CopyOnWriteArraySet<String> allUsers = (CopyOnWriteArraySet<String>) request.getServletContext()
                 .getAttribute(Attributes.REQUEST_USERS_ALL);
 
         if (allUsers.contains(user.getEmail())) {
             log.warn(Mess.LOG_USER_DOUBLE_AUTH + " [" + user.getEmail() + "]");
             redirectAttributes.addFlashAttribute(Attributes.PAGE_USER_ERROR, Attributes.PAGE_USER_LOGGED);
-            modelAndView.setViewName(Pages.SIGN_OR_REGISTER_REDIRECT);
         } else {
             allUsers.add(user.getEmail());
-            request.getServletContext().setAttribute(Attributes.REQUEST_USERS_ALL, allUsers);
+            request.getServletContext()
+                    .setAttribute(Attributes.REQUEST_USERS_ALL, allUsers);
+
+            request.getSession().setAttribute(Attributes.REQUEST_USER, user);
             log.info(Mess.LOG_USER_LOGGED + "[" + user.getEmail() + "]");
 
-            redirectAttributes.addAttribute(Attributes.PAGE_NAME, Attributes.PAGE_GENERAL);
-            redirectAttributes.addAttribute(Attributes.REQUEST_USER, user);
-
-            modelAndView.setViewName(Pages.HOME);
+            modelAndView.setViewName(Pages.HOME_REDIRECT);
         }
 
         return modelAndView;
