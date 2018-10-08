@@ -27,7 +27,7 @@
         <div class="card bg-transparent">
             <div class="card-header">
                 <a class="card-link" data-toggle="collapse" href="#collapseOne">
-                    <fmt:message key="page.menu.own"/>
+                    <fmt:message key="menu.own"/>
                 </a>
             </div>
 
@@ -42,24 +42,24 @@
                                 <fmt:message key="page.category"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.name"/>
+                                <fmt:message key="dish.name"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.weight"/>,
-                                <fmt:message key="page.dish.gr"/>
+                                <fmt:message key="dish.weight"/>,
+                                <fmt:message key="dish.gr"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.calories"/> /
-                                100 <fmt:message key="page.dish.gr"/>
+                                <fmt:message key="dish.calories"/> /
+                                100 <fmt:message key="dish.gr"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.proteins"/>
+                                <fmt:message key="dish.proteins"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.fats"/>
+                                <fmt:message key="dish.fats"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.carbohydrates"/>
+                                <fmt:message key="dish.carbohydrates"/>
                             </th>
                             <th scope="col">
                                 <button type="button" id="delete_users_dish" class="btn btn-danger navbar-btn">
@@ -165,7 +165,7 @@
         <div class="card bg-transparent">
             <div class="card-header">
                 <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
-                    <fmt:message key="page.menu.add"/>
+                    <fmt:message key="menu.add"/>
                 </a>
             </div>
 
@@ -180,40 +180,40 @@
                                 </label>
                                 <select class="form-control" id="category" name="category">
                                     <option selected value="LUNCHEON">
-                                        <fmt:message key="page.category.luncheon"/>
+                                        <fmt:message key="category.luncheon"/>
                                     </option>
                                     <option value="HOT">
-                                        <fmt:message key="page.category.hot"/>
+                                        <fmt:message key="category.hot"/>
                                     </option>
                                     <option value="SOUP">
-                                        <fmt:message key="page.category.soup"/>
+                                        <fmt:message key="category.soup"/>
                                     </option>
                                     <option value="DESSERT">
-                                        <fmt:message key="page.category.dessert"/>
+                                        <fmt:message key="category.dessert"/>
                                     </option>
                                 </select>
                             </div>
                             <div class="col">
                                 <label for="name">
-                                    <fmt:message key="page.dish.name"/>:
+                                    <fmt:message key="dish.name"/>:
                                 </label>
                                 <input type="text" class="form-control" id="name" name="name"
-                                       placeholder="<fmt:message key="page.example.dish"/>">
+                                       placeholder="<fmt:message key="example.dish"/>">
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <div class="col">
                                 <label for="weight">
-                                    <fmt:message key="page.dish.weight"/>,&nbsp;
-                                    <fmt:message key="page.dish.gr"/>&nbsp;:
+                                    <fmt:message key="dish.weight"/>,&nbsp;
+                                    <fmt:message key="dish.gr"/>&nbsp;:
                                 </label>
                                 <input type="number" class="form-control" id="weight" name="weight" step="0.1"
                                        placeholder="150,0">
                             </div>
                             <div class="col">
                                 <label for="calories">
-                                    <fmt:message key="page.dish.calories"/>:
+                                    <fmt:message key="dish.calories"/>:
                                 </label>
                                 <input type="number" class="form-control" id="calories" name="calories" step="0.1"
                                        placeholder="300,0">
@@ -223,21 +223,21 @@
                         <div class="form-group row">
                             <div class="col">
                                 <label for="proteins">
-                                    <fmt:message key="page.dish.proteins"/>:
+                                    <fmt:message key="dish.proteins"/>:
                                 </label>
                                 <input type="number" class="form-control" id="proteins" name="proteins" step="0.1"
                                        placeholder="1,5">
                             </div>
                             <div class="col">
                                 <label for="fats">
-                                    <fmt:message key="page.dish.fats"/>:
+                                    <fmt:message key="dish.fats"/>:
                                 </label>
                                 <input type="number" class="form-control" id="fats" name="fats" step="0.1"
                                        placeholder="0,5">
                             </div>
                             <div class="col">
                                 <label for="carbohydrates">
-                                    <fmt:message key="page.dish.carbohydrates"/>:
+                                    <fmt:message key="dish.carbohydrates"/>:
                                 </label>
                                 <input type="number" class="form-control" id="carbohydrates" name="carbohydrates"
                                        step="0.1" placeholder="4,5">
@@ -245,7 +245,7 @@
                         </div>
 
                         <button type="submit" class="btn btn-success">
-                            <fmt:message key="page.menu.add"/>
+                            <fmt:message key="menu.add"/>
                         </button>
                     </form>
                 </div>
@@ -273,27 +273,27 @@
         if (!(name.value.match(/^[A-Z][a-z]+(\s[A-Za-z]+)?(\s[A-Za-z]+)?$/g) ||
             name.value.match(/^[\u0410-\u0429\u042C\u042E\u042F\u0407\u0406\u0404\u0490][`´''ʼ’ʼ’]?([\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+[`´''ʼ’ʼ’]?)?[\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+(\s[\u0410-\u0429\u042C\u042E\u042F\u0407\u0406\u0404\u0490\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491][`´''ʼ’ʼ’]?([\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+[`´''ʼ’ʼ’]?)?[\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+)?(\s[\u0410-\u0429\u042C\u042E\u042F\u0407\u0406\u0404\u0490\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491][`´''ʼ’ʼ’]?([\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+[`´''ʼ’ʼ’]?)?[\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+)?/g))) {
             reg.preventDefault();
-            alert('<fmt:message key="page.dish.name.wrong"/>');
+            alert('<fmt:message key="wrong.dish.name"/>');
             return;
         } else if ((weight.value < 50) || (weight.value > 999)) {
             reg.preventDefault();
-            alert('<fmt:message key="page.dish.weight.wrong"/>');
+            alert('<fmt:message key="wrong.dish.weight"/>');
             return;
         } else if ((calories.value < 0.001) || (calories.value > 1000)) {
             reg.preventDefault();
-            alert('<fmt:message key="page.dish.calories.wrong"/>');
+            alert('<fmt:message key="wrong.dish.calories"/>');
             return;
         } else if ((proteins.value < 0.001) || (proteins.value > 1000)) {
             reg.preventDefault();
-            alert('<fmt:message key="page.dish.proteins.wrong"/>');
+            alert('<fmt:message key="wrong.dish.proteins"/>');
             return;
         } else if ((fats.value < 0.001) || (fats.value > 1000)) {
             reg.preventDefault();
-            alert('<fmt:message key="page.dish.fats.wrong"/>');
+            alert('<fmt:message key="wrong.dish.fats"/>');
             return;
         } else if ((carbohydrates.value < 0.001) || (carbohydrates.value > 1000)) {
             reg.preventDefault();
-            alert('<fmt:message key="page.dish.carbohydrates.wrong"/>');
+            alert('<fmt:message key="wrong.dish.carbohydrates"/>');
             return;
         }
     });

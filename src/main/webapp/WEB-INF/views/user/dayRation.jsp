@@ -52,7 +52,7 @@
         <div class="card bg-transparent">
             <div class="card-header">
                 <a class="card-link" data-toggle="collapse" href="#collapseOne">
-                    <fmt:message key="page.menu.edit"/>
+                    <fmt:message key="menu.edit"/>
                     <mytags:formatDate langCount="${localeLang}" localDate="${localeDate}"/>
                 </a>
             </div>
@@ -74,13 +74,13 @@
                                 <fmt:message key="page.ration"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.name"/>
+                                <fmt:message key="dish.name"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.amount"/>
+                                <fmt:message key="dish.amount"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.calories"/>
+                                <fmt:message key="dish.calories"/>
                             </th>
                             <th scope="col">
                                 <button type="button" id="delete_composition" class="btn btn-danger navbar-btn">
@@ -112,7 +112,7 @@
                                                value="${userCom.id}" id="checkbox_${userCom.id}"/>
                                     </td>
                                     <td>
-                                        <fmt:message key="page.ration.breakfast"/>
+                                        <fmt:message key="ration.breakfast"/>
                                     </td>
                                     <td>
                                         <c:if test="${userCom.dish.generalFood eq false}">
@@ -157,7 +157,7 @@
                                                id="checkbox_${userCom.id}"/>
                                     </td>
                                     <td>
-                                        <fmt:message key="page.ration.dinner"/>
+                                        <fmt:message key="ration.dinner"/>
                                     </td>
                                     <td>
                                         <c:if test="${userCom.dish.generalFood eq false}">
@@ -202,7 +202,7 @@
                                                id="checkbox_${userCom.id}"/>
                                     </td>
                                     <td>
-                                        <fmt:message key="page.ration.supper"/>
+                                        <fmt:message key="ration.supper"/>
                                     </td>
                                     <td>
                                         <c:if test="${userCom.dish.generalFood eq false}">
@@ -236,7 +236,7 @@
                         </c:forEach>
                         <tr>
                             <td colspan="5" style="text-align: center">
-                                <fmt:message key="calories.total.number"/>
+                                <fmt:message key="calories.totalNumber"/>
                             </td>
                             <td>
                                 ${countCalories}
@@ -268,7 +268,7 @@
 
             <div class="card-header">
                 <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
-                    <fmt:message key="page.menu.add"/>
+                    <fmt:message key="menu.add"/>
                 </a>
             </div>
 
@@ -281,7 +281,7 @@
                             </label>
 
                             <select class="form-control" multiple="multiple" id="selectMenu" size="18">
-                                <optgroup label="<fmt:message key="page.category.luncheon"/>">
+                                <optgroup label="<fmt:message key="category.luncheon"/>">
                                     <c:forEach items="${usersDishes}" var="dishUsers">
                                         <c:if test="${dishUsers.foodCategory eq 'LUNCHEON'}">
                                             <option value="${dishUsers.id}" id="${dishUsers.calories}">
@@ -296,7 +296,7 @@
                                     </c:forEach>
                                 </optgroup>
 
-                                <optgroup label="<fmt:message key="page.category.soup"/>">
+                                <optgroup label="<fmt:message key="category.soup"/>">
                                     <c:forEach items="${usersDishes}" var="dishUsers">
                                         <c:if test="${dishUsers.foodCategory eq 'SOUP'}">
                                             <option value="${dishUsers.id}" id="${dishUsers.calories}">
@@ -311,7 +311,7 @@
                                     </c:forEach>
                                 </optgroup>
 
-                                <optgroup label="<fmt:message key="page.category.hot"/>">
+                                <optgroup label="<fmt:message key="category.hot"/>">
                                     <c:forEach items="${usersDishes}" var="dishUsers">
                                         <c:if test="${dishUsers.foodCategory eq 'HOT'}">
                                             <option value="${dishUsers.id}" id="${dishUsers.calories}">
@@ -326,7 +326,7 @@
                                     </c:forEach>
                                 </optgroup>
 
-                                <optgroup label="<fmt:message key="page.category.dessert"/>">
+                                <optgroup label="<fmt:message key="category.dessert"/>">
                                     <c:forEach items="${usersDishes}" var="dishUsers">
                                         <c:if test="${dishUsers.foodCategory eq 'DESSERT'}">
                                             <option value="${dishUsers.id}" id="${dishUsers.calories}">
@@ -348,12 +348,12 @@
                                   id="dayRation">
 
                                 <label style="text-align: right;display: block" for="breakfast">
-                                    <fmt:message key="page.ration.breakfast"/>:
+                                    <fmt:message key="ration.breakfast"/>:
                                 </label>
                                 <div class="row" id="breakfast">
                                     <div class="btn-group-vertical" role="group">
                                         <button type="button" id="addToBreakfast" class="btn btn-success btn-sm">
-                                            &raquo;&nbsp;<fmt:message key="page.menu.add"/>&nbsp;&raquo;
+                                            &raquo;&nbsp;<fmt:message key="menu.add"/>&nbsp;&raquo;
                                         </button>
                                         &nbsp;
                                         <button type="button" id="removeFromBreakfast"
@@ -369,12 +369,12 @@
                                 </div>
 
                                 <label style="text-align: right;display: block" for="dinner">
-                                    <fmt:message key="page.ration.dinner"/>:
+                                    <fmt:message key="ration.dinner"/>:
                                 </label>
                                 <div class="row" id="dinner">
                                     <div class="btn-group-vertical" role="group">
                                         <button type="button" id="addToDinner" class="btn btn-success btn-sm">
-                                            &raquo;&nbsp;<fmt:message key="page.menu.add"/>&nbsp;&raquo;
+                                            &raquo;&nbsp;<fmt:message key="menu.add"/>&nbsp;&raquo;
                                         </button>
                                         &nbsp;
                                         <button type="button" id="removeFromDinner" class="btn btn-danger btn-sm">
@@ -389,12 +389,12 @@
                                 </div>
 
                                 <label style="text-align: right;display: block" for="supper">
-                                    <fmt:message key="page.ration.supper"/>:
+                                    <fmt:message key="ration.supper"/>:
                                 </label>
                                 <div class="row" id="supper">
                                     <div class="btn-group-vertical" role="group">
                                         <button type="button" id="addToSupper" class="btn btn-success btn-sm">
-                                            &raquo;&nbsp;<fmt:message key="page.menu.add"/>&nbsp;&raquo;
+                                            &raquo;&nbsp;<fmt:message key="menu.add"/>&nbsp;&raquo;
                                         </button>
                                         &nbsp;
                                         <button type="button" id="removeFromSupper" class="btn btn-danger btn-sm">
@@ -520,7 +520,7 @@
                 if (diffDays > 14
                     || diffDays < -14) {
                     event.preventDefault();
-                    alert('<fmt:message key="page.date.wrong"/>');
+                    alert('<fmt:message key="wrong.user.date"/>');
                     return;
                 }
             }

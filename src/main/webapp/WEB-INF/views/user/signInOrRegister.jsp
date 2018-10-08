@@ -38,14 +38,14 @@
                     <form:form method="POST" action="logIn" id="logIn" modelAttribute="formUser">
                         <div class="form-group">
                             <form:label path="email">
-                                <spring:message code="page.register.email"/>:
+                                <spring:message code="register.email"/>:
                             </form:label>
                             <form:input path="email" type="email" class="form-control" id="emailIn"
                                         placeholder="ZakusyloP@gmail.com" value="${valueEmailLogIn}"/>
                         </div>
                         <div class="form-group">
                             <form:label path="password">
-                                <spring:message code="page.register.password"/>:
+                                <spring:message code="register.password"/>:
                             </form:label>
                             <form:input path="password" type="password" class="form-control" id="passwordIn"
                                         placeholder="" value="${valuePasswordLogIn}"/>
@@ -73,15 +73,15 @@
                     <div class="form-group row">
                         <div class="col">
                             <form:label path="name">
-                                <spring:message code="page.register.name"/>:
+                                <spring:message code="register.name"/>:
                             </form:label>
-                            <spring:message code="page.example.name" var="page.example.name"/>
+                            <spring:message code="example.name" var="page.example.name"/>
                             <form:input path="name" type="text" class="form-control" id="name"
                                         placeholder="${page.example.name}" value="${valueNameReg}"/>
                         </div>
                         <div class="col">
                             <form:label path="dob">
-                                <spring:message code="page.register.dob"/>:
+                                <spring:message code="register.dob"/>:
                             </form:label>
                             <form:input path="dob" type="date" class="form-control" id="dob"
                                         value="${valueDobReg}"/>
@@ -91,14 +91,14 @@
                     <div class="form-group row">
                         <div class="col">
                             <form:label path="email">
-                                <spring:message code="page.register.email"/>:
+                                <spring:message code="register.email"/>:
                             </form:label>
                             <form:input path="email" type="email" class="form-control" id="emailReg"
                                         placeholder="ZakusyloP@gmail.com" value="${valueEmailReg}"/>
                         </div>
                         <div class="col">
                             <form:label path="password">
-                                <spring:message code="page.register.password"/>:
+                                <spring:message code="register.password"/>:
                             </form:label>
                             <form:input path="password" type="password" class="form-control" id="passwordReg"
                                         value="${valuePasswordReg}"/>
@@ -108,30 +108,30 @@
                     <div class="form-group row">
                         <div class="col">
                             <form:label path="lifeStyleCoefficient">
-                                <spring:message code="page.register.lifestyle"/>:
+                                <spring:message code="register.lifestyle"/>:
                             </form:label>
                             <form:select path="lifeStyleCoefficient" class="form-control" id="lifestyle">
                                 <form:option selected="true" value="1.2">
-                                    <spring:message code="page.register.lifestyleMin"/>
+                                    <spring:message code="register.lifestyleMin"/>
                                 </form:option>
                                 <form:option value="1.375">
-                                    <spring:message code="page.register.lifestyleWeak"/>
+                                    <spring:message code="register.lifestyleWeak"/>
                                 </form:option>
                                 <form:option value="1.55">
-                                    <spring:message code="page.register.lifestyleAvr"/>
+                                    <spring:message code="register.lifestyleAvr"/>
                                 </form:option>
                                 <form:option value="1.725">
-                                    <spring:message code="page.register.lifestyleHigh"/>
+                                    <spring:message code="register.lifestyleHigh"/>
                                 </form:option>
                                 <form:option value="1.9">
-                                    <spring:message code="page.register.lifestyleExtra"/>
+                                    <spring:message code="register.lifestyleExtra"/>
                                 </form:option>
                             </form:select>
                         </div>
                         <div class="col">
                             <form:label path="height">
-                                <spring:message code="page.register.height"/>,&nbsp;
-                                <spring:message code="page.register.cm"/>&nbsp;:
+                                <spring:message code="register.height"/>,&nbsp;
+                                <spring:message code="register.cm"/>&nbsp;:
                             </form:label>
                             <form:input path="height" type="number" class="form-control" id="height" step="0.1"
                                         placeholder="183,5" value="${valueHeightReg}"/>
@@ -139,7 +139,7 @@
                         <div class="col">
                             <form:label path="weight">
                                 <spring:message code="calories.currentWeight"/>,&nbsp;
-                                <spring:message code="page.register.kg"/>&nbsp;:
+                                <spring:message code="register.kg"/>&nbsp;:
                             </form:label>
                             <form:input path="weight" type="number" class="form-control" id="weight" step="0.1"
                                         placeholder="85,0" value="${valueWeightReg}"/>
@@ -147,7 +147,7 @@
                         <div class="col">
                             <form:label path="weightDesired">
                                 <spring:message code="calories.desireWeight"/>,&nbsp;
-                                <spring:message code="page.register.kg"/>&nbsp;:
+                                <spring:message code="register.kg"/>&nbsp;:
                             </form:label>
                             <form:input path="weightDesired" type="number" class="form-control" id="weightDesired"
                                         step="0.1" placeholder="70,5" value="${valueWeightDesiredReg}"/>
@@ -182,11 +182,11 @@
                 emailIn.value.match(/^\w{2,}@[a-z]{3,}\.[a-z]{3,}\.[a-z]{2,}$/g) ||
                 emailIn.value.match(/^\w{2,}@.{3,}\.[a-z]{3,}\.[a-z]{2,}$/g))) {
                 log.preventDefault();
-                alert('<spring:message code="page.email.wrong"/>');
+                alert('<spring:message code="wrong.user.email"/>');
                 return;
             } else if (passwordIn.value.length < 3) {
                 log.preventDefault();
-                alert('<spring:message code="page.password.wrong"/>');
+                alert('<spring:message code="wrong.user.password"/>');
             }
         });
         <%--Regex for Log In--%>
@@ -208,36 +208,36 @@
                 name.value.match(/^[\u0410-\u0429\u042C\u042E\u042F\u0407\u0406\u0404\u0490][`´''ʼ’ʼ’]?([\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+[`´''ʼ’ʼ’]?)?[\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+$/g) ||
                 name.value.match(/^[\u0410-\u0429\u042C\u042E\u042F\u0407\u0406\u0404\u0490][`´''ʼ’ʼ’]?([\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+[`´''ʼ’ʼ’]?)?[\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+-[\u0410-\u0429\u042C\u042E\u042F\u0407\u0406\u0404\u0490][`´''ʼ’ʼ’]?([\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+[`´''ʼ’ʼ’]?)?[\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+$/g))) {
                 reg.preventDefault();
-                alert('<spring:message code="page.name.wrong"/>');
+                alert('<spring:message code="wrong.user.name"/>');
                 return;
             } else if (isNaN(dob) ||
                 ((currentDate.getFullYear() - dob.getFullYear()) < 15) ||
                 ((currentDate.getFullYear() - dob.getFullYear()) > 99)) {
                 reg.preventDefault();
-                alert('<spring:message code="page.dob.wrong"/>');
+                alert('<spring:message code="wrong.user.dob"/>');
                 return;
             } else if (!(emailReg.value.match(/^\w{2,}@[a-z]{3,}\.[a-z]{2,}$/g) ||
                 emailReg.value.match(/^\w{2,}@[a-z]{3,}\.[a-z]{3,}\.[a-z]{2,}$/g) ||
                 emailReg.value.match(/^\w{2,}@.{3,}\.[a-z]{3,}\.[a-z]{2,}$/g))) {
                 reg.preventDefault();
-                alert('<spring:message code="page.email.wrong"/>');
+                alert('<spring:message code="wrong.user.email"/>');
                 return;
             } else if (passwordReg.value.length < 3) {
                 reg.preventDefault();
-                alert('<spring:message code="page.password.wrong"/>');
+                alert('<spring:message code="wrong.user.password"/>');
                 return;
             } else if ((height.value < 50) || (height.value > 250)) {
                 reg.preventDefault();
-                alert('<spring:message code="page.height.wrong"/>');
+                alert('<spring:message code="wrong.user.height"/>');
                 return;
             } else if ((weight.value < 50) || (weight.value > 150)) {
                 reg.preventDefault();
-                alert('<spring:message code="page.weight.wrong"/>');
+                alert('<spring:message code="wrong.user.weight"/>');
                 return;
             } else if (weightDesired.value != '') {
                 if ((weightDesired.value < 50) || (weightDesired.value > 150)) {
                     reg.preventDefault();
-                    alert('<spring:message code="page.weight.wrong"/>');
+                    alert('<spring:message code="wrong.user.weight"/>');
                 }
             }
         });

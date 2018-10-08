@@ -10,7 +10,7 @@
         <div class="card bg-transparent">
             <div class="card-header">
                 <a class="card-link text-success" data-toggle="collapse" href="#collapseOne">
-                    <fmt:message key="page.menu.users.list"/>
+                    <fmt:message key="menu.users.list"/>
                 </a>
             </div>
 
@@ -22,13 +22,13 @@
                             <th scope="col">#</th>
                             <th scope="col"></th>
                             <th scope="col">
-                                <fmt:message key="page.register.email"/>
+                                <fmt:message key="register.email"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.register.newPassword"/>
+                                <fmt:message key="register.newPassword"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.user.role"/>
+                                <fmt:message key="user.role"/>
                             </th>
                             <th scope="col">
                                 <button type="button" id="delete_users" class="btn btn-danger navbar-btn">
@@ -70,7 +70,7 @@
                                       method="POST">
                                     <td>
                                         <input type="password" class="form-control" id="password" name="password"
-                                               placeholder="<fmt:message key="page.register.newPassword"/>">
+                                               placeholder="<fmt:message key="register.newPassword"/>">
                                     </td>
                                     <td>
                                         <select class="form-control" id="role" name="role">
@@ -79,14 +79,14 @@
                                                         selected
                                                     </c:if>
                                                     value="ADMIN">
-                                                <fmt:message key="page.user.role.admin"/>
+                                                <fmt:message key="user.role.admin"/>
                                             </option>
                                             <option
                                                     <c:if test="${user.role eq 'USER'}">
                                                         selected
                                                     </c:if>
                                                     value="USER">
-                                                <fmt:message key="page.user.role.user"/>
+                                                <fmt:message key="user.role.user"/>
                                             </option>
                                         </select>
                                     </td>

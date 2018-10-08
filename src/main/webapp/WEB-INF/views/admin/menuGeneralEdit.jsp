@@ -57,7 +57,7 @@
         <div class="card bg-transparent">
             <div class="card-header">
                 <a class="card-link text-danger" data-toggle="collapse" href="#luncheon">
-                    <fmt:message key="page.category.luncheon"/>
+                    <fmt:message key="category.luncheon"/>
                 </a>
             </div>
 
@@ -69,24 +69,24 @@
                             <th scope="col">#</th>
                             <th scope="col"></th>
                             <th scope="col">
-                                <fmt:message key="page.dish.name"/>
+                                <fmt:message key="dish.name"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.weight"/>,
-                                <fmt:message key="page.dish.gr"/>
+                                <fmt:message key="dish.weight"/>,
+                                <fmt:message key="dish.gr"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.calories"/> /
-                                100 <fmt:message key="page.dish.gr"/>
+                                <fmt:message key="dish.calories"/> /
+                                100 <fmt:message key="dish.gr"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.proteins"/>
+                                <fmt:message key="dish.proteins"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.fats"/>
+                                <fmt:message key="dish.fats"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.carbohydrates"/>
+                                <fmt:message key="dish.carbohydrates"/>
                             </th>
                             <th scope="col">
                                 <button type="button" id="delete_luncheon_dish" class="btn btn-danger navbar-btn">
@@ -170,7 +170,7 @@
         <div class="card bg-transparent">
             <div class="card-header">
                 <a class="card-link text-danger" data-toggle="collapse" href="#soup">
-                    <fmt:message key="page.category.soup"/>
+                    <fmt:message key="category.soup"/>
                 </a>
             </div>
 
@@ -182,24 +182,24 @@
                             <th scope="col">#</th>
                             <th scope="col"></th>
                             <th scope="col">
-                                <fmt:message key="page.dish.name"/>
+                                <fmt:message key="dish.name"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.weight"/>,
-                                <fmt:message key="page.dish.gr"/>
+                                <fmt:message key="dish.weight"/>,
+                                <fmt:message key="dish.gr"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.calories"/> /
-                                100 <fmt:message key="page.dish.gr"/>
+                                <fmt:message key="dish.calories"/> /
+                                100 <fmt:message key="dish.gr"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.proteins"/>
+                                <fmt:message key="dish.proteins"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.fats"/>
+                                <fmt:message key="dish.fats"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.carbohydrates"/>
+                                <fmt:message key="dish.carbohydrates"/>
                             </th>
                             <th scope="col">
                                 <button type="button" id="delete_soup_dish" class="btn btn-danger navbar-btn">
@@ -284,7 +284,7 @@
         <div class="card bg-transparent">
             <div class="card-header">
                 <a class="card-link text-danger" data-toggle="collapse" href="#hot">
-                    <fmt:message key="page.category.hot"/>
+                    <fmt:message key="category.hot"/>
                 </a>
             </div>
 
@@ -296,24 +296,24 @@
                             <th scope="col">#</th>
                             <th scope="col"></th>
                             <th scope="col">
-                                <fmt:message key="page.dish.name"/>
+                                <fmt:message key="dish.name"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.weight"/>,
-                                <fmt:message key="page.dish.gr"/>
+                                <fmt:message key="dish.weight"/>,
+                                <fmt:message key="dish.gr"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.calories"/> /
-                                100 <fmt:message key="page.dish.gr"/>
+                                <fmt:message key="dish.calories"/> /
+                                100 <fmt:message key="dish.gr"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.proteins"/>
+                                <fmt:message key="dish.proteins"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.fats"/>
+                                <fmt:message key="dish.fats"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.carbohydrates"/>
+                                <fmt:message key="dish.carbohydrates"/>
                             </th>
                             <th scope="col">
                                 <button type="button" id="delete_hot_dish" class="btn btn-danger navbar-btn">
@@ -398,7 +398,7 @@
         <div class="card bg-transparent">
             <div class="card-header">
                 <a class="card-link text-danger" data-toggle="collapse" href="#dessert">
-                    <fmt:message key="page.category.dessert"/>
+                    <fmt:message key="category.dessert"/>
                 </a>
             </div>
 
@@ -410,24 +410,24 @@
                             <th scope="col">#</th>
                             <th scope="col"></th>
                             <th scope="col">
-                                <fmt:message key="page.dish.name"/>
+                                <fmt:message key="dish.name"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.weight"/>,
-                                <fmt:message key="page.dish.gr"/>
+                                <fmt:message key="dish.weight"/>,
+                                <fmt:message key="dish.gr"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.calories"/> /
-                                100 <fmt:message key="page.dish.gr"/>
+                                <fmt:message key="dish.calories"/> /
+                                100 <fmt:message key="dish.gr"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.proteins"/>
+                                <fmt:message key="dish.proteins"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.fats"/>
+                                <fmt:message key="dish.fats"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="page.dish.carbohydrates"/>
+                                <fmt:message key="dish.carbohydrates"/>
                             </th>
                             <th scope="col">
                                 <button type="button" id="delete_dessert_dish" class="btn btn-danger navbar-btn">

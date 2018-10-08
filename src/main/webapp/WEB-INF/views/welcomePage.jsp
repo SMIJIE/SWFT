@@ -44,7 +44,7 @@
             ]);
 
             var options = {
-                title: '<spring:message code="page.charts.caloriesPerMonth"/>',
+                title: '<spring:message code="charts.caloriesPerMonth"/>',
                 seriesType: 'line',
                 series: {2: {type: 'bars'}},
                 colors: ['#007bff', '#28a745', '#ffc107'],

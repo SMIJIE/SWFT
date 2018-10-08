@@ -44,7 +44,7 @@
         <div class="card bg-transparent">
             <div class="card-header">
                 <a class="card-link text-danger" data-toggle="collapse" href="#luncheon">
-                    <spring:message code="page.category.luncheon"/>
+                    <spring:message code="category.luncheon"/>
                 </a>
             </div>
 
@@ -55,24 +55,24 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">
-                                <spring:message code="page.dish.name"/>
+                                <spring:message code="dish.name"/>
                             </th>
                             <th scope="col">
-                                <spring:message code="page.dish.weight"/>,
-                                <spring:message code="page.dish.gr"/>
+                                <spring:message code="dish.weight"/>,
+                                <spring:message code="dish.gr"/>
                             </th>
                             <th scope="col">
-                                <spring:message code="page.dish.calories"/> /
-                                100 <spring:message code="page.dish.gr"/>
+                                <spring:message code="dish.calories"/> /
+                                100 <spring:message code="dish.gr"/>
                             </th>
                             <th scope="col">
-                                <spring:message code="page.dish.proteins"/>
+                                <spring:message code="dish.proteins"/>
                             </th>
                             <th scope="col">
-                                <spring:message code="page.dish.fats"/>
+                                <spring:message code="dish.fats"/>
                             </th>
                             <th scope="col">
-                                <spring:message code="page.dish.carbohydrates"/>
+                                <spring:message code="dish.carbohydrates"/>
                             </th>
                         </tr>
                         </thead>
@@ -116,7 +116,7 @@
         <div class="card bg-transparent">
             <div class="card-header">
                 <a class="card-link text-danger" data-toggle="collapse" href="#soup">
-                    <spring:message code="page.category.soup"/>
+                    <spring:message code="category.soup"/>
                 </a>
             </div>
 
@@ -127,24 +127,24 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">
-                                <spring:message code="page.dish.name"/>
+                                <spring:message code="dish.name"/>
                             </th>
                             <th scope="col">
-                                <spring:message code="page.dish.weight"/>,
-                                <spring:message code="page.dish.gr"/>
+                                <spring:message code="dish.weight"/>,
+                                <spring:message code="dish.gr"/>
                             </th>
                             <th scope="col">
-                                <spring:message code="page.dish.calories"/> /
-                                100 <spring:message code="page.dish.gr"/>
+                                <spring:message code="dish.calories"/> /
+                                100 <spring:message code="dish.gr"/>
                             </th>
                             <th scope="col">
-                                <spring:message code="page.dish.proteins"/>
+                                <spring:message code="dish.proteins"/>
                             </th>
                             <th scope="col">
-                                <spring:message code="page.dish.fats"/>
+                                <spring:message code="dish.fats"/>
                             </th>
                             <th scope="col">
-                                <spring:message code="page.dish.carbohydrates"/>
+                                <spring:message code="dish.carbohydrates"/>
                             </th>
                         </tr>
                         </thead>
@@ -188,7 +188,7 @@
         <div class="card bg-transparent">
             <div class="card-header">
                 <a class="card-link text-danger" data-toggle="collapse" href="#hot">
-                    <spring:message code="page.category.hot"/>
+                    <spring:message code="category.hot"/>
                 </a>
             </div>
 
@@ -199,24 +199,24 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">
-                                <spring:message code="page.dish.name"/>
+                                <spring:message code="dish.name"/>
                             </th>
                             <th scope="col">
-                                <spring:message code="page.dish.weight"/>,
-                                <spring:message code="page.dish.gr"/>
+                                <spring:message code="dish.weight"/>,
+                                <spring:message code="dish.gr"/>
                             </th>
                             <th scope="col">
-                                <spring:message code="page.dish.calories"/> /
-                                100 <spring:message code="page.dish.gr"/>
+                                <spring:message code="dish.calories"/> /
+                                100 <spring:message code="dish.gr"/>
                             </th>
                             <th scope="col">
-                                <spring:message code="page.dish.proteins"/>
+                                <spring:message code="dish.proteins"/>
                             </th>
                             <th scope="col">
-                                <spring:message code="page.dish.fats"/>
+                                <spring:message code="dish.fats"/>
                             </th>
                             <th scope="col">
-                                <spring:message code="page.dish.carbohydrates"/>
+                                <spring:message code="dish.carbohydrates"/>
                             </th>
                         </tr>
                         </thead>
@@ -260,7 +260,7 @@
         <div class="card bg-transparent">
             <div class="card-header">
                 <a class="card-link text-danger" data-toggle="collapse" href="#dessert">
-                    <spring:message code="page.category.dessert"/>
+                    <spring:message code="category.dessert"/>
                 </a>
             </div>
 
@@ -271,24 +271,24 @@
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">
-                                <spring:message code="page.dish.name"/>
+                                <spring:message code="dish.name"/>
                             </th>
                             <th scope="col">
-                                <spring:message code="page.dish.weight"/>,
-                                <spring:message code="page.dish.gr"/>
+                                <spring:message code="dish.weight"/>,
+                                <spring:message code="dish.gr"/>
                             </th>
                             <th scope="col">
-                                <spring:message code="page.dish.calories"/> /
-                                100 <spring:message code="page.dish.gr"/>
+                                <spring:message code="dish.calories"/> /
+                                100 <spring:message code="dish.gr"/>
                             </th>
                             <th scope="col">
-                                <spring:message code="page.dish.proteins"/>
+                                <spring:message code="dish.proteins"/>
                             </th>
                             <th scope="col">
-                                <spring:message code="page.dish.fats"/>
+                                <spring:message code="dish.fats"/>
                             </th>
                             <th scope="col">
-                                <spring:message code="page.dish.carbohydrates"/>
+                                <spring:message code="dish.carbohydrates"/>
                             </th>
                         </tr>
                         </thead>

@@ -49,7 +49,7 @@
                 <ul class="nav navbar-nav" style="list-style: none">
                     <li>&#8211;
                         <a class="text-light" href="${pageContext.request.contextPath}/swft/menuGeneralEdit">
-                            <spring:message code="page.menu.edit"/>
+                            <spring:message code="menu.edit"/>
                         </a>
                     </li>
                 </ul>
@@ -58,7 +58,7 @@
 
         <li id="menuUsers">
             <a class="text-light" href="${pageContext.request.contextPath}/swft/menuUsersEdit">
-                <spring:message code="page.menu.own"/>
+                <spring:message code="menu.own"/>
             </a>
         </li>
 
