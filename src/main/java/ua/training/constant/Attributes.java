@@ -11,8 +11,15 @@ public interface Attributes {
 
     String PAGE_PATH = "/swft/";
     String PAGE_NAME = "pageName";
-    String PAGE_VALUE_EMAIL = "valueEmail";
-    String PAGE_VALUE_PASSWORD = "valuePassword";
+    String PAGE_VALUE_EMAIL_LOG_IN = "valueEmailLogIn";
+    String PAGE_VALUE_PASSWORD_LOG_IN = "valuePasswordLogIn";
+    String PAGE_VALUE_PASSWORD_REG = "valuePasswordReg";
+    String PAGE_VALUE_EMAIL_REG = "valueEmailReg";
+    String PAGE_VALUE_NAME_REG = "valueNameReg";
+    String PAGE_VALUE_DOB_REG = "valueDobReg";
+    String PAGE_VALUE_HEIGHT_REG = "valueHeightReg";
+    String PAGE_VALUE_WEIGHT_REG = "valueWeightReg";
+    String PAGE_VALUE_WEIGHT_DESIRED_REG = "valueWeightDesiredReg";
     String PAGE_GENERAL = "page.general";
     String PAGE_RATION = "page.ration";
     String PAGE_MENU = "page.menu";
@@ -38,6 +45,7 @@ public interface Attributes {
     String REQUEST_LOCALE_DATE = "localeDate";
     String REQUEST_CURRENT_PAGE = "currPage";
     String REQUEST_USER = "user";
+    String REQUEST_FORM_USER = "formUser";
     String REQUEST_USERS_ALL = "allUsers";
     String REQUEST_USER_ROLE = "role";
     String REQUEST_USERS_DISHES = "usersDishes";
