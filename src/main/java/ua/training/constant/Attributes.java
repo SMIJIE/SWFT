@@ -24,17 +24,17 @@ public interface Attributes {
     String PAGE_RATION = "page.ration";
     String PAGE_MENU = "page.menu";
     String PAGE_SIGN_IN_OR_UP = "page.signInOrRegistration";
-    String PAGE_USERS_LIST = "page.menu.users.list";
-    String PAGE_MENU_EDIT = "page.menu.edit.mess";
+    String PAGE_USERS_LIST = "menu.users.list";
+    String PAGE_MENU_EDIT = "menu.edit.mess";
     String PAGE_DEMONSTRATION = "page.demonstration";
     String PAGE_SETTINGS = "page.settings";
 
-    String PAGE_USER_EXIST = "page.user.email.exist";
-    String PAGE_USER_WRONG_DATA = "page.wrong.data";
-    String PAGE_USER_NOT_EXIST = "page.user.email.not.exist";
-    String PAGE_USER_WRONG_PASSWORD = "page.user.wrong.password";
-    String PAGE_USER_LOGGED = "page.user.email.logged";
-    String PAGE_USER_ERROR_EMAIL = "page.email.wrong";
+    String PAGE_USER_EXIST = "user.email.exist";
+    String PAGE_USER_WRONG_DATA = "wrong.data";
+    String PAGE_USER_NOT_EXIST = "user.email.not.exist";
+    String PAGE_USER_WRONG_PASSWORD = "user.inappropriate.password";
+    String PAGE_USER_LOGGED = "user.email.logged";
+    String PAGE_USER_ERROR_EMAIL = "wrong.user.email";
     String PAGE_USER_ERROR_DATA = "userErrorData";
     String PAGE_NON_ERROR = "nonError";
     String PAGE_USER_ERROR = "userError";
@@ -82,7 +82,7 @@ public interface Attributes {
     String REQUEST_DATE = "date";
     String REQUEST_MONTHLY_DAY_RATION = "monthlyDR";
 
-    String SQL_EXCEPTION = "page.wrong.work.server";
+    String SQL_EXCEPTION = "wrong.work.server";
 
     String DB_PROPERTIES = "db.properties";
     String DB_URL = "db.url";
