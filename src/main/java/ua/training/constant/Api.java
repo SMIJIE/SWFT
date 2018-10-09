@@ -1,6 +1,10 @@
 package ua.training.constant;
 
-
+/**
+ * Description: This is list of all api(urls)
+ *
+ * @author Zakusylo Pavlo
+ */
 public interface Api {
     String DEFAULT = "/";
     String MENU_API = "/menu";

@@ -16,7 +16,7 @@ public interface Mess {
     String LOG_USER_REGISTERED = "User registered";
     String LOG_USER_UPDATE_PARAMETERS = "User update parameters";
     String LOG_USER_GET_BY_ID = "\n\tProblem to get user by id";
-    String LOG_USER_HTTP_NOT_EXTRACT = "\n\tProblem to extract user from HttpServletRequest";
+    String LOG_USER_HTTP_FORM = "\n\tProblem to extract user from http form";
     String LOG_USER_GO_ADMIN_URL = "\n\tTries to go by admin urls";
     String LOG_USER_GO_USER_URL = "\n\tTries to go by user urls";
     String LOG_USER_GO_NON_REGISTERED_URL = "\n\tTries to go by user(non registered) urls";
@@ -33,6 +33,7 @@ public interface Mess {
     String USER_VALID_NAME_NOT_BLANK = "valid.name.notEmptyNull";
     String USER_VALID_NAME_WRONG = "wrong.user.name";
     String USER_VALID_DOB_NOT_NULL = "valid.dob.notNull";
+    String USER_VALID_DOB_AGE_BETWEEN = "valid.dob.age.between";
     String USER_VALID_EMAIL_NOT_BLANK = "valid.email.notEmptyNull";
     String USER_VALID_EMAIL_WRONG = "wrong.user.email";
     String USER_VALID_PASSWORD_SIZE = "valid.password.size";
