@@ -16,8 +16,8 @@ public class MenuController implements GeneralController {
     /**
      * Display general menu page
      *
-     * @param modelAndView ModelAndView
-     * @return modelAndView ModelAndView
+     * @param modelAndView {@link ModelAndView}
+     * @return modelAndView {@link ModelAndView}
      */
     @RequestMapping(value = MENU_API, method = RequestMethod.GET)
     public ModelAndView getGeneralMenuPage(ModelAndView modelAndView) {

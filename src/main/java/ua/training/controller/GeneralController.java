@@ -2,6 +2,7 @@ package ua.training.controller;
 
 import ua.training.constant.Api;
 import ua.training.constant.Attributes;
+import ua.training.constant.Mess;
 import ua.training.constant.Pages;
 import ua.training.model.dao.mapper.DayRationMapper;
 import ua.training.model.dao.mapper.DishMapper;
@@ -16,7 +17,7 @@ import ua.training.model.dao.service.implementation.UserServiceImp;
  *
  * @author Zakusylo Pavlo
  */
-public interface GeneralController extends Api, Attributes, Pages {
+public interface GeneralController extends Api, Attributes, Pages, Mess {
     UserServiceImp USER_SERVICE_IMP = new UserServiceImp();
     DishServiceImp DISH_SERVICE_IMP = new DishServiceImp();
     DayRationServiceImp DAY_RATION_SERVICE_IMP = new DayRationServiceImp();

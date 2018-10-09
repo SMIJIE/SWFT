@@ -1,14 +1,17 @@
 package ua.training.controller;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ua.training.controller.commands.exception.DataHttpException;
 import ua.training.controller.commands.utility.CommandsUtil;
 import ua.training.model.dao.utility.PasswordEncoder;
 import ua.training.model.entity.DayRation;
 import ua.training.model.entity.User;
+import ua.training.model.entity.form.FormUser;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -22,14 +25,15 @@ import java.util.stream.Collectors;
  *
  * @author Zakusylo Pavlo
  */
+@Log4j2
 @Controller
 public class UserController implements GeneralController {
 
     /**
      * Display welcome(initial) page
      *
-     * @param modelAndView ModelAndView
-     * @return modelAndView ModelAndView
+     * @param modelAndView {@link ModelAndView}
+     * @return modelAndView {@link ModelAndView}
      */
     @RequestMapping(value = DEFAULT, method = RequestMethod.GET)
     public ModelAndView getWelcomePage(ModelAndView modelAndView) {
@@ -42,13 +46,13 @@ public class UserController implements GeneralController {
     /**
      * Display sign in/registration page
      *
-     * @param modelAndView ModelAndView
-     * @return modelAndView ModelAndView
+     * @param modelAndView {@link ModelAndView}
+     * @return modelAndView {@link ModelAndView}
      */
     @RequestMapping(value = SIGN_IN_OR_REGISTER, method = RequestMethod.GET)
     public ModelAndView getSignInOrRegisterPage(ModelAndView modelAndView) {
         modelAndView.addObject(PAGE_NAME, PAGE_SIGN_IN_OR_UP);
-        modelAndView.addObject(REQUEST_FORM_USER, new User());
+        modelAndView.addObject(REQUEST_FORM_USER, new FormUser());
         modelAndView.addObject(SHOW_COLLAPSE_SIGN_IN, SHOW_COLLAPSE_ATTRIBUTE_FOR_CCS_CLASS);
         modelAndView.setViewName(SIGN_OR_REGISTER);
 
@@ -58,12 +62,12 @@ public class UserController implements GeneralController {
     /**
      * Action login
      *
-     * @param email              String
-     * @param password           String
-     * @param modelAndView       ModelAndView
-     * @param redirectAttributes RedirectAttributes
-     * @param request            HttpServletRequest
-     * @return modelAndView ModelAndView
+     * @param email              {@link String}
+     * @param password           {@link String}
+     * @param modelAndView       {@link ModelAndView}
+     * @param redirectAttributes {@link RedirectAttributes}
+     * @param request            {@link HttpServletRequest}
+     * @return modelAndView {@link ModelAndView}
      */
     @RequestMapping(value = LOG_IN, method = RequestMethod.POST)
     public ModelAndView actionLogIn(@RequestParam(value = REQUEST_EMAIL) String email,
@@ -92,58 +96,58 @@ public class UserController implements GeneralController {
         return modelAndView;
     }
 
+    /**
+     * Action register new user
+     *
+     * @param formUser           {@link FormUser}
+     * @param bindingResult      {@link BindingResult}
+     * @param modelAndView       {@link ModelAndView}
+     * @param redirectAttributes {@link RedirectAttributes}
+     * @param servletRequest     {@link HttpServletRequest}
+     * @return modelAndView {@link ModelAndView}
+     */
     @RequestMapping(value = REGISTER_NEW_USER, method = RequestMethod.POST)
-    public ModelAndView actionRegisterNewUser(@ModelAttribute(REQUEST_FORM_USER) User user,
+    public ModelAndView actionRegisterNewUser(@Valid @ModelAttribute(REQUEST_FORM_USER) FormUser formUser,
                                               BindingResult bindingResult,
+                                              RedirectAttributes redirectAttributes,
+                                              HttpServletRequest servletRequest,
                                               ModelAndView modelAndView) {
-        System.out.println(user);
+
+        modelAndView.addObject(PAGE_NAME, PAGE_SIGN_IN_OR_UP);
+        modelAndView.addObject(SHOW_COLLAPSE_SIGN_UP, SHOW_COLLAPSE_ATTRIBUTE_FOR_CCS_CLASS);
+        modelAndView.setViewName(SIGN_OR_REGISTER);
 
         if (bindingResult.hasErrors()) {
-            System.out.println(bindingResult.getErrorCount());
-            user.setLifeStyleCoefficient(bindingResult.getFieldValue("lifeStyleCoefficient"));
-            user.setLifeStyleCoefficient(bindingResult.getFieldErrors("lifeStyleCoefficient").add(user.));
-            get(user, bindingResult);
-            System.out.println(bindingResult.getErrorCount());
-
-            modelAndView.addObject(SHOW_COLLAPSE_SIGN_UP, SHOW_COLLAPSE_ATTRIBUTE_FOR_CCS_CLASS);
-            modelAndView.setViewName(SIGN_OR_REGISTER);
-            System.out.println("=====================================================================================1");
-
             return modelAndView;
         }
-//        String returnPage = SIGN_OR_REGISTER_WITH_ERROR;
-//
-//        Optional<User> userHttp = CommandsUtil.extractUserFromHTTP(request);
-//        if (!userHttp.isPresent()) {
-//            request.getSession().setAttribute(PAGE_USER_ERROR_EMAIL, PAGE_USER_WRONG_DATA);
-//            return returnPage;
-//        }
-//
-//        Optional<User> userSQL = USER_SERVICE_IMP.getOrCheckUserByEmail(userHttp.get().getEmail());
-//
-//        if (!userSQL.isPresent()) {
-//            USER_SERVICE_IMP.registerNewUser(userHttp.get());
-//            log.info(Mess.LOG_USER_REGISTERED + "[" + userHttp.get().getEmail() + "]");
-////            returnPage = CommandsUtil.openUsersSession(request, userHttp.get());
-//        } else {
-//            request.getSession().setAttribute(PAGE_USER_ERROR_EMAIL, PAGE_USER_EXIST);
-//        }
-        System.out.println("=====================================================================================1");
-        System.out.println(user);
-        modelAndView.addObject(PAGE_NAME, PAGE_SIGN_IN_OR_UP);
+
+        User user;
+        try {
+            user = USER_MAPPER.extractUserFromHttpForm(formUser, modelAndView);
+        } catch (DataHttpException e) {
+            log.error(e.getMessage());
+            return modelAndView;
+        }
+
+        Optional<User> userSQL = USER_SERVICE_IMP.getOrCheckUserByEmail(user.getEmail());
+
+        if (!userSQL.isPresent()) {
+            USER_SERVICE_IMP.registerNewUser(user);
+            log.info(LOG_USER_REGISTERED + "[" + user.getEmail() + "]");
+            return CommandsUtil.openUsersSession(servletRequest, user, modelAndView, redirectAttributes);
+        } else {
+            modelAndView.addObject(PAGE_USER_ERROR, PAGE_USER_EXIST);
+        }
 
         return modelAndView;
-    }
-
-    void get(@Valid User user, BindingResult bindingResult) {
     }
 
     /**
      * Display home page
      *
-     * @param user         User
-     * @param modelAndView ModelAndView
-     * @return modelAndView ModelAndView
+     * @param user         {@link User}
+     * @param modelAndView {@link ModelAndView}
+     * @return modelAndView {@link ModelAndView}
      */
     @RequestMapping(value = HOME_PAGE, method = RequestMethod.GET)
     public ModelAndView getHomePage(@SessionAttribute(REQUEST_USER) User user,

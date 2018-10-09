@@ -18,10 +18,8 @@ import ua.training.controller.commands.action.pages.ListUserDayRation;
 import ua.training.controller.commands.action.purge.DeleteUsersComposition;
 import ua.training.controller.commands.action.purge.DeleteUsersMenuItem;
 import ua.training.controller.commands.action.statement.LogOut;
-import ua.training.controller.commands.action.statement.RegisterNewUser;
 import ua.training.controller.commands.action.update.UpdateUsersComposition;
 import ua.training.controller.commands.action.update.UpdateUsersDish;
-import ua.training.controller.commands.action.update.UpdateUsersParameters;
 import ua.training.controller.commands.direction.*;
 import ua.training.controller.commands.exception.DataHttpException;
 import ua.training.controller.commands.exception.DataSqlException;
@@ -34,6 +32,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArraySet;
+
+//import ua.training.controller.commands.action.statement.RegisterNewUser;
+//import ua.training.controller.commands.action.update.UpdateUsersParameters;
 
 /**
  * Description: This util class for commands
@@ -50,14 +51,11 @@ public abstract class CommandsUtil implements Command {
     public static Map<String, Command> commandMapInitialize() {
         Map<String, Command> commandMap = new HashMap<>();
 
-//        commandMap.put(Attributes.COMMAND_LOG_IN, new LogIn());
-        commandMap.put(Attributes.COMMAND_REGISTER_NEW_USER, new RegisterNewUser());
-//        commandMap.put(Attributes.COMMAND_HOME_PAGE, new HomePage());
+//        commandMap.put(Attributes.COMMAND_REGISTER_NEW_USER, new RegisterNewUser());
         commandMap.put(Attributes.COMMAND_LOG_OUT, new LogOut());
-//        commandMap.put(Attributes.COMMAND_CHANGE_LANGUAGE, new ChangeLanguage());
         commandMap.put(Attributes.COMMAND_USER_SETTINGS, new UsersSettings());
         commandMap.put(Attributes.COMMAND_USER_SETTINGS_WITH_ERROR, new UsersSettingsWithError());
-        commandMap.put(Attributes.COMMAND_USER_UPDATE_PARAMETERS, new UpdateUsersParameters());
+//        commandMap.put(Attributes.COMMAND_USER_UPDATE_PARAMETERS, new UpdateUsersParameters());
         commandMap.put(Attributes.COMMAND_MENU_GENERAL_EDIT, new MenuGeneralEdit());
         commandMap.put(Attributes.COMMAND_MENU_GENERAL_DELETE, new DeleteGeneralMenuItem());
         commandMap.put(Attributes.COMMAND_MENU_GENERAL_UPDATE, new UpdateGeneralDish());
@@ -88,10 +86,10 @@ public abstract class CommandsUtil implements Command {
     /**
      * Open session for users and return page
      *
-     * @param request            HttpServletRequest
-     * @param user               User
-     * @param modelAndView       ModelAndView
-     * @param redirectAttributes RedirectAttributes
+     * @param request            {@link HttpServletRequest}
+     * @param user               {@link User}
+     * @param modelAndView       {@link ModelAndView}
+     * @param redirectAttributes {@link RedirectAttributes}
      */
     public static ModelAndView openUsersSession(HttpServletRequest request,
                                                 User user,
@@ -205,30 +203,13 @@ public abstract class CommandsUtil implements Command {
     public static Optional<Dish> extractDishFromHTTP(HttpServletRequest request) {
         Optional<Dish> dishHttp;
         try {
-            dishHttp = Optional.ofNullable(DISH_MAPPER.extractFromHttpServletRequest(request));
+            dishHttp = Optional.ofNullable(DISH_MAPPER.extractUserFromHttpForm(request));
         } catch (DataHttpException e) {
             request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_DATA, Attributes.PAGE_USER_WRONG_DATA);
             log.error(e.getMessage());
             dishHttp = Optional.empty();
         }
         return dishHttp;
-    }
-
-    /**
-     * Extract entity 'User' from HTTP request
-     *
-     * @param request HttpServletRequest
-     * @return userHttp Optional<User>
-     */
-    public static Optional<User> extractUserFromHTTP(HttpServletRequest request) {
-        Optional<User> userHttp;
-        try {
-            userHttp = Optional.ofNullable(USER_MAPPER.extractFromHttpServletRequest(request));
-        } catch (DataHttpException e) {
-            log.error(e.getMessage());
-            userHttp = Optional.empty();
-        }
-        return userHttp;
     }
 
     /**
