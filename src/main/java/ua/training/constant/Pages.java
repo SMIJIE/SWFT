@@ -21,7 +21,7 @@ public interface Pages {
     String USER_SETTINGS_REDIRECT = "redirect:/userSettings";
     String USER_SETTINGS_REDIRECT_WITH_ERROR = "redirect:/userSettingsWithError";
 
-    String MENU = "/user/menu";
+    String MENU_PAGE = "/user/menu";
     String MENU_GENERAL_EDIT = "/WEB-INF/admin/menuGeneralEdit.jsp";
     String MENU_GENERAL_EDIT_REDIRECT = "redirect:/menuGeneralEdit";
     String MENU_GENERAL_EDIT_WITH_ERROR_REDIRECT = "redirect:/menuGeneralEditWithError";

@@ -3,7 +3,7 @@ package ua.training.constant;
 
 public interface Api {
     String DEFAULT = "/";
-    String MENU = "/menu";
+    String MENU_API = "/menu";
     String SIGN_IN_OR_REGISTER = "/signInOrRegister";
     String LOG_IN = "/logIn";
     String REGISTER_NEW_USER = "/registerNewUser";

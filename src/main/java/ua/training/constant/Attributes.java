@@ -9,6 +9,11 @@ public interface Attributes {
     String HTML_TEXT = "text/html";
     String HTML_ENCODE = "UTF-8";
 
+    String SHOW_COLLAPSE_SIGN_IN = "showCollapseSignIn";
+    String SHOW_COLLAPSE_SIGN_UP = "showCollapseSignUp";
+    String SHOW_COLLAPSE_ATTRIBUTE_FOR_CCS_CLASS = "show";
+
+
     String PAGE_PATH = "/swft/";
     String PAGE_NAME = "pageName";
     String PAGE_VALUE_EMAIL_LOG_IN = "valueEmailLogIn";
