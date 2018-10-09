@@ -1,108 +1,91 @@
 package ua.training.model.dao.mapper;
 
-import lombok.extern.log4j.Log4j2;
-import ua.training.constant.Attributes;
-import ua.training.constant.Mess;
-import ua.training.constant.RegexExpress;
+import org.springframework.web.servlet.ModelAndView;
 import ua.training.controller.commands.exception.DataHttpException;
 import ua.training.model.dao.utility.PasswordEncoder;
 import ua.training.model.entity.User;
 import ua.training.model.entity.enums.Roles;
+import ua.training.model.entity.form.FormUser;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.Period;
 
-import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
-
-@Log4j2
 public class UserMapper implements ObjectMapper<User> {
-
     /**
-     * @param req HttpServletRequest
-     * @return new User
+     * Extract entity 'User' from HTTP form
+     *
+     * @param formUser     {@link FormUser}
+     * @param modelAndView {@link ModelAndView}
+     * @return new {@link User}
+     * @throws DataHttpException
      */
-    @Override
-    public User extractFromHttpServletRequest(HttpServletRequest req) throws DataHttpException {
-        String name;
-        LocalDate dob;
+    public User extractUserFromHttpForm(FormUser formUser, ModelAndView modelAndView) throws DataHttpException {
         String email;
         String password;
-        Roles role;
-        double height;
-        double weight;
-        double weightDesired;
-        double lifeStyleCoefficient;
-        String wd;
-        String tempPassword;
+        int height;
+        int weight;
+        int weightDesired;
+        int lifeStyleCoefficient;
 
-        name = req.getParameter(Attributes.REQUEST_NAME);
-        dob = LocalDate.parse(req.getParameter(Attributes.REQUEST_DATE_OF_BIRTHDAY));
-        email = req.getParameter(Attributes.REQUEST_EMAIL).toLowerCase();
-        tempPassword = req.getParameter(Attributes.REQUEST_PASSWORD);
-        password = isNullOrEmpty(tempPassword) ? "" : PasswordEncoder.encodePassword(tempPassword);
-        role = Roles.USER;
-        height = Double.valueOf(req.getParameter(Attributes.REQUEST_HEIGHT));
-        weight = Double.valueOf(req.getParameter(Attributes.REQUEST_WEIGHT));
-        wd = req.getParameter(Attributes.REQUEST_WEIGHT_DESIRED).equals("") ? "0" : req.getParameter(Attributes.REQUEST_WEIGHT_DESIRED);
-        weightDesired = Double.valueOf(wd);
-        lifeStyleCoefficient = Double.valueOf(req.getParameter(Attributes.REQUEST_LIFESTYLE));
+        email = formUser.getEmail().toLowerCase();
+        password = PasswordEncoder.encodePassword(formUser.getPassword());
+        height = (int) (formUser.getHeight() * 100);
+        weight = (int) (formUser.getWeight() * 1000);
+        weightDesired = (int) (formUser.getWeightDesired() * 1000);
+        lifeStyleCoefficient = (int) (formUser.getLifeStyleCoefficient() * 1000);
 
         User user = User.builder()
-                .name(name)
-                .dob(dob)
+                .name(formUser.getName())
+                .dob(formUser.getDob())
                 .email(email)
                 .password(password)
-                .role(role)
-                .height((int) (height * 100))
-                .weight((int) (weight * 1000))
-                .weightDesired((int) (weightDesired * 1000))
-                .lifeStyleCoefficient((int) (lifeStyleCoefficient * 1000))
+                .role(Roles.USER)
+                .height(height)
+                .weight(weight)
+                .weightDesired(weightDesired)
+                .lifeStyleCoefficient(lifeStyleCoefficient)
                 .build();
 
-        checkByRegex(user);
+        checkByRegex(user, modelAndView);
 
         return user;
     }
 
     /**
-     * Check users by regex
+     * Check users fields by regex
      *
-     * @param user User
+     * @param user         {@link User}
+     * @param modelAndView {@link ModelAndView}
      * @throws DataHttpException
      */
     @Override
-    public void checkByRegex(User user) throws DataHttpException {
+    public void checkByRegex(User user, ModelAndView modelAndView) throws DataHttpException {
         LocalDate localDate = LocalDate.now();
-
         Period period = Period.between(user.getDob(), localDate);
         boolean flag = true;
 
-        if (!(user.getName().matches(RegexExpress.USER_NAME_US)
-                || user.getName().matches(RegexExpress.USER_NAME_US2)
-                || user.getName().matches(RegexExpress.USER_NAME_UA)
-                || user.getName().matches(RegexExpress.USER_NAME_UA2))) {
+        if (!(user.getName().matches(USER_NAME_PATTERN))) {
+            modelAndView.addObject(PAGE_USER_ERROR, USER_VALID_NAME_WRONG);
             flag = false;
-        } else if ((period.getYears() < 15
-                || period.getYears() > 99)) {
+        } else if ((period.getYears() < 15 || period.getYears() > 99)) {
+            modelAndView.addObject(PAGE_USER_ERROR, USER_VALID_DOB_AGE_BETWEEN);
             flag = false;
-        } else if (!(user.getEmail().matches(RegexExpress.USER_EMAIL)
-                || user.getEmail().matches(RegexExpress.USER_EMAIL2)
-                || user.getEmail().matches(RegexExpress.USER_EMAIL3))) {
+        } else if (!(user.getEmail().matches(USER_EMAIL_PATTERN))) {
+            modelAndView.addObject(PAGE_USER_ERROR, USER_VALID_EMAIL_WRONG);
             flag = false;
-        } else if ((user.getHeight() / 100) < 50
-                || (user.getHeight() / 100) > 250) {
+        } else if (user.getHeight() < 50 * 100 || user.getHeight() > 250 * 100) {
+            modelAndView.addObject(PAGE_USER_ERROR, USER_VALID_HEIGHT_SIZE);
             flag = false;
-        } else if ((user.getWeight() / 1000) < 50
-                || (user.getWeight() / 1000) > 150) {
+        } else if (user.getWeight() < 50 * 1000 || user.getWeight() > 150 * 1000) {
+            modelAndView.addObject(PAGE_USER_ERROR, USER_VALID_WEIGHT_SIZE);
             flag = false;
-        } else if ((user.getWeightDesired() != 0) && ((user.getWeightDesired() / 1000) < 50
-                || (user.getWeightDesired() / 1000) > 150)) {
+        } else if (user.getWeightDesired() < 50 * 1000 || user.getWeightDesired() > 150 * 1000) {
+            modelAndView.addObject(PAGE_USER_ERROR, USER_VALID_WEIGHT_SIZE);
             flag = false;
         }
 
         if (!flag) {
-            throw new DataHttpException(Mess.LOG_USER_HTTP_NOT_EXTRACT);
+            throw new DataHttpException(LOG_USER_HTTP_FORM);
         }
     }
 }
