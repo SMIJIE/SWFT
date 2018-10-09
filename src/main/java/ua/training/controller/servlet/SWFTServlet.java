@@ -34,7 +34,7 @@ public class SWFTServlet extends
     /**
      * Add listeners to servlet context
      *
-     * @param servletContext ServletContext
+     * @param servletContext {@link ServletContext}
      */
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {

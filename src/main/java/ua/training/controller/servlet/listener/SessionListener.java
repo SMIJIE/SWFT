@@ -21,7 +21,7 @@ public class SessionListener implements HttpSessionListener, Attributes {
     /**
      * Set session timeout
      *
-     * @param httpSessionEvent HttpSessionEvent
+     * @param httpSessionEvent {@link HttpSessionEvent}
      */
     @Override
     public void sessionCreated(HttpSessionEvent httpSessionEvent) {
@@ -31,7 +31,7 @@ public class SessionListener implements HttpSessionListener, Attributes {
     /**
      * Delete user after session timeout
      *
-     * @param httpSessionEvent HttpSessionEvent
+     * @param httpSessionEvent {@link HttpSessionEvent}
      */
     @Override
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
