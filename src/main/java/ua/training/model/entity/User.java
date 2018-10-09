@@ -21,18 +21,16 @@ import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
 @ToString
 @Entity
 @Table(name = "user")
-public class User {
+public class User implements Mess, RegexExpress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idU", nullable = false)
     private Integer id;
     /**
-     * Verify on not EMPTY or NULL and PATTERN
+     * Verify on not NULL and PATTERN
      */
-    @NotNull(message = Mess.USER_VALID_NAME_NOT_EMPTY_NULL)
-    @NotEmpty(message = Mess.USER_VALID_NAME_NOT_EMPTY_NULL)
-    @Pattern(regexp = RegexExpress.USER_NAME_PATTERN,
-            message = Mess.USER_VALID_NAME_WRONG)
+    @NotBlank(message = USER_VALID_NAME_NOT_BLANK)
+    @Pattern(regexp = USER_NAME_PATTERN, message = USER_VALID_NAME_WRONG)
     @Column(nullable = false)
     private String name;
     /**
@@ -40,26 +38,23 @@ public class User {
      * Verify on not NULL
      * DateTimeFormat for input from <spring:form>
      */
-    @NotNull(message = Mess.USER_VALID_DOB_NOT_NULL)
+    @NotNull(message = USER_VALID_DOB_NOT_NULL)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(nullable = false)
     private LocalDate dob;
     /**
-     * Verify on not EMPTY or NULL and PATTERN and EMAIL
+     * Verify on not NULL and PATTERN and EMAIL
      */
     @Email
-    @NotNull(message = Mess.USER_VALID_EMAIL_NOT_EMPTY_NULL)
-    @NotEmpty(message = Mess.USER_VALID_EMAIL_NOT_EMPTY_NULL)
-    @Pattern(regexp = RegexExpress.USER_EMAIL_PATTERN,
-            message = Mess.USER_VALID_EMAIL_WRONG)
+    @NotBlank(message = USER_VALID_EMAIL_NOT_BLANK)
+    @Pattern(regexp = USER_EMAIL_PATTERN, message = USER_VALID_EMAIL_WRONG)
     @Column(nullable = false)
     private String email;
     /**
-     * Verify on not EMPTY or NULL and on MIN 3 symbols
+     * Verify on not NULL and on MIN 3 symbols
      */
-    @NotNull(message = Mess.USER_VALID_PASSWORD_NOT_EMPTY_NULL)
-    @NotEmpty(message = Mess.USER_VALID_PASSWORD_NOT_EMPTY_NULL)
-    @Size(min = 3, message = Mess.USER_VALID_PASSWORD_SIZE)
+    @NotBlank(message = USER_VALID_PASSWORD_NOT_BLANK)
+    @Size(min = 3, message = USER_VALID_PASSWORD_SIZE)
     @Column(nullable = false)
     private String password;
     /**
@@ -70,25 +65,29 @@ public class User {
     /**
      * Verify on not NULL and on MIN and MAX
      */
-    @NotNull(message = Mess.USER_VALID_HEIGHT_SIZE)
-    @Size(min = 50 * 100, max = 250 * 100, message = Mess.USER_VALID_HEIGHT_SIZE)
+    @NotNull(message = USER_VALID_HEIGHT_SIZE)
+    @Min(value = 50 * 100, message = USER_VALID_HEIGHT_SIZE)
+    @Max(value = 250 * 100, message = USER_VALID_HEIGHT_SIZE)
     @Column(nullable = false)
     private Integer height;
     /**
      * Verify on not NULL and on MIN and MAX
      */
-    @NotNull(message = Mess.USER_VALID_WEIGHT_SIZE)
-    @Size(min = 50 * 1000, max = 150 * 1000, message = Mess.USER_VALID_WEIGHT_SIZE)
+    @NotNull(message = USER_VALID_WEIGHT_SIZE)
+    @Min(value = 50 * 1000, message = USER_VALID_WEIGHT_SIZE)
+    @Max(value = 150 * 1000, message = USER_VALID_WEIGHT_SIZE)
     @Column(nullable = false)
     private Integer weight;
-
+    /**
+     * Has default value
+     */
     @Column(nullable = false)
     private Integer weightDesired;
     /**
      * For the Mifflin-San Jehora formula
      * Verify on not NULL
      */
-    @NotNull(message = Mess.USER_VALID_LIFE_STYLE_COEFFICIENT)
+    @NotNull(message = USER_VALID_LIFE_STYLE_COEFFICIENT)
     @Column(nullable = false)
     private Integer lifeStyleCoefficient;
     /**
@@ -110,12 +109,20 @@ public class User {
         this.height = (int) (heightTemp * 100);
     }
 
+    public void setHeight(Integer height) {
+        this.height = height;
+    }
+
     /**
      * Overload for input from <spring:form>
      */
     public void setWeight(String weight) {
         double weightTemp = Double.valueOf(weight);
         this.weight = (int) (weightTemp * 1000);
+    }
+
+    public void setWeight(Integer weight) {
+        this.weight = weight;
     }
 
     /**
@@ -126,11 +133,19 @@ public class User {
         this.weightDesired = (int) (weightDesiredTemp * 1000);
     }
 
+    public void setWeightDesired(Integer weightDesired) {
+        this.weightDesired = weightDesired;
+    }
+
     /**
      * Overload for input from <spring:form>
      */
-    public void setLifeStyleCoefficient(String lifeStyleCoefficient) {
-        double lifeStyleCoefficientTemp = Double.valueOf(lifeStyleCoefficient);
+    public void setLifeStyleCoefficient(Object lifeStyleCoefficient) {
+        double lifeStyleCoefficientTemp = Double.valueOf(lifeStyleCoefficient.toString());
         this.lifeStyleCoefficient = (int) (lifeStyleCoefficientTemp * 1000);
+    }
+
+    public void setLifeStyleCoefficient(Integer lifeStyleCoefficient) {
+        this.lifeStyleCoefficient = lifeStyleCoefficient;
     }
 }
