@@ -2,11 +2,9 @@ package ua.training.controller.servlet;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 import ua.training.config.AppConfig;
-import ua.training.controller.servlet.filter.EncodingFilter;
 import ua.training.controller.servlet.listener.ServContListener;
 import ua.training.controller.servlet.listener.SessionListener;
 
-import javax.servlet.Filter;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
@@ -31,11 +29,6 @@ public class SWFTServlet extends
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class[]{AppConfig.class};
-    }
-
-    @Override
-    protected Filter[] getServletFilters() {
-        return new Filter[]{new EncodingFilter()};
     }
 
     /**

@@ -15,7 +15,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * @author Zakusylo Pavlo
  */
 @WebListener
-public class SessionListener implements HttpSessionListener {
+public class SessionListener implements HttpSessionListener, Attributes {
     private CopyOnWriteArraySet<String> allUsers;
 
     /**
@@ -38,13 +38,13 @@ public class SessionListener implements HttpSessionListener {
         allUsers = (CopyOnWriteArraySet<String>) httpSessionEvent
                 .getSession()
                 .getServletContext()
-                .getAttribute(Attributes.REQUEST_USERS_ALL);
+                .getAttribute(REQUEST_USERS_ALL);
 
         Optional.ofNullable((User) httpSessionEvent
                 .getSession()
-                .getAttribute(Attributes.REQUEST_USER))
+                .getAttribute(REQUEST_USER))
                 .ifPresent(u -> allUsers.remove(u.getEmail()));
 
-        httpSessionEvent.getSession().getServletContext().setAttribute(Attributes.REQUEST_USERS_ALL, allUsers);
+        httpSessionEvent.getSession().getServletContext().setAttribute(REQUEST_USERS_ALL, allUsers);
     }
 }

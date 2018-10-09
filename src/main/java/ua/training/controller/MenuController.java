@@ -4,9 +4,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import ua.training.constant.Api;
-import ua.training.constant.Attributes;
-import ua.training.constant.Pages;
 
 /**
  * Description: This is the menu controller
@@ -14,7 +11,7 @@ import ua.training.constant.Pages;
  * @author Zakusylo Pavlo
  */
 @Controller
-public class MenuController {
+public class MenuController implements GeneralController {
 
     /**
      * Display general menu page
@@ -22,10 +19,10 @@ public class MenuController {
      * @param modelAndView ModelAndView
      * @return modelAndView ModelAndView
      */
-    @RequestMapping(value = Api.MENU, method = RequestMethod.GET)
+    @RequestMapping(value = MENU_API, method = RequestMethod.GET)
     public ModelAndView getGeneralMenuPage(ModelAndView modelAndView) {
-        modelAndView.addObject(Attributes.PAGE_NAME, Attributes.PAGE_MENU);
-        modelAndView.setViewName(Pages.MENU);
+        modelAndView.addObject(PAGE_NAME, PAGE_MENU);
+        modelAndView.setViewName(MENU_PAGE);
 
         return modelAndView;
     }

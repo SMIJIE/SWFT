@@ -17,7 +17,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * @author Zakusylo Pavlo
  */
 @WebListener
-public class ServContListener implements ServletContextListener {
+public class ServContListener implements ServletContextListener, Attributes {
     private CopyOnWriteArraySet allUsers = new CopyOnWriteArraySet();
     private DishServiceImp dishServiceImp = new DishServiceImp();
 
@@ -28,13 +28,13 @@ public class ServContListener implements ServletContextListener {
      */
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        servletContextEvent.getServletContext().setAttribute(Attributes.REQUEST_USERS_ALL, allUsers);
+        servletContextEvent.getServletContext().setAttribute(REQUEST_USERS_ALL, allUsers);
 
         List<Dish> general = dishServiceImp.getGeneralDishes();
 
         if (!general.isEmpty()) {
             CommandsUtil.sortListByAnnotationFields(general);
-            servletContextEvent.getServletContext().setAttribute(Attributes.REQUEST_GENERAL_DISHES, general);
+            servletContextEvent.getServletContext().setAttribute(REQUEST_GENERAL_DISHES, general);
         }
     }
 
