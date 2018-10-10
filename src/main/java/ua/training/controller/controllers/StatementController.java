@@ -1,4 +1,4 @@
-package ua.training.controller;
+package ua.training.controller.controllers;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
@@ -9,25 +9,25 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.training.controller.commands.exception.DataHttpException;
 import ua.training.controller.commands.utility.CommandsUtil;
 import ua.training.model.dao.utility.PasswordEncoder;
-import ua.training.model.entity.DayRation;
 import ua.training.model.entity.User;
 import ua.training.model.entity.form.FormUser;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.Optional;
+
+import static ua.training.constant.RegexExpress.USER_EMAIL_PATTERN;
+import static ua.training.constant.RegexExpress.USER_NAME_PATTERN;
 
 /**
- * Description: This is the user controller
+ * Description: This is the statement controller
  *
  * @author Zakusylo Pavlo
  */
 @Log4j2
 @Controller
-public class UserController implements GeneralController {
+public class StatementController implements GeneralController {
 
     /**
      * Display welcome(initial) page
@@ -142,35 +142,26 @@ public class UserController implements GeneralController {
         return modelAndView;
     }
 
-    /**
-     * Display home page
-     *
-     * @param user         {@link User}
-     * @param modelAndView {@link ModelAndView}
-     * @return modelAndView {@link ModelAndView}
-     */
-    @RequestMapping(value = HOME_PAGE, method = RequestMethod.GET)
-    public ModelAndView getHomePage(@SessionAttribute(REQUEST_USER) User user,
-                                    ModelAndView modelAndView) {
-
-        LocalDate localDate = LocalDate.now();
-
-        List<DayRation> dayRations = DAY_RATION_SERVICE_IMP.getMonthlyDayRationByUser(localDate.getMonthValue(),
-                localDate.getYear(), user.getId());
-
-        Map<DayRation, Integer> rationsWithCalories = dayRations.stream()
-                .sorted(Comparator.comparing(rwc -> rwc.getDate().getDayOfMonth()))
-                .collect(Collectors.toMap(Function.identity(),
-                        dr -> RATION_COMPOSITION_SERVICE_IMP.sumCaloriesCompositionByRationId(dr.getId()),
-                        (e1, e2) -> e1, LinkedHashMap::new));
+    @RequestMapping(value = "/checkUserParamFromHttpForm", method = RequestMethod.GET)
+    public @ResponseBody
+    String checkUserParamFromHttpForm(@RequestParam String param) {
+        String[] params = param.split("=");
 
 
-        modelAndView.setViewName(HOME);
-        modelAndView.addObject(PAGE_NAME, PAGE_GENERAL);
-        modelAndView.addObject(REQUEST_NUMBER_PAGE, 0);
-        modelAndView.addObject(REQUEST_NUMBER_MONTH, localDate.getMonthValue());
-        modelAndView.addObject(REQUEST_MONTHLY_DAY_RATION, rationsWithCalories);
+        if (params[0].contains("email")) {
+            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(params[1], USER_EMAIL_PATTERN, USER_VALID_EMAIL_WRONG, 3.0, 45.0);
+        } else if (params[0].contains("password")) {
+            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(Double.valueOf(params[1].length()), null, USER_VALID_PASSWORD_SIZE, 3.0, 45.0);
+        } else if (params[0].equals("name")) {
+            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(params[1], USER_NAME_PATTERN, USER_VALID_NAME_WRONG, 0.0, 0.0);
+        } else if (params[0].equals("dob")) {
+            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(LocalDate.parse(params[1]), null, USER_VALID_DOB_AGE_BETWEEN, 15.0, 99.0);
+        } else if (params[0].equals("height")) {
+            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(Double.valueOf(params[1]), null, USER_VALID_HEIGHT_SIZE, 50.0, 250.0);
+        } else if (params[0].contains("weight")) {
+            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(Double.valueOf(params[1]), null, USER_VALID_WEIGHT_SIZE, 50.0, 150.0);
+        }
 
-        return modelAndView;
+        return param;
     }
 }

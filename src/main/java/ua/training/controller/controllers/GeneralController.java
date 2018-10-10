@@ -1,4 +1,4 @@
-package ua.training.controller;
+package ua.training.controller.controllers;
 
 import ua.training.constant.Api;
 import ua.training.constant.Attributes;
