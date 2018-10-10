@@ -88,4 +88,40 @@ public class UserMapper implements ObjectMapper<User> {
             throw new DataHttpException(LOG_USER_HTTP_FORM);
         }
     }
+
+    /**
+     * Check every users http input by regex separately
+     *
+     * @param object {@link Object}
+     * @param regex  {@link String}
+     * @param mess   {@link String}
+     * @param min    {@link Double}
+     * @param max    {@link Double}
+     * @return mess {@link String}
+     */
+    public String checkByAjaxUserParamFromHttpFormByRegex(Object object,
+                                                          String regex,
+                                                          String mess,
+                                                          Double min,
+                                                          Double max) {
+        if (object.getClass() == String.class) {
+            String temp = (String) object;
+            if (temp.matches(regex)) {
+                return "";
+            }
+        } else if (object.getClass() == Double.class) {
+            Double temp = (Double) object;
+            if (temp >= min && temp <= max) {
+                return "";
+            }
+        } else if (object.getClass() == LocalDate.class) {
+            LocalDate localDate = LocalDate.now();
+            Period period = Period.between((LocalDate) object, localDate);
+            if ((period.getYears() >= min && period.getYears() <= max)) {
+                return "";
+            }
+        }
+
+        return mess;
+    }
 }
