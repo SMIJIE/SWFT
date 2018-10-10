@@ -53,6 +53,8 @@ public class AppConfig implements WebMvcConfigurer {
         viewResolver.setViewClass(JstlView.class);
         viewResolver.setPrefix("/WEB-INF/views/");
         viewResolver.setSuffix(".jsp");
+        viewResolver.setContentType("text/html; charset=UTF-8");
+        viewResolver.setContentType("text/javascript; charset=UTF-8");
 
         return viewResolver;
     }
