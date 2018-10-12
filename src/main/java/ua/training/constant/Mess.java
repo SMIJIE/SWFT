@@ -42,4 +42,5 @@ public interface Mess {
     String USER_VALID_WEIGHT_SIZE = "valid.weight.size";
     String USER_VALID_LIFE_STYLE_COEFFICIENT = "valid.lifeStyleCoefficient";
 
+    String AJAX_MESS_ERROR="ERROR";
 }

@@ -8,13 +8,13 @@ package ua.training.constant;
 public interface Pages {
     String REDIRECT = "redirect:/";
     String INDEX = "/index.jsp";
-    String WELCOME_PAGE = "welcomePage";
+    String WELCOME_PAGE = "/welcomePage";
 
     String HOME = "/user/homePage";
-    String HOME_REDIRECT = "redirect:/homePage";
+    String HOME_REDIRECT = "redirect:/swft/homePage";
 
     String SIGN_OR_REGISTER = "/user/signInOrRegister";
-    String SIGN_OR_REGISTER_REDIRECT = "redirect:/signInOrRegister";
+    String SIGN_OR_REGISTER_REDIRECT = "redirect:/swft/signInOrRegister";
     String SIGN_OR_REGISTER_WITH_ERROR = "redirect:/signInOrRegisterWithError";
 
     String USER_SETTINGS = "/WEB-INF/user/userSettings.jsp";

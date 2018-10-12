@@ -10,6 +10,8 @@ public interface Api {
     String MENU_API = "/menu";
     String SIGN_IN_OR_REGISTER = "/signInOrRegister";
     String LOG_IN = "/logIn";
+    String LOG_OUT = "/logOut";
     String REGISTER_NEW_USER = "/registerNewUser";
     String HOME_PAGE = "/homePage";
+    String AJAX_CHECK_DYNAMICALLY= "/checkUserParamFromHttpForm";
 }
