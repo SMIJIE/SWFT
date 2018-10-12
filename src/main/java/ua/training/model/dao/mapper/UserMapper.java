@@ -94,14 +94,12 @@ public class UserMapper implements ObjectMapper<User> {
      *
      * @param object {@link Object}
      * @param regex  {@link String}
-     * @param mess   {@link String}
      * @param min    {@link Double}
      * @param max    {@link Double}
      * @return mess {@link String}
      */
     public String checkByAjaxUserParamFromHttpFormByRegex(Object object,
                                                           String regex,
-                                                          String mess,
                                                           Double min,
                                                           Double max) {
         if (object.getClass() == String.class) {
@@ -122,6 +120,6 @@ public class UserMapper implements ObjectMapper<User> {
             }
         }
 
-        return mess;
+        return AJAX_MESS_ERROR;
     }
 }

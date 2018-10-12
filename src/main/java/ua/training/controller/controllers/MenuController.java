@@ -21,8 +21,8 @@ public class MenuController implements GeneralController {
      */
     @RequestMapping(value = MENU_API, method = RequestMethod.GET)
     public ModelAndView getGeneralMenuPage(ModelAndView modelAndView) {
-        modelAndView.addObject(PAGE_NAME, PAGE_MENU);
-        modelAndView.setViewName(MENU_PAGE);
+        modelAndView.addObject(PAGE_NAME, PAGE_MENU)
+                .setViewName(MENU_PAGE);
 
         return modelAndView;
     }

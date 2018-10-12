@@ -6,6 +6,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ua.training.constant.Attributes;
 import ua.training.controller.commands.exception.DataHttpException;
 import ua.training.controller.commands.utility.CommandsUtil;
 import ua.training.model.dao.utility.PasswordEncoder;
@@ -17,6 +18,7 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
 import static ua.training.constant.RegexExpress.USER_EMAIL_PATTERN;
 import static ua.training.constant.RegexExpress.USER_NAME_PATTERN;
 
@@ -37,8 +39,8 @@ public class StatementController implements GeneralController {
      */
     @RequestMapping(value = DEFAULT, method = RequestMethod.GET)
     public ModelAndView getWelcomePage(ModelAndView modelAndView) {
-        modelAndView.addObject(PAGE_NAME, PAGE_GENERAL);
-        modelAndView.setViewName(WELCOME_PAGE);
+        modelAndView.addObject(PAGE_NAME, PAGE_GENERAL)
+                .setViewName(WELCOME_PAGE);
 
         return modelAndView;
     }
@@ -51,10 +53,10 @@ public class StatementController implements GeneralController {
      */
     @RequestMapping(value = SIGN_IN_OR_REGISTER, method = RequestMethod.GET)
     public ModelAndView getSignInOrRegisterPage(ModelAndView modelAndView) {
-        modelAndView.addObject(PAGE_NAME, PAGE_SIGN_IN_OR_UP);
-        modelAndView.addObject(REQUEST_FORM_USER, new FormUser());
-        modelAndView.addObject(SHOW_COLLAPSE_SIGN_IN, SHOW_COLLAPSE_ATTRIBUTE_FOR_CCS_CLASS);
-        modelAndView.setViewName(SIGN_OR_REGISTER);
+        modelAndView.addObject(PAGE_NAME, PAGE_SIGN_IN_OR_UP)
+                .addObject(REQUEST_FORM_USER, new FormUser())
+                .addObject(SHOW_COLLAPSE_SIGN_IN, SHOW_COLLAPSE_ATTRIBUTE_FOR_CCS_CLASS)
+                .setViewName(SIGN_OR_REGISTER);
 
         return modelAndView;
     }
@@ -77,8 +79,8 @@ public class StatementController implements GeneralController {
                                     HttpServletRequest request) {
 
         modelAndView.setViewName(SIGN_OR_REGISTER_REDIRECT);
-        redirectAttributes.addFlashAttribute(PAGE_VALUE_EMAIL_LOG_IN, email);
-        redirectAttributes.addFlashAttribute(PAGE_VALUE_PASSWORD_LOG_IN, password);
+        redirectAttributes.addFlashAttribute(PAGE_VALUE_EMAIL_LOG_IN, email)
+                .addFlashAttribute(PAGE_VALUE_PASSWORD_LOG_IN, password);
 
         String emailSQL = email.toLowerCase();
         String passwordSQL = PasswordEncoder.encodePassword(password);
@@ -106,16 +108,16 @@ public class StatementController implements GeneralController {
      * @param servletRequest     {@link HttpServletRequest}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = REGISTER_NEW_USER, method = RequestMethod.POST)
+    @RequestMapping(value = REGISTER_NEW_USER, method = {RequestMethod.POST, RequestMethod.GET})
     public ModelAndView actionRegisterNewUser(@Valid @ModelAttribute(REQUEST_FORM_USER) FormUser formUser,
                                               BindingResult bindingResult,
                                               RedirectAttributes redirectAttributes,
                                               HttpServletRequest servletRequest,
                                               ModelAndView modelAndView) {
 
-        modelAndView.addObject(PAGE_NAME, PAGE_SIGN_IN_OR_UP);
-        modelAndView.addObject(SHOW_COLLAPSE_SIGN_UP, SHOW_COLLAPSE_ATTRIBUTE_FOR_CCS_CLASS);
-        modelAndView.setViewName(SIGN_OR_REGISTER);
+        modelAndView.addObject(PAGE_NAME, PAGE_SIGN_IN_OR_UP)
+                .addObject(SHOW_COLLAPSE_SIGN_UP, SHOW_COLLAPSE_ATTRIBUTE_FOR_CCS_CLASS)
+                .setViewName(SIGN_OR_REGISTER);
 
         if (bindingResult.hasErrors()) {
             return modelAndView;
@@ -142,24 +144,64 @@ public class StatementController implements GeneralController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/checkUserParamFromHttpForm", method = RequestMethod.GET)
-    public @ResponseBody
-    String checkUserParamFromHttpForm(@RequestParam String param) {
+    /**
+     * Action log out
+     *
+     * @param servletRequest     {@link HttpServletRequest}
+     * @param redirectAttributes {@link RedirectAttributes}
+     * @param modelAndView       {@link ModelAndView}
+     * @return modelAndView {@link ModelAndView}
+     */
+    @RequestMapping(value = LOG_OUT, method = RequestMethod.GET)
+    public ModelAndView actionLogOut(HttpServletRequest servletRequest,
+                                     RedirectAttributes redirectAttributes,
+                                     ModelAndView modelAndView) {
+
+        User user = (User) servletRequest.getSession().getAttribute(REQUEST_USER);
+
+        CommandsUtil.deleteUsersFromContext(servletRequest, user.getEmail());
+
+        servletRequest.getSession().setAttribute(Attributes.REQUEST_USER, null);
+
+        log.info(LOG_USER_LOGGED_OUT + "[" + user.getEmail() + "]");
+
+        redirectAttributes.addAttribute(PAGE_NAME, PAGE_DEMONSTRATION);
+        modelAndView.setViewName(SIGN_OR_REGISTER_REDIRECT);
+
+        return modelAndView;
+    }
+
+    /**
+     * Action check every users http input dynamically
+     *
+     * @param param {@link String}
+     * @return param {@link String}
+     */
+    @RequestMapping(value = AJAX_CHECK_DYNAMICALLY, method = RequestMethod.GET)
+    @ResponseBody
+    public String checkUserParamFromHttpForm(@RequestParam String param) {
         String[] params = param.split("=");
 
+        if (params.length != 2) {
+            return AJAX_MESS_ERROR;
+        }
 
         if (params[0].contains("email")) {
-            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(params[1], USER_EMAIL_PATTERN, USER_VALID_EMAIL_WRONG, 3.0, 45.0);
+            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(params[1], USER_EMAIL_PATTERN, 3.0, 45.0);
         } else if (params[0].contains("password")) {
-            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(Double.valueOf(params[1].length()), null, USER_VALID_PASSWORD_SIZE, 3.0, 45.0);
+            double temp = isNullOrEmpty(params[1]) ? 0.0 : params[1].length();
+            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(temp, null, 3.0, 45.0);
         } else if (params[0].equals("name")) {
-            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(params[1], USER_NAME_PATTERN, USER_VALID_NAME_WRONG, 0.0, 0.0);
+            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(params[1], USER_NAME_PATTERN, 0.0, 0.0);
         } else if (params[0].equals("dob")) {
-            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(LocalDate.parse(params[1]), null, USER_VALID_DOB_AGE_BETWEEN, 15.0, 99.0);
+            LocalDate temp = isNullOrEmpty(params[1]) ? LocalDate.now() : LocalDate.parse(params[1]);
+            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(temp, null, 15.0, 99.0);
         } else if (params[0].equals("height")) {
-            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(Double.valueOf(params[1]), null, USER_VALID_HEIGHT_SIZE, 50.0, 250.0);
+            double temp = isNullOrEmpty(params[1]) ? 0.0 : Double.valueOf(params[1]);
+            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(temp, null, 50.0, 250.0);
         } else if (params[0].contains("weight")) {
-            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(Double.valueOf(params[1]), null, USER_VALID_WEIGHT_SIZE, 50.0, 150.0);
+            double temp = isNullOrEmpty(params[1]) ? 0.0 : Double.valueOf(params[1]);
+            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(temp, null, 50.0, 150.0);
         }
 
         return param;

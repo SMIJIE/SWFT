@@ -22,7 +22,11 @@
             url: 'checkUserParamFromHttpForm',
             data: ({param: parseAttribute + '=' + $('#' + parseAttribute).val()}),
             success: function (data) {
-                $('#' + parseAttribute + 'Error').html(data);
+                if (data === "") {
+                    $('#' + parseAttribute + 'Error').css({visibility: 'hidden'});
+                } else {
+                    $('#' + parseAttribute + 'Error').css({visibility: 'visible'});
+                }
             }
         });
     }
@@ -54,21 +58,25 @@
                     <form:form method="POST" action="logIn" id="logIn" modelAttribute="formUser">
                         <div class="form-group">
                             <form:label path="email">
-                                <spring:message code="register.email"/>:
+                                <spring:message code="register.email"/>:&nbsp;
+                                <span style="color:red; visibility: hidden" id="emailInError">
+                                    <spring:message code="wrong.user.email"/>
+                                </span>
                             </form:label>
                             <form:input path="email" type="email" class="form-control" id="emailIn"
                                         placeholder="ZakusyloP@gmail.com" value="${valueEmailLogIn}"
                                         onkeyup="doAjax('emailIn')"/>
-                            <p style="color:red" id="emailInError"></p>
                         </div>
 
                         <div class="form-group">
                             <form:label path="password">
-                                <spring:message code="register.password"/>:
+                                <spring:message code="register.password"/>:&nbsp;
+                                <span style="color:red; visibility: hidden" id="passwordInError">
+                                    <spring:message code="valid.password.size"/>
+                                </span>
                             </form:label>
                             <form:input path="password" type="password" class="form-control" id="passwordIn"
                                         placeholder="" value="${valuePasswordLogIn}" onkeyup="doAjax('passwordIn')"/>
-                            <p style="color:red" id="passwordInError"></p>
                         </div>
 
                         <button type="submit" class="btn btn-primary">
@@ -95,13 +103,16 @@
                             <div class="col">
                                 <spring:bind path="name">
                                     <form:label path="name">
-                                        <spring:message code="register.name"/>:
+                                        <spring:message code="register.name"/>:&nbsp;
+                                        <span style="color:red; visibility: hidden" id="nameError">
+                                          <spring:message code="wrong.user.name"/>
+                                        </span>
                                     </form:label>
                                     <spring:message code="example.name" var="page.example.name"/>
                                     <form:input path="name" type="text" class="form-control" id="name"
                                                 placeholder="${page.example.name}" value="${formUser.name}"
                                                 onkeyup="doAjax('name')"/>
-                                    <p style="color:red" id="nameError">
+                                    <p style="color:red">
                                         <spring:message code="${status.errorMessage}"/>
                                     </p>
                                 </spring:bind>
@@ -110,11 +121,14 @@
                             <div class="col">
                                 <spring:bind path="dob">
                                     <form:label path="dob">
-                                        <spring:message code="register.dob"/>:
+                                        <spring:message code="register.dob"/>&nbsp;
+                                        <span style="color:red; visibility: hidden" id="dobError">
+                                          <spring:message code="valid.dob.age.between"/>
+                                        </span>
                                     </form:label>
                                     <form:input path="dob" type="date" class="form-control" id="dob"
                                                 value="${formUser.dob}" onkeyup="doAjax('dob')"/>
-                                    <p style="color:red" id="dobError">
+                                    <p style="color:red">
                                         <spring:message code="${status.errorMessage}"/>
                                     </p>
                                 </spring:bind>
@@ -125,12 +139,15 @@
                             <div class="col">
                                 <spring:bind path="email">
                                     <form:label path="email">
-                                        <spring:message code="register.email"/>:
+                                        <spring:message code="register.email"/>:&nbsp;
+                                        <span style="color:red; visibility: hidden" id="emailRegError">
+                                          <spring:message code="wrong.user.email"/>
+                                        </span>
                                     </form:label>
                                     <form:input path="email" type="email" class="form-control" id="emailReg"
                                                 placeholder="ZakusyloP@gmail.com" value="${formUser.email}"
                                                 onkeyup="doAjax('emailReg')"/>
-                                    <p style="color:red" id="emailRegError">
+                                    <p style="color:red">
                                         <spring:message code="${status.errorMessage}"/>
                                     </p>
                                 </spring:bind>
@@ -139,12 +156,15 @@
                             <div class="col">
                                 <spring:bind path="password">
                                     <form:label path="password">
-                                        <spring:message code="register.password"/>:
+                                        <spring:message code="register.password"/>:&nbsp;
+                                        <span style="color:red; visibility: hidden" id="passwordRegError">
+                                          <spring:message code="valid.password.size"/>
+                                        </span>
                                     </form:label>
                                     <form:input path="password" type="password" class="form-control" id="passwordReg"
                                                 placeholder="" value="${formUser.password}"
                                                 onkeyup="doAjax('passwordReg')"/>
-                                    <p style="color:red" id="passwordRegError">
+                                    <p style="color:red">
                                         <spring:message code="${status.errorMessage}"/>
                                     </p>
                                 </spring:bind>
@@ -185,12 +205,15 @@
                                 <spring:bind path="height">
                                     <form:label path="height">
                                         <spring:message code="register.height"/>,&nbsp;
-                                        <spring:message code="register.cm"/>&nbsp;:
+                                        <spring:message code="register.cm"/>&nbsp;:&nbsp;
+                                        <span style="color:red; visibility: hidden" id="heightError">
+                                          <spring:message code="valid.height.size"/>
+                                        </span>
                                     </form:label>
                                     <form:input path="height" type="number" class="form-control" id="height" step="0.1"
                                                 placeholder="183,5" value="${formUser.height}"
                                                 onkeyup="doAjax('height')"/>
-                                    <p style="color:red" id="heightError">
+                                    <p style="color:red">
                                         <spring:message code="${status.errorMessage}"/>
                                     </p>
                                 </spring:bind>
@@ -200,12 +223,15 @@
                                 <spring:bind path="weight">
                                     <form:label path="weight">
                                         <spring:message code="calories.currentWeight"/>,&nbsp;
-                                        <spring:message code="register.kg"/>&nbsp;:
+                                        <spring:message code="register.kg"/>&nbsp;:&nbsp;
+                                        <span style="color:red; visibility: hidden" id="weightError">
+                                          <spring:message code="valid.weight.size"/>
+                                        </span>
                                     </form:label>
                                     <form:input path="weight" type="number" class="form-control" id="weight" step="0.1"
                                                 placeholder="85,0" value="${formUser.weight}"
                                                 onkeyup="doAjax('weight')"/>
-                                    <p style="color:red" id="weightError">
+                                    <p style="color:red">
                                         <spring:message code="${status.errorMessage}"/>
                                     </p>
                                 </spring:bind>
@@ -215,13 +241,16 @@
                                 <spring:bind path="weightDesired">
                                     <form:label path="weightDesired">
                                         <spring:message code="calories.desireWeight"/>,&nbsp;
-                                        <spring:message code="register.kg"/>&nbsp;:
+                                        <spring:message code="register.kg"/>&nbsp;:&nbsp;
+                                        <span style="color:red; visibility: hidden" id="weightDesiredError">
+                                          <spring:message code="valid.weight.size"/>
+                                        </span>
                                     </form:label>
                                     <form:input path="weightDesired" type="number" class="form-control"
                                                 id="weightDesired" step="0.1"
                                                 placeholder="70,5" value="${formUser.weightDesired}"
                                                 onkeyup="doAjax('weightDesired')"/>
-                                    <p style="color:red" id="weightDesiredError">
+                                    <p style="color:red">
                                         <spring:message code="${status.errorMessage}"/>
                                     </p>
                                 </spring:bind>

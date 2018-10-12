@@ -48,11 +48,11 @@ public class UserController implements GeneralController {
                         (e1, e2) -> e1, LinkedHashMap::new));
 
 
-        modelAndView.setViewName(HOME);
-        modelAndView.addObject(PAGE_NAME, PAGE_GENERAL);
-        modelAndView.addObject(REQUEST_NUMBER_PAGE, 0);
-        modelAndView.addObject(REQUEST_NUMBER_MONTH, localDate.getMonthValue());
-        modelAndView.addObject(REQUEST_MONTHLY_DAY_RATION, rationsWithCalories);
+        modelAndView.addObject(PAGE_NAME, PAGE_GENERAL)
+                .addObject(REQUEST_NUMBER_PAGE, 0)
+                .addObject(REQUEST_NUMBER_MONTH, localDate.getMonthValue())
+                .addObject(REQUEST_MONTHLY_DAY_RATION, rationsWithCalories)
+                .setViewName(HOME);
 
         return modelAndView;
     }
