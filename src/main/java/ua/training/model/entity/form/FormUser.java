@@ -48,6 +48,10 @@ public class FormUser implements Mess, RegexExpress {
     @Size(min = 3, message = USER_VALID_PASSWORD_SIZE)
     private String password;
     /**
+     * For confirm when want to change the password
+     */
+    private String passwordConfirm;
+    /**
      * Verify on not NULL and on MIN and MAX
      */
     @NotNull(message = USER_VALID_HEIGHT_SIZE)

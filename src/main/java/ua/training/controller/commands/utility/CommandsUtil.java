@@ -17,11 +17,9 @@ import ua.training.controller.commands.action.pages.ListHomePage;
 import ua.training.controller.commands.action.pages.ListUserDayRation;
 import ua.training.controller.commands.action.purge.DeleteUsersComposition;
 import ua.training.controller.commands.action.purge.DeleteUsersMenuItem;
-import ua.training.controller.commands.action.statement.LogOut;
 import ua.training.controller.commands.action.update.UpdateUsersComposition;
 import ua.training.controller.commands.action.update.UpdateUsersDish;
 import ua.training.controller.commands.direction.*;
-import ua.training.controller.commands.exception.DataHttpException;
 import ua.training.controller.commands.exception.DataSqlException;
 import ua.training.model.dao.utility.DishComparator;
 import ua.training.model.dao.utility.SortAnnotation;
@@ -32,6 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArraySet;
+
+//import ua.training.controller.commands.action.statement.LogOut;
 
 //import ua.training.controller.commands.action.statement.RegisterNewUser;
 //import ua.training.controller.commands.action.update.UpdateUsersParameters;
@@ -51,11 +51,6 @@ public abstract class CommandsUtil implements Command {
     public static Map<String, Command> commandMapInitialize() {
         Map<String, Command> commandMap = new HashMap<>();
 
-//        commandMap.put(Attributes.COMMAND_REGISTER_NEW_USER, new RegisterNewUser());
-        commandMap.put(Attributes.COMMAND_LOG_OUT, new LogOut());
-        commandMap.put(Attributes.COMMAND_USER_SETTINGS, new UsersSettings());
-        commandMap.put(Attributes.COMMAND_USER_SETTINGS_WITH_ERROR, new UsersSettingsWithError());
-//        commandMap.put(Attributes.COMMAND_USER_UPDATE_PARAMETERS, new UpdateUsersParameters());
         commandMap.put(Attributes.COMMAND_MENU_GENERAL_EDIT, new MenuGeneralEdit());
         commandMap.put(Attributes.COMMAND_MENU_GENERAL_DELETE, new DeleteGeneralMenuItem());
         commandMap.put(Attributes.COMMAND_MENU_GENERAL_UPDATE, new UpdateGeneralDish());
@@ -123,7 +118,7 @@ public abstract class CommandsUtil implements Command {
      * @param emails  String...
      */
     public static void addUsersToContext(HttpServletRequest request, String... emails) {
-        HashSet<String> allUsers = (HashSet<String>) request.getServletContext().getAttribute(Attributes.REQUEST_USERS_ALL);
+        CopyOnWriteArraySet<String> allUsers = (CopyOnWriteArraySet<String>) request.getServletContext().getAttribute(Attributes.REQUEST_USERS_ALL);
         allUsers.addAll(Arrays.asList(emails));
         request.getServletContext().setAttribute(Attributes.REQUEST_USERS_ALL, allUsers);
     }
@@ -135,9 +130,31 @@ public abstract class CommandsUtil implements Command {
      * @param emails  String...
      */
     public static void deleteUsersFromContext(HttpServletRequest request, String... emails) {
-        HashSet<String> allUsers = (HashSet<String>) request.getServletContext().getAttribute(Attributes.REQUEST_USERS_ALL);
+        CopyOnWriteArraySet<String> allUsers = (CopyOnWriteArraySet<String>) request.getServletContext().getAttribute(Attributes.REQUEST_USERS_ALL);
         Arrays.asList(emails).forEach(allUsers::remove);
         request.getServletContext().setAttribute(Attributes.REQUEST_USERS_ALL, allUsers);
+    }
+
+    /**
+     * Merge users from Http Form to Session
+     *
+     * @param userHttp {@link User}
+     * @param user     {@link User}
+     */
+    public static void mergeUserParameters(User userHttp, User user) {
+        user.setName(userHttp.getName());
+        user.setDob(userHttp.getDob());
+        user.setEmail(userHttp.getEmail());
+        user.setRole(userHttp.getRole());
+        user.setHeight(userHttp.getHeight());
+        user.setWeight(userHttp.getWeight());
+        user.setWeightDesired(userHttp.getWeightDesired());
+        user.setLifeStyleCoefficient(userHttp.getLifeStyleCoefficient());
+
+        boolean flagPassword = userHttp.getPassword().isEmpty();
+        user.setPassword(flagPassword ?
+                user.getPassword() : userHttp.getPassword());
+
     }
 
     /**
@@ -202,13 +219,13 @@ public abstract class CommandsUtil implements Command {
      */
     public static Optional<Dish> extractDishFromHTTP(HttpServletRequest request) {
         Optional<Dish> dishHttp;
-        try {
-            dishHttp = Optional.ofNullable(DISH_MAPPER.extractUserFromHttpForm(request));
-        } catch (DataHttpException e) {
-            request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_DATA, Attributes.PAGE_USER_WRONG_DATA);
-            log.error(e.getMessage());
-            dishHttp = Optional.empty();
-        }
+//        try {
+        dishHttp = Optional.ofNullable(/*DISH_MAPPER.extractUserFromHttpForm(request)*/null);
+//        } catch (DataHttpException e) {
+//            request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_DATA, Attributes.PAGE_USER_WRONG_DATA);
+//            log.error(e.getMessage());
+//            dishHttp = Optional.empty();
+//        }
         return dishHttp;
     }
 

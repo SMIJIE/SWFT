@@ -170,40 +170,4 @@ public class StatementController implements GeneralController {
 
         return modelAndView;
     }
-
-    /**
-     * Action check every users http input dynamically
-     *
-     * @param param {@link String}
-     * @return param {@link String}
-     */
-    @RequestMapping(value = AJAX_CHECK_DYNAMICALLY, method = RequestMethod.GET)
-    @ResponseBody
-    public String checkUserParamFromHttpForm(@RequestParam String param) {
-        String[] params = param.split("=");
-
-        if (params.length != 2) {
-            return AJAX_MESS_ERROR;
-        }
-
-        if (params[0].contains("email")) {
-            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(params[1], USER_EMAIL_PATTERN, 3.0, 45.0);
-        } else if (params[0].contains("password")) {
-            double temp = isNullOrEmpty(params[1]) ? 0.0 : params[1].length();
-            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(temp, null, 3.0, 45.0);
-        } else if (params[0].equals("name")) {
-            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(params[1], USER_NAME_PATTERN, 0.0, 0.0);
-        } else if (params[0].equals("dob")) {
-            LocalDate temp = isNullOrEmpty(params[1]) ? LocalDate.now() : LocalDate.parse(params[1]);
-            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(temp, null, 15.0, 99.0);
-        } else if (params[0].equals("height")) {
-            double temp = isNullOrEmpty(params[1]) ? 0.0 : Double.valueOf(params[1]);
-            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(temp, null, 50.0, 250.0);
-        } else if (params[0].contains("weight")) {
-            double temp = isNullOrEmpty(params[1]) ? 0.0 : Double.valueOf(params[1]);
-            param = USER_MAPPER.checkByAjaxUserParamFromHttpFormByRegex(temp, null, 50.0, 150.0);
-        }
-
-        return param;
-    }
 }
