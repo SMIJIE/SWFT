@@ -15,12 +15,7 @@ import ua.training.model.entity.form.FormUser;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.Optional;
-
-import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
-import static ua.training.constant.RegexExpress.USER_EMAIL_PATTERN;
-import static ua.training.constant.RegexExpress.USER_NAME_PATTERN;
 
 /**
  * Description: This is the statement controller
@@ -147,17 +142,17 @@ public class StatementController implements GeneralController {
     /**
      * Action log out
      *
+     * @param user               {@link User}
      * @param servletRequest     {@link HttpServletRequest}
      * @param redirectAttributes {@link RedirectAttributes}
      * @param modelAndView       {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
     @RequestMapping(value = LOG_OUT, method = RequestMethod.GET)
-    public ModelAndView actionLogOut(HttpServletRequest servletRequest,
+    public ModelAndView actionLogOut(@SessionAttribute(REQUEST_USER) User user,
+                                     HttpServletRequest servletRequest,
                                      RedirectAttributes redirectAttributes,
                                      ModelAndView modelAndView) {
-
-        User user = (User) servletRequest.getSession().getAttribute(REQUEST_USER);
 
         CommandsUtil.deleteUsersFromContext(servletRequest, user.getEmail());
 

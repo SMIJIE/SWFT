@@ -3,10 +3,7 @@ package ua.training.controller.controllers;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.training.controller.commands.exception.DataHttpException;
@@ -34,17 +31,20 @@ import static org.apache.logging.log4j.util.Strings.isEmpty;
 @Controller
 public class UserController implements GeneralController {
     /**
-     * Display home page
+     * Display home page with an opportunity pagination
      *
      * @param user         {@link User}
+     * @param numPage      {@link Integer}
      * @param modelAndView {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
     @RequestMapping(value = HOME_PAGE, method = RequestMethod.GET)
     public ModelAndView getHomePage(@SessionAttribute(REQUEST_USER) User user,
+                                    @RequestParam(value = REQUEST_NUMBER_PAGE, required = false) Integer numPage,
                                     ModelAndView modelAndView) {
 
-        LocalDate localDate = LocalDate.now();
+        Integer page = isNull(numPage) ? 0 : numPage;
+        LocalDate localDate = LocalDate.now().plusMonths(page);
 
         List<DayRation> dayRations = DAY_RATION_SERVICE_IMP.getMonthlyDayRationByUser(localDate.getMonthValue(),
                 localDate.getYear(), user.getId());
@@ -57,7 +57,7 @@ public class UserController implements GeneralController {
 
 
         modelAndView.addObject(PAGE_NAME, PAGE_GENERAL)
-                .addObject(REQUEST_NUMBER_PAGE, 0)
+                .addObject(REQUEST_NUMBER_PAGE, page)
                 .addObject(REQUEST_NUMBER_MONTH, localDate.getMonthValue())
                 .addObject(REQUEST_MONTHLY_DAY_RATION, rationsWithCalories)
                 .setViewName(HOME);
@@ -84,11 +84,17 @@ public class UserController implements GeneralController {
     /**
      * Action update user parameters
      *
-     * @param modelAndView {@link ModelAndView}
+     * @param formUser           {@link FormUser}
+     * @param user               {@link User}
+     * @param bindingResult      {@link BindingResult}
+     * @param redirectAttributes {@link RedirectAttributes}
+     * @param servletRequest     {@link HttpServletRequest}
+     * @param modelAndView       {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
     @RequestMapping(value = UPDATE_USER_PARAMETERS, method = {RequestMethod.POST, RequestMethod.GET})
     public ModelAndView actionUpdateUsersParameters(@Valid @ModelAttribute(REQUEST_FORM_USER) FormUser formUser,
+                                                    @SessionAttribute(REQUEST_USER) User user,
                                                     BindingResult bindingResult,
                                                     RedirectAttributes redirectAttributes,
                                                     HttpServletRequest servletRequest,
@@ -113,7 +119,6 @@ public class UserController implements GeneralController {
             }
         }
 
-        User user = (User) servletRequest.getSession().getAttribute(REQUEST_USER);
         User userHttp;
         try {
             userHttp = USER_MAPPER.extractUserFromHttpForm(formUser, modelAndView);

@@ -65,7 +65,7 @@
 <%--Sent number of page--%>
 <script>
     function clickPage(currentPage) {
-        window.location.href = '${pageContext.request.contextPath}/swft/listHomePage?' + currentPage.id;
+        window.location.href = '${pageContext.request.contextPath}/swft/homePage?' + currentPage.id;
     }
 </script>
 <%--Sent number of page--%>

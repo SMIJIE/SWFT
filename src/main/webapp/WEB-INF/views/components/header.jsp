@@ -29,7 +29,7 @@
             var dob = new Date("${user.dob}");
             var age = currentDate.getFullYear() - dob.getFullYear();
             resultCalories.innerHTML = Math.round(((${user.lifeStyleCoefficient}) / 1000) * (10 * ((${user.weight}) / 1000) + 6.25 * ((${user.height}) / 100) - (5 * age)));
-            resultCaloriesDesired.innerHTML = (${user.weightDesired}) == 0 ? 0 : Math.round(((${user.lifeStyleCoefficient}) / 1000) * (10 * ((${user.weightDesired}) / 1000) + 6.25 * ((${user.height}) / 100) - (5 * age)));
+            resultCaloriesDesired.innerHTML = Math.round(((${user.lifeStyleCoefficient}) / 1000) * (10 * ((${user.weightDesired}) / 1000) + 6.25 * ((${user.height}) / 100) - (5 * age)));
             $('#signInOrRegister').css({display: 'none'});
             </c:if>
 
@@ -108,7 +108,7 @@
 </script>
 <%--To calculate calories--%>
 <%--To know current address for change language--%>
-<script>
+<script type="text/javascript">
     function knowCurrentlink() {
         var select, value, page;
 
@@ -120,7 +120,7 @@
 </script>
 <%--To know current address for change language--%>
 <%--For button Sign in--%>
-<script>
+<script type="text/javascript">
     $('#signInOrRegister').click(function () {
         window.location.href = '${pageContext.request.contextPath}/swft/signInOrRegister';
     });
