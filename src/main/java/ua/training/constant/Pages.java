@@ -17,16 +17,16 @@ public interface Pages {
     String SIGN_OR_REGISTER_REDIRECT = "redirect:/swft/signInOrRegister";
     String SIGN_OR_REGISTER_WITH_ERROR = "redirect:/signInOrRegisterWithError";
 
-    String USER_SETTINGS = "/WEB-INF/user/userSettings.jsp";
-    String USER_SETTINGS_REDIRECT = "redirect:/userSettings";
+    String USER_SETTINGS = "/user/userSettings";
+    String USER_SETTINGS_REDIRECT = "redirect:/swft/userSettings";
     String USER_SETTINGS_REDIRECT_WITH_ERROR = "redirect:/userSettingsWithError";
 
     String MENU_PAGE = "/user/menu";
     String MENU_GENERAL_EDIT = "/WEB-INF/admin/menuGeneralEdit.jsp";
     String MENU_GENERAL_EDIT_REDIRECT = "redirect:/menuGeneralEdit";
     String MENU_GENERAL_EDIT_WITH_ERROR_REDIRECT = "redirect:/menuGeneralEditWithError";
-    String MENU_USERS_EDIT = "/WEB-INF/user/menuUsersEdit.jsp";
-    String MENU_USERS_EDIT_REDIRECT = "redirect:/menuUsersEdit";
+    String MENU_USERS_EDIT_PAGE = "/user/menuUsersEdit";
+    String MENU_USERS_EDIT_REDIRECT = "redirect:/swft/menuUsersEdit";
     String MENU_USERS_EDIT_REDIRECT_WITH_ERROR = "redirect:/menuUsersEditWithError";
     String MENU_USERS_EDIT_AFTER_UPDATE_REDIRECT = "redirect:/menuUsersEditAfterUpdate";
 

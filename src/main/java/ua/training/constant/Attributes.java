@@ -11,6 +11,8 @@ public interface Attributes {
 
     String SHOW_COLLAPSE_SIGN_IN = "showCollapseSignIn";
     String SHOW_COLLAPSE_SIGN_UP = "showCollapseSignUp";
+    String SHOW_COLLAPSE_MENU_USERS_PAGE = "showCollapseMenuUsersPage";
+    String SHOW_COLLAPSE_MENU_ADD_DISH= "showCollapseMenuAddDish";
     String SHOW_COLLAPSE_ATTRIBUTE_FOR_CCS_CLASS = "show";
 
 
@@ -38,6 +40,7 @@ public interface Attributes {
     String PAGE_USER_WRONG_DATA = "wrong.data";
     String PAGE_USER_NOT_EXIST = "user.email.not.exist";
     String PAGE_USER_WRONG_PASSWORD = "user.inappropriate.password";
+    String PAGE_USER_NOT_MATCH_PASSWORDS = "user.not.match.passwords";
     String PAGE_USER_LOGGED = "user.email.logged";
     String PAGE_USER_ERROR_EMAIL = "wrong.user.email";
     String PAGE_USER_ERROR_DATA = "userErrorData";
@@ -51,6 +54,7 @@ public interface Attributes {
     String REQUEST_CURRENT_PAGE = "currPage";
     String REQUEST_USER = "user";
     String REQUEST_FORM_USER = "formUser";
+    String REQUEST_FORM_DISH = "formDish";
     String REQUEST_USERS_ALL = "allUsers";
     String REQUEST_USER_ROLE = "role";
     String REQUEST_USERS_DISHES = "usersDishes";

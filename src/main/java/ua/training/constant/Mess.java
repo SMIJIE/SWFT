@@ -42,5 +42,12 @@ public interface Mess {
     String USER_VALID_WEIGHT_SIZE = "valid.weight.size";
     String USER_VALID_LIFE_STYLE_COEFFICIENT = "valid.lifeStyleCoefficient";
 
-    String AJAX_MESS_ERROR="ERROR";
+    String DISH_VALID_FOOD_CATEGORY_NOT_NULL = "valid.foodCategory.notNull";
+    String DISH_VALID_NAME_NOT_BLANK = "valid.title.notEmptyNull";
+    String DISH_VALID_NAME_WRONG = "wrong.dish.name";
+    String DISH_VALID_WEIGHT_SIZE = "valid.dish.weight.size";
+    String DISH_VALID_CALORIES_SIZE = "valid.dish.calories.size";
+    String DISH_VALID_PROTEINS_SIZE = "valid.dish.proteins.size";
+    String DISH_VALID_FATS_SIZE = "valid.dish.fats.size";
+    String DISH_VALID_CARBOHYDRATES_SIZE = "valid.dish.carbohydrates.size";
 }
