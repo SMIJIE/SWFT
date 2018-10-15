@@ -57,7 +57,6 @@ public class FormUser implements Mess, RegexExpress {
     @NotNull(message = USER_VALID_HEIGHT_SIZE)
     @Min(value = 50, message = USER_VALID_HEIGHT_SIZE)
     @Max(value = 250, message = USER_VALID_HEIGHT_SIZE)
-    @Column(nullable = false)
     private Double height;
     /**
      * Verify on not NULL and on MIN and MAX
@@ -65,7 +64,6 @@ public class FormUser implements Mess, RegexExpress {
     @NotNull(message = USER_VALID_WEIGHT_SIZE)
     @Min(value = 50, message = USER_VALID_WEIGHT_SIZE)
     @Max(value = 150, message = USER_VALID_WEIGHT_SIZE)
-    @Column(nullable = false)
     private Double weight;
     /**
      * Verify on not NULL and on MIN and MAX

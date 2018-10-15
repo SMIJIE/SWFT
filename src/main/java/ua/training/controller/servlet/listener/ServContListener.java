@@ -8,7 +8,10 @@ import ua.training.model.entity.Dish;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
@@ -30,11 +33,22 @@ public class ServContListener implements ServletContextListener, Attributes {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         servletContextEvent.getServletContext().setAttribute(REQUEST_USERS_ALL, allUsers);
 
-        List<Dish> general = dishServiceImp.getGeneralDishes();
+        List<Dish> generalList = dishServiceImp.getGeneralDishes();
+        CommandsUtil.sortListByAnnotationFields(generalList);
 
-        if (!general.isEmpty()) {
-            CommandsUtil.sortListByAnnotationFields(general);
-            servletContextEvent.getServletContext().setAttribute(REQUEST_GENERAL_DISHES, general);
+        Map<String, List<Dish>> generalMap = new HashMap<>();
+        generalList.forEach(dish -> {
+            String category = dish
+                    .getFoodCategory()
+                    .toString()
+                    .toLowerCase();
+            generalMap.putIfAbsent(category, new ArrayList<>());
+            generalMap.get(category).add(dish);
+        });
+
+        if (!generalList.isEmpty()) {
+            CommandsUtil.sortListByAnnotationFields(generalList);
+            servletContextEvent.getServletContext().setAttribute(REQUEST_GENERAL_DISHES, generalMap);
         }
     }
 

@@ -118,20 +118,20 @@ public class StatementController implements GeneralController {
             return modelAndView;
         }
 
-        User user;
+        User userHttp;
         try {
-            user = USER_MAPPER.extractUserFromHttpForm(formUser, modelAndView);
+            userHttp = USER_MAPPER.extractUserFromHttpForm(formUser, modelAndView);
         } catch (DataHttpException e) {
             log.error(e.getMessage());
             return modelAndView;
         }
 
-        Optional<User> userSQL = USER_SERVICE_IMP.getOrCheckUserByEmail(user.getEmail());
+        Optional<User> userSQL = USER_SERVICE_IMP.getOrCheckUserByEmail(userHttp.getEmail());
 
         if (!userSQL.isPresent()) {
-            USER_SERVICE_IMP.registerNewUser(user);
-            log.info(LOG_USER_REGISTERED + "[" + user.getEmail() + "]");
-            return CommandsUtil.openUsersSession(servletRequest, user, modelAndView, redirectAttributes);
+            USER_SERVICE_IMP.registerNewUser(userHttp);
+            log.info(LOG_USER_REGISTERED + "[" + userHttp.getEmail() + "]");
+            return CommandsUtil.openUsersSession(servletRequest, userHttp, modelAndView, redirectAttributes);
         } else {
             modelAndView.addObject(PAGE_USER_ERROR, PAGE_USER_EXIST);
         }

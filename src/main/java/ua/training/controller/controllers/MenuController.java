@@ -1,15 +1,29 @@
 package ua.training.controller.controllers;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ua.training.controller.commands.exception.DataHttpException;
+import ua.training.controller.commands.utility.CommandsUtil;
+import ua.training.model.entity.Dish;
+import ua.training.model.entity.User;
+import ua.training.model.entity.form.FormDish;
+
+import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.List;
+
+import static java.util.Objects.isNull;
 
 /**
  * Description: This is the menu controller
  *
  * @author Zakusylo Pavlo
  */
+@Log4j2
 @Controller
 public class MenuController implements GeneralController {
 
@@ -23,6 +37,105 @@ public class MenuController implements GeneralController {
     public ModelAndView getGeneralMenuPage(ModelAndView modelAndView) {
         modelAndView.addObject(PAGE_NAME, PAGE_MENU)
                 .setViewName(MENU_PAGE);
+
+        return modelAndView;
+    }
+
+    /**
+     * Display users menu page with an opportunity pagination
+     *
+     * @param user         {@link User}
+     * @param numPage      {@link Integer}
+     * @param modelAndView {@link ModelAndView}
+     * @return modelAndView {@link ModelAndView}
+     */
+    @RequestMapping(value = MENU_USERS_EDIT, method = RequestMethod.GET)
+    public ModelAndView getUsersMenuPage(@SessionAttribute(REQUEST_USER) User user,
+                                         @RequestParam(value = REQUEST_NUMBER_PAGE, required = false) Integer numPage,
+                                         ModelAndView modelAndView) {
+        Integer page = isNull(numPage) ? 1 : numPage;
+        Integer numberDish = DISH_SERVICE_IMP.counterDishByUserId(user.getId());
+
+        Integer maxPage = CommandsUtil.getCountPages(numberDish, 5);
+        Integer pageForSQL = CommandsUtil.getPageOrAmountForSQL(page, maxPage);
+
+        List<Dish> usersDish = DISH_SERVICE_IMP.getLimitDishesByUserId(user.getId(), 5, 5 * (pageForSQL - 1));
+        CommandsUtil.sortListByAnnotationFields(usersDish);
+
+        modelAndView.addObject(PAGE_NAME, PAGE_MENU_EDIT)
+                .addObject(REQUEST_FORM_DISH, new FormDish())
+                .addObject(SHOW_COLLAPSE_MENU_USERS_PAGE, SHOW_COLLAPSE_ATTRIBUTE_FOR_CCS_CLASS)
+                .addObject(REQUEST_NUMBER_PAGE, pageForSQL)
+                .addObject(REQUEST_NUMBER_USER_DISH, numberDish)
+                .addObject(REQUEST_USERS_DISHES, usersDish)
+                .setViewName(MENU_USERS_EDIT_PAGE);
+
+        return modelAndView;
+    }
+
+    /**
+     * Delete 1 or more users dish
+     *
+     * @param user               {@link User}
+     * @param idDishes           [] {@link Integer}
+     * @param modelAndView       {@link ModelAndView}
+     * @param redirectAttributes {@link RedirectAttributes}
+     * @return modelAndView {@link ModelAndView}
+     */
+    @RequestMapping(value = USER_DELETE_DISH, method = RequestMethod.GET)
+    public ModelAndView actionDeleteUsersDish(@SessionAttribute(REQUEST_USER) User user,
+                                              @RequestParam(value = REQUEST_ARR_DISH) Integer[] idDishes,
+                                              RedirectAttributes redirectAttributes,
+                                              ModelAndView modelAndView) {
+
+        DISH_SERVICE_IMP.deleteArrayDishesByIdAndUser(Arrays.asList(idDishes), user.getId());
+
+        redirectAttributes.addAttribute(PAGE_NAME, PAGE_MENU_EDIT);
+        modelAndView.setViewName(MENU_USERS_EDIT_REDIRECT);
+
+        return modelAndView;
+    }
+
+    /**
+     * Add users dish
+     *
+     * @param formDish           {@link FormDish}
+     * @param bindingResult      {@link BindingResult}
+     * @param user               {@link User}
+     * @param modelAndView       {@link ModelAndView}
+     * @param redirectAttributes {@link RedirectAttributes}
+     * @return modelAndView {@link ModelAndView}
+     */
+    @RequestMapping(value = USER_ADD_DISH, method = {RequestMethod.POST, RequestMethod.GET})
+    public ModelAndView actionAddUsersDish(@Valid @ModelAttribute(REQUEST_FORM_DISH) FormDish formDish,
+                                           BindingResult bindingResult,
+                                           @SessionAttribute(REQUEST_USER) User user,
+                                           RedirectAttributes redirectAttributes,
+                                           ModelAndView modelAndView) {
+
+        modelAndView.addObject(PAGE_NAME, PAGE_MENU_EDIT)
+                .addObject(SHOW_COLLAPSE_MENU_ADD_DISH, SHOW_COLLAPSE_ATTRIBUTE_FOR_CCS_CLASS)
+                .setViewName(MENU_USERS_EDIT_PAGE);
+
+        if (bindingResult.hasErrors()) {
+            return modelAndView;
+        }
+
+        Dish dishHttp;
+        try {
+            dishHttp = DISH_MAPPER.extractDishFromHttpForm(formDish, modelAndView);
+        } catch (DataHttpException e) {
+            log.error(e.getMessage());
+            return modelAndView;
+        }
+
+        dishHttp.setUser(user);
+        dishHttp.setGeneralFood(false);
+        DISH_SERVICE_IMP.insertNewDish(dishHttp);
+
+        redirectAttributes.addAttribute(PAGE_NAME, PAGE_MENU_EDIT)
+                .addAttribute(SHOW_COLLAPSE_MENU_USERS_PAGE, SHOW_COLLAPSE_ATTRIBUTE_FOR_CCS_CLASS);
+        modelAndView.setViewName(MENU_USERS_EDIT_REDIRECT);
 
         return modelAndView;
     }

@@ -10,6 +10,7 @@
         var showTrId;
         var hideTrId;
         var messArr;
+
         if (messCurrentPage == null) {
             for (var i = 1; i <= 4; i++) {
                 showTrId = '#LUNCHEON' + i;
@@ -41,293 +42,83 @@
 
     <div id="accordion">
 
-        <div class="card bg-transparent">
-            <div class="card-header">
-                <a class="card-link text-danger" data-toggle="collapse" href="#luncheon">
-                    <spring:message code="category.luncheon"/>
-                </a>
-            </div>
+        <c:forEach items="${generalDishes}" var="generalDish">
 
-            <div id="luncheon" class="collapse" data-parent="#accordion">
-                <div class="card-body">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">
-                                <spring:message code="dish.name"/>
-                            </th>
-                            <th scope="col">
-                                <spring:message code="dish.weight"/>,
-                                <spring:message code="dish.gr"/>
-                            </th>
-                            <th scope="col">
-                                <spring:message code="dish.calories"/> /
-                                100 <spring:message code="dish.gr"/>
-                            </th>
-                            <th scope="col">
-                                <spring:message code="dish.proteins"/>
-                            </th>
-                            <th scope="col">
-                                <spring:message code="dish.fats"/>
-                            </th>
-                            <th scope="col">
-                                <spring:message code="dish.carbohydrates"/>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <c:set var="countLuncheon" value="0" scope="page"/>
-                        <c:forEach items="${generalDishes}" var="dishGeneral">
-                            <c:if test="${dishGeneral.foodCategory eq 'LUNCHEON'}">
-                                <c:set var="foodCategory" value="${dishGeneral.foodCategory}" scope="page"/>
-                                <c:set var="countLuncheon" value="${countLuncheon + 1}" scope="page"/>
-                                <tr class="${dishGeneral.foodCategory}" id="${dishGeneral.foodCategory}${countLuncheon}"
-                                    style="display: none">
-                                    <th scope="row">${countLuncheon}</th>
-                                    <td><spring:message code="${dishGeneral.name}"/></td>
-                                    <td>${dishGeneral.weight/1000}</td>
-                                    <td>${dishGeneral.calories/1000}</td>
-                                    <td>${dishGeneral.proteins/1000}</td>
-                                    <td>${dishGeneral.fats/1000}</td>
-                                    <td>${dishGeneral.carbohydrates/1000}</td>
-                                </tr>
-                            </c:if>
-                        </c:forEach>
-                        </tbody>
-                    </table>
+            <div class="card bg-transparent">
+                <div class="card-header">
+                    <a class="card-link text-danger" data-toggle="collapse" href="#${generalDish.key}">
+                        <spring:message code="category.${generalDish.key}"/>
+                    </a>
                 </div>
 
-                <nav aria-label="Page navigation example" class="">
-                    <ul class="pagination">
-                        &nbsp;&nbsp;
-                        <c:forEach begin="1" end="${0.99+countLuncheon/4}" var="loop">
-                            <li class="page-item"><a class="page-link bg-transparent text-danger"
-                                                     id="${foodCategory}+${loop}"
-                                                     href="#" onclick="clickPage(this)">${loop}</a></li>
-                            &nbsp;
-                        </c:forEach>
-                    </ul>
-                </nav>
-            </div>
-        </div>
+                <div id="${generalDish.key}" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">
+                                    <spring:message code="dish.name"/>
+                                </th>
+                                <th scope="col">
+                                    <spring:message code="dish.weight"/>,
+                                    <spring:message code="dish.gr"/>
+                                </th>
+                                <th scope="col">
+                                    <spring:message code="dish.calories"/> /
+                                    100 <spring:message code="dish.gr"/>
+                                </th>
+                                <th scope="col">
+                                    <spring:message code="dish.proteins"/>
+                                </th>
+                                <th scope="col">
+                                    <spring:message code="dish.fats"/>
+                                </th>
+                                <th scope="col">
+                                    <spring:message code="dish.carbohydrates"/>
+                                </th>
+                            </tr>
+                            </thead>
 
-        <div class="card bg-transparent">
-            <div class="card-header">
-                <a class="card-link text-danger" data-toggle="collapse" href="#soup">
-                    <spring:message code="category.soup"/>
-                </a>
-            </div>
+                            <tbody>
+                            <c:set var="counter" value="0" scope="page"/>
+                            <c:forEach items="${generalDish.value}" var="dishGeneralValue">
 
-            <div id="soup" class="collapse" data-parent="#accordion">
-                <div class="card-body">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">
-                                <spring:message code="dish.name"/>
-                            </th>
-                            <th scope="col">
-                                <spring:message code="dish.weight"/>,
-                                <spring:message code="dish.gr"/>
-                            </th>
-                            <th scope="col">
-                                <spring:message code="dish.calories"/> /
-                                100 <spring:message code="dish.gr"/>
-                            </th>
-                            <th scope="col">
-                                <spring:message code="dish.proteins"/>
-                            </th>
-                            <th scope="col">
-                                <spring:message code="dish.fats"/>
-                            </th>
-                            <th scope="col">
-                                <spring:message code="dish.carbohydrates"/>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <c:set var="countSoup" value="0" scope="page"/>
-                        <c:forEach items="${generalDishes}" var="dishGeneral">
-                            <c:if test="${dishGeneral.foodCategory eq 'SOUP'}">
-                                <c:set var="foodCategory" value="${dishGeneral.foodCategory}" scope="page"/>
-                                <c:set var="countSoup" value="${countSoup + 1}" scope="page"/>
-                                <tr class="${dishGeneral.foodCategory}" id="${dishGeneral.foodCategory}${countSoup}"
-                                    style="display: none">
-                                    <th scope="row">${countSoup}</th>
-                                    <td><spring:message code="${dishGeneral.name}"/></td>
-                                    <td>${dishGeneral.weight/1000}</td>
-                                    <td>${dishGeneral.calories/1000}</td>
-                                    <td>${dishGeneral.proteins/1000}</td>
-                                    <td>${dishGeneral.fats/1000}</td>
-                                    <td>${dishGeneral.carbohydrates/1000}</td>
+                                <c:set var="foodCategory" value="${dishGeneralValue.foodCategory}" scope="page"/>
+                                <c:set var="counter" value="${counter + 1}" scope="page"/>
+                                <tr style="display: none" class="${dishGeneralValue.foodCategory}"
+                                    id="${dishGeneralValue.foodCategory}${counter}">
+                                    <th scope="row">${counter}</th>
+                                    <td><spring:message code="${dishGeneralValue.name}"/></td>
+                                    <td>${dishGeneralValue.weight/1000}</td>
+                                    <td>${dishGeneralValue.calories/1000}</td>
+                                    <td>${dishGeneralValue.proteins/1000}</td>
+                                    <td>${dishGeneralValue.fats/1000}</td>
+                                    <td>${dishGeneralValue.carbohydrates/1000}</td>
                                 </tr>
-                            </c:if>
-                        </c:forEach>
-                        </tbody>
-                    </table>
+
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <nav aria-label="Page navigation example" class="">
+                        <ul class="pagination">
+                            &nbsp;&nbsp;
+                            <c:forEach begin="1" end="${0.99+counter/4}" var="loop">
+                                <li class="page-item">
+                                    <a class="page-link bg-transparent text-danger" id="${foodCategory}+${loop}"
+                                       href="#" onclick="clickPage(this)">
+                                            ${loop}
+                                    </a>
+                                </li>
+                                &nbsp;
+                            </c:forEach>
+                        </ul>
+                    </nav>
                 </div>
-
-                <nav aria-label="Page navigation example" class="">
-                    <ul class="pagination">
-                        &nbsp;&nbsp;
-                        <c:forEach begin="1" end="${0.99+countSoup/4}" var="loop">
-                            <li class="page-item"><a class="page-link bg-transparent text-danger"
-                                                     id="${foodCategory}+${loop}"
-                                                     href="#" onclick="clickPage(this)">${loop}</a></li>
-                            &nbsp;
-                        </c:forEach>
-                    </ul>
-                </nav>
             </div>
-        </div>
-
-        <div class="card bg-transparent">
-            <div class="card-header">
-                <a class="card-link text-danger" data-toggle="collapse" href="#hot">
-                    <spring:message code="category.hot"/>
-                </a>
-            </div>
-
-            <div id="hot" class="collapse" data-parent="#accordion">
-                <div class="card-body">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">
-                                <spring:message code="dish.name"/>
-                            </th>
-                            <th scope="col">
-                                <spring:message code="dish.weight"/>,
-                                <spring:message code="dish.gr"/>
-                            </th>
-                            <th scope="col">
-                                <spring:message code="dish.calories"/> /
-                                100 <spring:message code="dish.gr"/>
-                            </th>
-                            <th scope="col">
-                                <spring:message code="dish.proteins"/>
-                            </th>
-                            <th scope="col">
-                                <spring:message code="dish.fats"/>
-                            </th>
-                            <th scope="col">
-                                <spring:message code="dish.carbohydrates"/>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <c:set var="countHot" value="0" scope="page"/>
-                        <c:forEach items="${generalDishes}" var="dishGeneral">
-                            <c:if test="${dishGeneral.foodCategory eq 'HOT'}">
-                                <c:set var="foodCategory" value="${dishGeneral.foodCategory}" scope="page"/>
-                                <c:set var="countHot" value="${countHot + 1}" scope="page"/>
-                                <tr class="${dishGeneral.foodCategory}" id="${dishGeneral.foodCategory}${countHot}"
-                                    style="display: none">
-                                    <th scope="row">${countHot}</th>
-                                    <td><spring:message code="${dishGeneral.name}"/></td>
-                                    <td>${dishGeneral.weight/1000}</td>
-                                    <td>${dishGeneral.calories/1000}</td>
-                                    <td>${dishGeneral.proteins/1000}</td>
-                                    <td>${dishGeneral.fats/1000}</td>
-                                    <td>${dishGeneral.carbohydrates/1000}</td>
-                                </tr>
-                            </c:if>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
-
-                <nav aria-label="Page navigation example" class="">
-                    <ul class="pagination">
-                        &nbsp;&nbsp;
-                        <c:forEach begin="1" end="${0.99+countHot/4}" var="loop">
-                            <li class="page-item"><a class="page-link bg-transparent text-danger"
-                                                     id="${foodCategory}+${loop}"
-                                                     href="#" onclick="clickPage(this)">${loop}</a></li>
-                            &nbsp;
-                        </c:forEach>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-
-        <div class="card bg-transparent">
-            <div class="card-header">
-                <a class="card-link text-danger" data-toggle="collapse" href="#dessert">
-                    <spring:message code="category.dessert"/>
-                </a>
-            </div>
-
-            <div id="dessert" class="collapse" data-parent="#accordion">
-                <div class="card-body">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">
-                                <spring:message code="dish.name"/>
-                            </th>
-                            <th scope="col">
-                                <spring:message code="dish.weight"/>,
-                                <spring:message code="dish.gr"/>
-                            </th>
-                            <th scope="col">
-                                <spring:message code="dish.calories"/> /
-                                100 <spring:message code="dish.gr"/>
-                            </th>
-                            <th scope="col">
-                                <spring:message code="dish.proteins"/>
-                            </th>
-                            <th scope="col">
-                                <spring:message code="dish.fats"/>
-                            </th>
-                            <th scope="col">
-                                <spring:message code="dish.carbohydrates"/>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <c:set var="countDessert" value="0" scope="page"/>
-                        <c:forEach items="${generalDishes}" var="dishGeneral">
-                            <c:if test="${dishGeneral.foodCategory eq 'DESSERT'}">
-                                <c:set var="foodCategory" value="${dishGeneral.foodCategory}" scope="page"/>
-                                <c:set var="countDessert" value="${countDessert + 1}" scope="page"/>
-                                <tr class="${dishGeneral.foodCategory}" id="${dishGeneral.foodCategory}${countDessert}"
-                                    style="display: none">
-                                    <th scope="row">${countDessert}</th>
-                                    <td><spring:message code="${dishGeneral.name}"/></td>
-                                    <td>${dishGeneral.weight/1000}</td>
-                                    <td>${dishGeneral.calories/1000}</td>
-                                    <td>${dishGeneral.proteins/1000}</td>
-                                    <td>${dishGeneral.fats/1000}</td>
-                                    <td>${dishGeneral.carbohydrates/1000}</td>
-                                </tr>
-                            </c:if>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
-
-                <nav aria-label="Page navigation example" class="">
-                    <ul class="pagination">
-                        &nbsp;&nbsp;
-                        <c:forEach begin="1" end="${0.99+countDessert/4}" var="loop">
-                            <li class="page-item"><a class="page-link bg-transparent text-danger"
-                                                     id="${foodCategory}+${loop}"
-                                                     href="#" onclick="clickPage(this)">${loop}</a></li>
-                            &nbsp;
-                        </c:forEach>
-                    </ul>
-                </nav>
-            </div>
-        </div>
+        </c:forEach>
     </div>
 </div>
 
@@ -335,7 +126,7 @@
 <script type="text/javascript">
     menuPages()
 </script>
-<script>
+<script type="text/javascript">
     function clickPage(currentPage) {
         menuPages(currentPage.id)
     }

@@ -82,7 +82,7 @@ public class UserController implements GeneralController {
     }
 
     /**
-     * Action update user parameters
+     * Action update user parameters with check passwords
      *
      * @param formUser           {@link FormUser}
      * @param bindingResult      {@link BindingResult}

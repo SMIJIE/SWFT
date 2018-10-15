@@ -7,31 +7,32 @@
 <%--Shows error with data--%>
 <script type="text/javascript">
     function showErrorWithData() {
-        var mess = '${userErrorData}';
-        if (mess === 'nonErrorData') {
+        var mess = '${userError}';
+        if (mess === '') {
             $('#userErrorData').css({display: 'none'});
         }
     }
 </script>
 <%--Shows error with data--%>
+
 <div id="content">
 
     <div id="accordion">
 
         <div class="card text-light bg-danger" id="userErrorData">
             <div class="card-header">
-                <fmt:message key="${userErrorData}"/>
+                <spring:message code="${userError}"/>
             </div>
         </div>
 
         <div class="card bg-transparent">
             <div class="card-header">
                 <a class="card-link" data-toggle="collapse" href="#collapseOne">
-                    <fmt:message key="menu.own"/>
+                    <spring:message code="menu.own"/>
                 </a>
             </div>
 
-            <div id="collapseOne" class="collapse show" data-parent="#accordion">
+            <div id="collapseOne" class="collapse ${showCollapseMenuUsersPage}" data-parent="#accordion">
                 <div class="card-body">
                     <table class="table table-striped">
                         <thead>
@@ -39,35 +40,36 @@
                             <th scope="col">#</th>
                             <th scope="col"></th>
                             <th scope="col">
-                                <fmt:message key="page.category"/>
+                                <spring:message code="page.foodCategory"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="dish.name"/>
+                                <spring:message code="dish.name"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="dish.weight"/>,
-                                <fmt:message key="dish.gr"/>
+                                <spring:message code="dish.weight"/>,
+                                <spring:message code="dish.gr"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="dish.calories"/> /
-                                100 <fmt:message key="dish.gr"/>
+                                <spring:message code="dish.calories"/> /
+                                100 <spring:message code="dish.gr"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="dish.proteins"/>
+                                <spring:message code="dish.proteins"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="dish.fats"/>
+                                <spring:message code="dish.fats"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="dish.carbohydrates"/>
+                                <spring:message code="dish.carbohydrates"/>
                             </th>
                             <th scope="col">
                                 <button type="button" id="delete_users_dish" class="btn btn-danger navbar-btn">
-                                    <fmt:message key="page.delete"/>
+                                    <spring:message code="page.delete"/>
                                 </button>
                             </th>
                         </tr>
                         </thead>
+
                         <tbody>
                         <c:set var="count" value="${((numPage-1)*5)}" scope="page"/>
                         <c:forEach items="${usersDishes}" var="dishGeneral">
@@ -81,40 +83,61 @@
                                     <input type="checkbox" name="toDelete[]" value="${dishGeneral.id}"
                                            id="checkbox_${dishGeneral.id}"/>
                                 </td>
-                                <td>
-                                    <fmt:message key="page.category.${fn:toLowerCase(dishGeneral.foodCategory)}"/>
-                                </td>
-                                <td>
-                                        ${dishGeneral.name}
-                                </td>
-                                <form action="${pageContext.request.contextPath}/swft/updateUsersDish?numDish=${dishGeneral.id}"
-                                      method="POST">
+
+                                <form:form method="POST" action="userUpdateDish?numDish=${dishGeneral.id}"
+                                           modelAttribute="formDish">
                                     <td>
-                                        <input type="number" class="form-control" name="weight"
-                                               step="0.1" value="${dishGeneral.weight/1000}"/>
+                                        <form:select path="foodCategory" class="form-control"
+                                                     id="foodCategory" name="foodCategory">
+                                            <form:option disabled="true" selected="true"
+                                                         value="${dishGeneral.foodCategory}">
+                                                <spring:message
+                                                        code="category.${fn:toLowerCase(dishGeneral.foodCategory)}"/>
+                                            </form:option>
+                                            <form:option value="LUNCHEON">
+                                                <spring:message code="category.luncheon"/>
+                                            </form:option>
+                                            <form:option value="HOT">
+                                                <spring:message code="category.hot"/>
+                                            </form:option>
+                                            <form:option value="SOUP">
+                                                <spring:message code="category.soup"/>
+                                            </form:option>
+                                            <form:option value="DESSERT">
+                                                <spring:message code="category.dessert"/>
+                                            </form:option>
+                                        </form:select>
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" name="calories"
-                                               step="0.1" value="${dishGeneral.calories/1000}">
+                                        <form:input path="name" type="text" class="form-control"
+                                                    id="name" value="${dishGeneral.name}"/>
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" name="proteins"
-                                               step="0.1" value="${dishGeneral.proteins/1000}">
+                                        <form:input path="weight" type="number" class="form-control"
+                                                    step="0.1" value="${dishGeneral.weight/1000}"/>
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" name="fats"
-                                               step="0.1" value="${dishGeneral.fats/1000}">
+                                        <form:input path="calories" type="number" class="form-control"
+                                                    step="0.1" value="${dishGeneral.calories/1000}"/>
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control" name="carbohydrates"
-                                               step="0.1" value="${dishGeneral.carbohydrates/1000}">
+                                        <form:input path="proteins" type="number" class="form-control"
+                                                    step="0.1" value="${dishGeneral.proteins/1000}"/>
+                                    </td>
+                                    <td>
+                                        <form:input path="fats" type="number" class="form-control"
+                                                    step="0.1" value="${dishGeneral.fats/1000}"/>
+                                    </td>
+                                    <td>
+                                        <form:input path="carbohydrates" type="number" class="form-control"
+                                                    step="0.1" value="${dishGeneral.carbohydrates/1000}"/>
                                     </td>
                                     <td>
                                         <button type="submit" class="btn btn-success">
-                                            <fmt:message key="page.update"/>
+                                            <spring:message code="page.update"/>
                                         </button>
                                     </td>
-                                </form>
+                                </form:form>
                             </tr>
                         </c:forEach>
                         </tbody>
@@ -165,89 +188,157 @@
         <div class="card bg-transparent">
             <div class="card-header">
                 <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
-                    <fmt:message key="menu.add"/>
+                    <spring:message code="menu.add"/>
                 </a>
             </div>
 
-            <div id="collapseTwo" class="collapse" data-parent="#accordion">
+            <div id="collapseTwo" class="collapse ${showCollapseMenuAddDish}" data-parent="#accordion">
                 <div class="card-body">
-                    <form method="POST" action="${pageContext.request.contextPath}/swft/addNewDish"
-                          id="addNewDish">
+                    <form:form method="POST" action="addNewDish" id="addNewDish" modelAttribute="formDish">
                         <div class="form-group row">
                             <div class="col">
-                                <label for="category">
-                                    <fmt:message key="page.category"/>:
-                                </label>
-                                <select class="form-control" id="category" name="category">
-                                    <option selected value="LUNCHEON">
-                                        <fmt:message key="category.luncheon"/>
-                                    </option>
-                                    <option value="HOT">
-                                        <fmt:message key="category.hot"/>
-                                    </option>
-                                    <option value="SOUP">
-                                        <fmt:message key="category.soup"/>
-                                    </option>
-                                    <option value="DESSERT">
-                                        <fmt:message key="category.dessert"/>
-                                    </option>
-                                </select>
+                                <spring:bind path="foodCategory">
+                                    <form:label path="foodCategory">
+                                        <spring:message code="page.foodCategory"/>:&nbsp;
+                                        <span style="color:#D2691E; visibility: hidden" id="foodCategoryError">
+                                            <spring:message code="valid.foodCategory.notNull"/>
+                                        </span>
+                                    </form:label>
+                                    <form:select path="foodCategory" class="form-control"
+                                                 id="foodCategory" name="foodCategory">
+                                        <form:option selected="true" value="LUNCHEON">
+                                            <spring:message code="category.luncheon"/>
+                                        </form:option>
+                                        <form:option value="HOT">
+                                            <spring:message code="category.hot"/>
+                                        </form:option>
+                                        <form:option value="SOUP">
+                                            <spring:message code="category.soup"/>
+                                        </form:option>
+                                        <form:option value="DESSERT">
+                                            <spring:message code="category.dessert"/>
+                                        </form:option>
+                                    </form:select>
+                                    <p style="color:red" id="foodCategoryErrorAfterPost">
+                                        <spring:message code="${status.errorMessage}"/>
+                                    </p>
+                                </spring:bind>
                             </div>
+
                             <div class="col">
-                                <label for="name">
-                                    <fmt:message key="dish.name"/>:
-                                </label>
-                                <input type="text" class="form-control" id="name" name="name"
-                                       placeholder="<fmt:message key="example.dish"/>">
+                                <spring:bind path="name">
+                                    <form:label path="name">
+                                        <spring:message code="dish.name"/>:&nbsp;
+                                        <span style="color:#D2691E; visibility: hidden" id="nameError">
+                                            <spring:message code="wrong.dish.name"/>
+                                        </span>
+                                    </form:label>
+                                    <spring:message code="example.dish" var="example"/>
+                                    <form:input path="name" type="text" class="form-control" id="name"
+                                                placeholder="${example}" value="${formDish.name}"
+                                                onkeyup="checkInputs('name')"/>
+                                    <p style="color:red" id="nameErrorAfterPost">
+                                        <spring:message code="${status.errorMessage}"/>
+                                    </p>
+                                </spring:bind>
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <div class="col">
-                                <label for="weight">
-                                    <fmt:message key="dish.weight"/>,&nbsp;
-                                    <fmt:message key="dish.gr"/>&nbsp;:
-                                </label>
-                                <input type="number" class="form-control" id="weight" name="weight" step="0.1"
-                                       placeholder="150,0">
+                                <spring:bind path="weight">
+                                    <form:label path="weight">
+                                        <spring:message code="dish.weight"/>,&nbsp;
+                                        <spring:message code="dish.gr"/>&nbsp;:&nbsp;
+                                        <span style="color:#D2691E; visibility: hidden" id="weightError">
+                                            <spring:message code="valid.dish.weight.size"/>
+                                        </span>
+                                    </form:label>
+                                    <form:input path="weight" type="number" class="form-control" id="weight"
+                                                step="0.1" placeholder="150,0" value="${formDish.weight}"
+                                                onkeyup="checkInputs('weight')"/>
+                                    <p style="color:red" id="weightErrorAfterPost">
+                                        <spring:message code="${status.errorMessage}"/>
+                                    </p>
+                                </spring:bind>
                             </div>
+
                             <div class="col">
-                                <label for="calories">
-                                    <fmt:message key="dish.calories"/>:
-                                </label>
-                                <input type="number" class="form-control" id="calories" name="calories" step="0.1"
-                                       placeholder="300,0">
+                                <spring:bind path="calories">
+                                    <form:label path="calories">
+                                        <spring:message code="dish.calories"/>:&nbsp;
+                                        <span style="color:#D2691E; visibility: hidden" id="caloriesError">
+                                            <spring:message code="valid.dish.calories.size"/>
+                                        </span>
+                                    </form:label>
+                                    <form:input path="calories" type="number" class="form-control" id="calories"
+                                                step="0.1" placeholder="300,0" value="${formDish.calories}"
+                                                onkeyup="checkInputs('calories')"/>
+                                    <p style="color:red" id="caloriesErrorAfterPost">
+                                        <spring:message code="${status.errorMessage}"/>
+                                    </p>
+                                </spring:bind>
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <div class="col">
-                                <label for="proteins">
-                                    <fmt:message key="dish.proteins"/>:
-                                </label>
-                                <input type="number" class="form-control" id="proteins" name="proteins" step="0.1"
-                                       placeholder="1,5">
+                                <spring:bind path="proteins">
+                                    <form:label path="proteins">
+                                        <spring:message code="dish.proteins"/>:&nbsp;<br/>
+                                        <span style="color:#D2691E; visibility: hidden" id="proteinsError">
+                                            <spring:message code="valid.dish.proteins.size"/>
+                                        </span>
+                                    </form:label>
+                                    <form:input path="proteins" type="number" class="form-control" id="proteins"
+                                                step="0.1" placeholder="1,5" value="${formDish.proteins}"
+                                                onkeyup="checkInputs('proteins')"/>
+                                    <p style="color:red" id="proteinsErrorAfterPost">
+                                        <spring:message code="${status.errorMessage}"/>
+                                    </p>
+                                </spring:bind>
                             </div>
+
                             <div class="col">
-                                <label for="fats">
-                                    <fmt:message key="dish.fats"/>:
-                                </label>
-                                <input type="number" class="form-control" id="fats" name="fats" step="0.1"
-                                       placeholder="0,5">
+                                <spring:bind path="fats">
+                                    <form:label path="fats">
+                                        <spring:message code="dish.fats"/>:&nbsp;<br/>
+                                        <span style="color:#D2691E; visibility: hidden" id="fatsError">
+                                            <spring:message code="valid.dish.fats.size"/>
+                                        </span>
+                                    </form:label>
+                                    <form:input path="fats" type="number" class="form-control" id="fats"
+                                                step="0.1" placeholder="0,5" value="${formDish.fats}"
+                                                onkeyup="checkInputs('fats')"/>
+                                    <p style="color:red" id="fatsErrorAfterPost">
+                                        <spring:message code="${status.errorMessage}"/>
+                                    </p>
+                                </spring:bind>
                             </div>
+
                             <div class="col">
-                                <label for="carbohydrates">
-                                    <fmt:message key="dish.carbohydrates"/>:
-                                </label>
-                                <input type="number" class="form-control" id="carbohydrates" name="carbohydrates"
-                                       step="0.1" placeholder="4,5">
+                                <spring:bind path="carbohydrates">
+                                    <form:label path="carbohydrates">
+                                        <spring:message code="dish.carbohydrates"/>:&nbsp;<br/>
+                                        <span style="color:#D2691E; visibility: hidden" id="carbohydratesError">
+                                            <spring:message code="valid.dish.carbohydrates.size"/>
+                                        </span>
+                                    </form:label>
+                                    <form:input path="carbohydrates" type="number" class="form-control"
+                                                id="carbohydrates"
+                                                step="0.1" placeholder="4,5" value="${formDish.carbohydrates}"
+                                                onkeyup="checkInputs('carbohydrates')"/>
+                                    <p style="color:red" id="carbohydratesErrorAfterPost">
+                                        <spring:message code="${status.errorMessage}"/>
+                                    </p>
+                                </spring:bind>
                             </div>
                         </div>
 
                         <button type="submit" class="btn btn-success">
-                            <fmt:message key="menu.add"/>
+                            <spring:message code="menu.add"/>
                         </button>
-                    </form>
+                    </form:form>
                 </div>
             </div>
         </div>
@@ -260,49 +351,41 @@
     showErrorWithData()
 </script>
 <%--Shows error with data--%>
-<%--Regex for add new dish--%>
-<script>
-    document.getElementById('addNewDish').addEventListener('submit', function (reg) {
-        var name = document.getElementById('name');
-        var weight = document.getElementById('weight');
-        var calories = document.getElementById('calories');
-        var proteins = document.getElementById('proteins');
-        var fats = document.getElementById('fats');
-        var carbohydrates = document.getElementById('carbohydrates');
+<%--Regex for dish parameters check dynamically--%>
+<script type="text/javascript">
+    function checkInputs(inputAttribute) {
+        var checkAttribute = $('#' + inputAttribute).val();
+        $('#' + inputAttribute + 'Error').css({visibility: 'visible'});
+        $('#' + inputAttribute + 'ErrorAfterPost').css({visibility: 'hidden'});
 
-        if (!(name.value.match(/^[A-Z][a-z]+(\s[A-Za-z]+)?(\s[A-Za-z]+)?$/g) ||
-            name.value.match(/^[\u0410-\u0429\u042C\u042E\u042F\u0407\u0406\u0404\u0490][`´''ʼ’ʼ’]?([\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+[`´''ʼ’ʼ’]?)?[\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+(\s[\u0410-\u0429\u042C\u042E\u042F\u0407\u0406\u0404\u0490\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491][`´''ʼ’ʼ’]?([\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+[`´''ʼ’ʼ’]?)?[\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+)?(\s[\u0410-\u0429\u042C\u042E\u042F\u0407\u0406\u0404\u0490\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491][`´''ʼ’ʼ’]?([\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+[`´''ʼ’ʼ’]?)?[\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+)?/g))) {
-            reg.preventDefault();
-            alert('<fmt:message key="wrong.dish.name"/>');
-            return;
-        } else if ((weight.value < 50) || (weight.value > 999)) {
-            reg.preventDefault();
-            alert('<fmt:message key="wrong.dish.weight"/>');
-            return;
-        } else if ((calories.value < 0.001) || (calories.value > 1000)) {
-            reg.preventDefault();
-            alert('<fmt:message key="wrong.dish.calories"/>');
-            return;
-        } else if ((proteins.value < 0.001) || (proteins.value > 1000)) {
-            reg.preventDefault();
-            alert('<fmt:message key="wrong.dish.proteins"/>');
-            return;
-        } else if ((fats.value < 0.001) || (fats.value > 1000)) {
-            reg.preventDefault();
-            alert('<fmt:message key="wrong.dish.fats"/>');
-            return;
-        } else if ((carbohydrates.value < 0.001) || (carbohydrates.value > 1000)) {
-            reg.preventDefault();
-            alert('<fmt:message key="wrong.dish.carbohydrates"/>');
-            return;
+        var REGEX_DISH_NAME_US = new RegExp(/^[A-Z][a-z]+(\s[A-Za-z]+)?(\s[A-Za-z]+)?$/g);
+        var REGEX_DISH_NAME_UA = new RegExp(/^[\u0410-\u0429\u042C\u042E\u042F\u0407\u0406\u0404\u0490][`´''ʼ’ʼ’]?([\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+[`´''ʼ’ʼ’]?)?[\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+(\s[\u0410-\u0429\u042C\u042E\u042F\u0407\u0406\u0404\u0490\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491][`´''ʼ’ʼ’]?([\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+[`´''ʼ’ʼ’]?)?[\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+)?(\s[\u0410-\u0429\u042C\u042E\u042F\u0407\u0406\u0404\u0490\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491][`´''ʼ’ʼ’]?([\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+[`´''ʼ’ʼ’]?)?[\u0430-\u0449\u044C\u044E\u044F\u0457\u0456\u0454\u0491]+)?/g);
+
+        if (inputAttribute === "name") {
+            if (REGEX_DISH_NAME_US.test(checkAttribute) ||
+                REGEX_DISH_NAME_UA.test(checkAttribute)) {
+                $('#' + inputAttribute + 'Error').css({visibility: 'hidden'});
+                return;
+            }
+        } else if (inputAttribute === "weight") {
+            if ((checkAttribute >= 50) && (checkAttribute <= 999)) {
+                $('#' + inputAttribute + 'Error').css({visibility: 'hidden'});
+                return;
+            }
+        } else if (inputAttribute === "calories" || inputAttribute === "proteins" ||
+            inputAttribute === "fats" || inputAttribute === "carbohydrates") {
+            if ((checkAttribute >= 0.001) && (checkAttribute <= 1000)) {
+                $('#' + inputAttribute + 'Error').css({visibility: 'hidden'});
+                return;
+            }
         }
-    });
+    }
 </script>
-<%--Regex for add new dish--%>
+<%--Regex for dish parameters check dynamically--%>
 <%--Sent number of page--%>
 <script>
     function clickPage(currentPage) {
-        window.location.href = '${pageContext.request.contextPath}/swft/listDishPage?' + currentPage.id;
+        window.location.href = '${pageContext.request.contextPath}/swft/menuUsersEdit?' + currentPage.id;
     }
 </script>
 <%--Sent number of page--%>
@@ -315,7 +398,7 @@
         });
 
         if (arrDish['toDelete[]'].length > 0) {
-            window.location.href = '${pageContext.request.contextPath}/swft/deleteUsersMenuItem?arrDish=' + arrDish['toDelete[]'];
+            window.location.href = '${pageContext.request.contextPath}/swft/userDeleteDish?arrDish=' + arrDish['toDelete[]'];
         }
     });
 </script>

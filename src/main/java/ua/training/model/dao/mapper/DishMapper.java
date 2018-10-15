@@ -1,97 +1,83 @@
 package ua.training.model.dao.mapper;
 
 import lombok.extern.log4j.Log4j2;
-import ua.training.constant.Attributes;
-import ua.training.constant.Mess;
-import ua.training.constant.RegexExpress;
+import org.springframework.web.servlet.ModelAndView;
 import ua.training.controller.commands.exception.DataHttpException;
 import ua.training.model.entity.Dish;
-import ua.training.model.entity.enums.FoodCategory;
-
-import javax.servlet.http.HttpServletRequest;
-
-import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
-import static java.util.Objects.isNull;
+import ua.training.model.entity.form.FormDish;
 
 @Log4j2
 public class DishMapper implements ObjectMapper<Dish> {
     /**
-     * @param req HttpServletRequest
-     * @return new Dish
+     * Extract entity 'Dish' from HTTP form
+     *
+     * @param formDish     {@link FormDish}
+     * @param modelAndView {@link ModelAndView}
+     * @return new {@link Dish}
+     * @throws DataHttpException
      */
-    @Override
-    public Dish extractFromHttpServletRequest(HttpServletRequest req) throws DataHttpException {
-        String category;
-        String name;
-        Double weight;
-        Double calories;
-        Double proteins;
-        Double fats;
-        Double carbohydrates;
+    public Dish extractDishFromHttpForm(FormDish formDish, ModelAndView modelAndView) throws DataHttpException {
+        Integer weight;
+        Integer calories;
+        Integer proteins;
+        Integer fats;
+        Integer carbohydrates;
 
-        name = req.getParameter(Attributes.REQUEST_NAME);
-        category = req.getParameter(Attributes.REQUEST_CATEGORY);
-        weight = Double.valueOf(req.getParameter(Attributes.REQUEST_WEIGHT));
-        calories = Double.valueOf(req.getParameter(Attributes.REQUEST_CALORIES));
-        proteins = Double.valueOf(req.getParameter(Attributes.REQUEST_PROTEINS));
-        fats = Double.valueOf(req.getParameter(Attributes.REQUEST_FATS));
-        carbohydrates = Double.valueOf(req.getParameter(Attributes.REQUEST_CARBOHYDRATES));
+        weight = (int) (formDish.getWeight() * 1000);
+        calories = (int) (formDish.getCalories() * 1000);
+        proteins = (int) (formDish.getProteins() * 1000);
+        fats = (int) (formDish.getFats() * 1000);
+        carbohydrates = (int) (formDish.getCarbohydrates() * 1000);
 
 
         Dish dish = Dish.builder()
-                .weight((int) (weight * 1000))
-                .calories((int) (calories * 1000))
-                .proteins((int) (proteins * 1000))
-                .fats((int) (fats * 1000))
-                .carbohydrates((int) (carbohydrates * 1000))
+                .name(formDish.getName())
+                .foodCategory(formDish.getFoodCategory())
+                .weight(weight)
+                .calories(calories)
+                .proteins(proteins)
+                .fats(fats)
+                .carbohydrates(carbohydrates)
                 .build();
 
-        if (!isNullOrEmpty(name)) {
-            dish.setName(name);
-        }
-        if (!isNullOrEmpty(category)) {
-            dish.setFoodCategory(FoodCategory.valueOf(category));
-        }
-
-        checkByRegex(dish);
+        checkByRegex(dish, modelAndView);
 
         return dish;
     }
 
     /**
-     * Check dish by regex
+     * Check dish fields by regex
      *
-     * @param dish Dish
+     * @param dish         {@link Dish}
+     * @param modelAndView {@link ModelAndView}
      * @throws DataHttpException
      */
     @Override
-    public void checkByRegex(Dish dish) throws DataHttpException {
+    public void checkByRegex(Dish dish, ModelAndView modelAndView) throws DataHttpException {
         boolean flag = true;
 
-        if (!isNull(dish.getName())) {
-            if (!(dish.getName().matches(RegexExpress.DISH_NAME_US)
-                    || dish.getName().matches(RegexExpress.DISH_NAME_UA))) {
-                flag = false;
-            }
-        } else if (((double) dish.getWeight() / 1000) < 50
-                || ((double) dish.getWeight() / 1000) > 999) {
+        if (!(dish.getName().matches(DISH_NAME_PATTERN))) {
+            modelAndView.addObject(PAGE_USER_ERROR, DISH_VALID_NAME_WRONG);
             flag = false;
-        } else if (((double) dish.getCalories() / 1000) < 0.001
-                || ((double) dish.getCalories() / 1000) > 1000) {
+        } else if (dish.getWeight() < 50 * 1000 || dish.getWeight() > 999 * 1000) {
+            modelAndView.addObject(PAGE_USER_ERROR, DISH_VALID_WEIGHT_SIZE);
             flag = false;
-        } else if (((double) dish.getProteins() / 1000) < 0.001
-                || ((double) dish.getProteins() / 1000) > 1000) {
+        } else if (dish.getCalories() < 0.001 * 1000 || dish.getCalories() > 1000 * 1000) {
+            modelAndView.addObject(PAGE_USER_ERROR, DISH_VALID_CALORIES_SIZE);
             flag = false;
-        } else if (((double) dish.getFats() / 1000) < 0.001
-                || ((double) dish.getFats() / 1000) > 1000) {
+        } else if (dish.getProteins() < 0.001 * 1000 || dish.getProteins() > 1000 * 1000) {
+            modelAndView.addObject(PAGE_USER_ERROR, DISH_VALID_PROTEINS_SIZE);
             flag = false;
-        } else if (((double) dish.getCarbohydrates() / 1000) < 0.001
-                || ((double) dish.getCarbohydrates() / 1000) > 1000) {
+        } else if (dish.getFats() < 0.001 * 1000 || dish.getFats() > 1000 * 1000) {
+            modelAndView.addObject(PAGE_USER_ERROR, DISH_VALID_FATS_SIZE);
+            flag = false;
+        } else if (dish.getCarbohydrates() < 0.001 * 1000 || dish.getCarbohydrates() > 1000 * 1000) {
+            modelAndView.addObject(PAGE_USER_ERROR, DISH_VALID_CARBOHYDRATES_SIZE);
             flag = false;
         }
 
         if (!flag) {
-            throw new DataHttpException(Mess.LOG_DISH_HTTP_NOT_EXTRACT);
+            throw new DataHttpException(LOG_DISH_HTTP_NOT_EXTRACT);
         }
     }
 }
