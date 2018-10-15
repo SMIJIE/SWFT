@@ -20,7 +20,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
-import static org.apache.logging.log4j.util.Strings.isEmpty;
+import static org.apache.logging.log4j.util.Strings.isNotEmpty;
 
 /**
  * Description: This is the user controller
@@ -85,38 +85,43 @@ public class UserController implements GeneralController {
      * Action update user parameters
      *
      * @param formUser           {@link FormUser}
-     * @param user               {@link User}
      * @param bindingResult      {@link BindingResult}
-     * @param redirectAttributes {@link RedirectAttributes}
+     * @param user               {@link User}
      * @param servletRequest     {@link HttpServletRequest}
+     * @param redirectAttributes {@link RedirectAttributes}
      * @param modelAndView       {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = UPDATE_USER_PARAMETERS, method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = USER_UPDATE_PARAMETERS, method = {RequestMethod.POST, RequestMethod.GET})
     public ModelAndView actionUpdateUsersParameters(@Valid @ModelAttribute(REQUEST_FORM_USER) FormUser formUser,
-                                                    @SessionAttribute(REQUEST_USER) User user,
                                                     BindingResult bindingResult,
-                                                    RedirectAttributes redirectAttributes,
+                                                    @SessionAttribute(REQUEST_USER) User user,
                                                     HttpServletRequest servletRequest,
+                                                    RedirectAttributes redirectAttributes,
                                                     ModelAndView modelAndView) {
 
         modelAndView.addObject(PAGE_NAME, PAGE_SETTINGS)
                 .setViewName(USER_SETTINGS);
 
+        String tempPass = formUser.getPassword();
+        String tempPassConf = formUser.getPasswordConfirm();
+        boolean strEquals = tempPass.equals(tempPassConf);
+
         if (bindingResult.hasErrors()) {
             if (bindingResult.getErrorCount() == 1 &&
-                    !isNull(bindingResult.getFieldError("password"))) {
-                String tempPass = formUser.getPassword();
-                String tempPassConf = formUser.getPasswordConfirm();
-                boolean strEquals = tempPass.equals(tempPassConf);
-
-                if (!(isEmpty(tempPass) && isEmpty(tempPassConf)) &&
-                        (tempPass.length() < 3 || tempPassConf.length() < 3 || !strEquals)) {
-                    return modelAndView;
-                }
+                    !isNull(bindingResult.getFieldError(REQUEST_PASSWORD))) {
             } else {
                 return modelAndView;
             }
+        }
+
+        if (isNotEmpty(tempPass) && isNotEmpty(tempPassConf)) {
+            if (tempPass.length() < 3 || tempPassConf.length() < 3 || !strEquals) {
+                modelAndView.addObject(PAGE_USER_ERROR, PAGE_USER_NOT_MATCH_PASSWORDS);
+                return modelAndView;
+            }
+        } else {
+            bindingResult.rejectValue(REQUEST_PASSWORD, "");
         }
 
         User userHttp;

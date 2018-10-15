@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <form:form method="POST" action="updateUserParameters" id="updateUser" modelAttribute="formUser">
+    <form:form method="POST" action="userUpdateParameters" id="updateUser" modelAttribute="formUser">
         <div class="form-group row">
             <div class="col">
                 <spring:bind path="name">
@@ -105,7 +105,7 @@
                                 placeholder="${newPasswordConfirm}"
                                 value="${formUser.passwordConfirm}" onkeyup="checkInputs('passwordConfirm')"/>
                     <p style="color:red" id="passwordErrorAfterPost">
-                        <span   id="passwordConfirmErrorAfterPost">
+                        <span id="passwordConfirmErrorAfterPost">
                             <spring:message code="${status.errorMessage}"/>
                         </span>
                     </p>
