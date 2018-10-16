@@ -26,9 +26,10 @@ public class UserMapper implements ObjectMapper<User> {
         int weight;
         int weightDesired;
         int lifeStyleCoefficient;
+        boolean flagPassword = formUser.getPassword().isEmpty();
 
         email = formUser.getEmail().toLowerCase();
-        password = PasswordEncoder.encodePassword(formUser.getPassword());
+        password = flagPassword ? "" : PasswordEncoder.encodePassword(formUser.getPassword());
         height = (int) (formUser.getHeight() * 100);
         weight = (int) (formUser.getWeight() * 1000);
         weightDesired = (int) (formUser.getWeightDesired() * 1000);
