@@ -84,26 +84,25 @@
                                            id="checkbox_${dishGeneral.id}"/>
                                 </td>
 
-                                <form:form method="POST" action="userUpdateDish?numDish=${dishGeneral.id}"
+                                <form:form method="POST" action="userUpdateDish?numDish=${dishGeneral.id}&numPage=${numPage}"
                                            modelAttribute="formDish">
                                     <td>
                                         <form:select path="foodCategory" class="form-control"
                                                      id="foodCategory" name="foodCategory">
-                                            <form:option disabled="true" selected="true"
-                                                         value="${dishGeneral.foodCategory}">
-                                                <spring:message
-                                                        code="category.${fn:toLowerCase(dishGeneral.foodCategory)}"/>
-                                            </form:option>
-                                            <form:option value="LUNCHEON">
+                                            <form:option selected="${dishGeneral.foodCategory eq 'LUNCHEON' ? 'true' : 'false'}"
+                                                         value="LUNCHEON">
                                                 <spring:message code="category.luncheon"/>
                                             </form:option>
-                                            <form:option value="HOT">
+                                            <form:option selected="${dishGeneral.foodCategory eq 'HOT' ? 'true' : 'false'}"
+                                                         value="HOT">
                                                 <spring:message code="category.hot"/>
                                             </form:option>
-                                            <form:option value="SOUP">
+                                            <form:option selected="${dishGeneral.foodCategory eq 'SOUP' ? 'true' : 'false'}"
+                                                         value="SOUP">
                                                 <spring:message code="category.soup"/>
                                             </form:option>
-                                            <form:option value="DESSERT">
+                                            <form:option selected="${dishGeneral.foodCategory eq 'DESSERT' ? 'true' : 'false'}"
+                                                         value="DESSERT">
                                                 <spring:message code="category.dessert"/>
                                             </form:option>
                                         </form:select>
@@ -194,7 +193,7 @@
 
             <div id="collapseTwo" class="collapse ${showCollapseMenuAddDish}" data-parent="#accordion">
                 <div class="card-body">
-                    <form:form method="POST" action="addNewDish" id="addNewDish" modelAttribute="formDish">
+                    <form:form method="POST" action="addNewDish?numPage=${numPage}" id="addNewDish" modelAttribute="formDish">
                         <div class="form-group row">
                             <div class="col">
                                 <spring:bind path="foodCategory">
@@ -398,7 +397,7 @@
         });
 
         if (arrDish['toDelete[]'].length > 0) {
-            window.location.href = '${pageContext.request.contextPath}/swft/userDeleteDish?arrDish=' + arrDish['toDelete[]'];
+            window.location.href = '${pageContext.request.contextPath}/swft/userDeleteDish?arrDish=' + arrDish['toDelete[]']+'&numPage='+${numPage};
         }
     });
 </script>

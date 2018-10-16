@@ -85,13 +85,14 @@ public class MenuController implements GeneralController {
     @RequestMapping(value = USER_DELETE_DISH, method = RequestMethod.GET)
     public ModelAndView actionDeleteUsersDish(@SessionAttribute(REQUEST_USER) User user,
                                               @RequestParam(value = REQUEST_ARR_DISH) Integer[] idDishes,
+                                              @RequestParam(REQUEST_NUMBER_PAGE) Integer numPage,
                                               RedirectAttributes redirectAttributes,
                                               ModelAndView modelAndView) {
 
         DISH_SERVICE_IMP.deleteArrayDishesByIdAndUser(Arrays.asList(idDishes), user.getId());
 
         redirectAttributes.addAttribute(PAGE_NAME, PAGE_MENU_EDIT);
-        modelAndView.setViewName(MENU_USERS_EDIT_REDIRECT);
+        modelAndView.setViewName(MENU_USERS_EDIT_REDIRECT + "?numPage=" + numPage);
 
         return modelAndView;
     }
@@ -110,12 +111,13 @@ public class MenuController implements GeneralController {
     public ModelAndView actionAddUsersDish(@Valid @ModelAttribute(REQUEST_FORM_DISH) FormDish formDish,
                                            BindingResult bindingResult,
                                            @SessionAttribute(REQUEST_USER) User user,
+                                           @RequestParam(REQUEST_NUMBER_PAGE) Integer numPage,
                                            RedirectAttributes redirectAttributes,
                                            ModelAndView modelAndView) {
 
         modelAndView.addObject(PAGE_NAME, PAGE_MENU_EDIT)
                 .addObject(SHOW_COLLAPSE_MENU_ADD_DISH, SHOW_COLLAPSE_ATTRIBUTE_FOR_CCS_CLASS)
-                .setViewName(MENU_USERS_EDIT_PAGE);
+                .setViewName(MENU_USERS_EDIT_PAGE + "?numPage=" + numPage);
 
         if (bindingResult.hasErrors()) {
             return modelAndView;
@@ -136,6 +138,49 @@ public class MenuController implements GeneralController {
         redirectAttributes.addAttribute(PAGE_NAME, PAGE_MENU_EDIT)
                 .addAttribute(SHOW_COLLAPSE_MENU_USERS_PAGE, SHOW_COLLAPSE_ATTRIBUTE_FOR_CCS_CLASS);
         modelAndView.setViewName(MENU_USERS_EDIT_REDIRECT);
+
+        return modelAndView;
+    }
+
+    /**
+     * Update users dish
+     *
+     * @param formDish           {@link FormDish}
+     * @param bindingResult      {@link BindingResult}
+     * @param modelAndView       {@link ModelAndView}
+     * @param redirectAttributes {@link RedirectAttributes}
+     * @param modelAndView       {@link ModelAndView}
+     * @return modelAndView {@link ModelAndView}
+     */
+    @RequestMapping(value = USER_UPDATE_DISH, method = RequestMethod.POST)
+    public ModelAndView actionUpdateUsersDish(@Valid @ModelAttribute(REQUEST_FORM_DISH) FormDish formDish,
+                                              BindingResult bindingResult,
+                                              @RequestParam(REQUEST_NUMBER_DISH) Integer idDish,
+                                              @RequestParam(REQUEST_NUMBER_PAGE) Integer numPage,
+                                              RedirectAttributes redirectAttributes,
+                                              ModelAndView modelAndView) {
+
+        modelAndView.setViewName(MENU_USERS_EDIT_REDIRECT + "?numPage=" + numPage);
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute(PAGE_USER_ERROR, PAGE_WRONG_DATA);
+            return modelAndView;
+        }
+
+        Dish dishHttp;
+        try {
+            dishHttp = DISH_MAPPER.extractDishFromHttpForm(formDish, modelAndView);
+        } catch (DataHttpException e) {
+            log.error(e.getMessage());
+            redirectAttributes.addFlashAttribute(PAGE_USER_ERROR, modelAndView.getModel().get(PAGE_USER_ERROR));
+            return modelAndView;
+        }
+
+        DISH_SERVICE_IMP.getDishById(idDish)
+                .ifPresent(dishSQL -> {
+                    CommandsUtil.mergeDishParameters(dishHttp, dishSQL);
+                    DISH_SERVICE_IMP.updateDishParameters(dishSQL);
+                });
 
         return modelAndView;
     }

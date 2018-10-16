@@ -13,7 +13,6 @@ import ua.training.controller.commands.action.admin.*;
 import ua.training.controller.commands.action.pages.ListUserDayRation;
 import ua.training.controller.commands.action.purge.DeleteUsersComposition;
 import ua.training.controller.commands.action.update.UpdateUsersComposition;
-import ua.training.controller.commands.action.update.UpdateUsersDish;
 import ua.training.controller.commands.direction.MenuGeneralEdit;
 import ua.training.controller.commands.direction.MenuGeneralEditWithError;
 import ua.training.controller.commands.direction.ShowUsersAfterUpdateOrSearch;
@@ -51,7 +50,6 @@ public abstract class CommandsUtil implements Command {
         commandMap.put(Attributes.COMMAND_MENU_GENERAL_EDIT, new MenuGeneralEdit());
         commandMap.put(Attributes.COMMAND_MENU_GENERAL_DELETE, new DeleteGeneralMenuItem());
         commandMap.put(Attributes.COMMAND_MENU_GENERAL_UPDATE, new UpdateGeneralDish());
-        commandMap.put(Attributes.COMMAND_MENU_USERS_UPDATE, new UpdateUsersDish());
         commandMap.put(Attributes.COMMAND_SHOW_USERS, new ShowUsers());
         commandMap.put(Attributes.COMMAND_DELETE_USERS, new DeleteUsers());
         commandMap.put(Attributes.COMMAND_MENU_LIST_USERS_PAGE, new ListUsersPage());
@@ -142,9 +140,23 @@ public abstract class CommandsUtil implements Command {
         user.setLifeStyleCoefficient(userHttp.getLifeStyleCoefficient());
 
         boolean flagPassword = userHttp.getPassword().isEmpty();
-        user.setPassword(flagPassword ?
-                user.getPassword() : userHttp.getPassword());
+        user.setPassword(flagPassword ? user.getPassword() : userHttp.getPassword());
+    }
 
+    /**
+     * Merge dish from Http Form to Session
+     *
+     * @param dishHttp {@link Dish}
+     * @param dish     {@link Dish}
+     */
+    public static void mergeDishParameters(Dish dishHttp, Dish dish) {
+        dish.setFoodCategory(dishHttp.getFoodCategory());
+        dish.setName(dishHttp.getName());
+        dish.setWeight(dishHttp.getWeight());
+        dish.setCalories(dishHttp.getCalories());
+        dish.setProteins(dishHttp.getProteins());
+        dish.setFats(dishHttp.getFats());
+        dish.setCarbohydrates(dishHttp.getCarbohydrates());
     }
 
     /**
@@ -217,20 +229,6 @@ public abstract class CommandsUtil implements Command {
 //            dishHttp = Optional.empty();
 //        }
         return dishHttp;
-    }
-
-    /**
-     * Extract entity 'User' from HTTP request
-     *
-     * @param dishHttp Dish
-     * @param dishSQL  Dish
-     */
-    public static void updateDishParameters(Dish dishHttp, Dish dishSQL) {
-        dishSQL.setWeight(dishHttp.getWeight());
-        dishSQL.setCalories(dishHttp.getCalories());
-        dishSQL.setProteins(dishHttp.getProteins());
-        dishSQL.setFats(dishHttp.getFats());
-        dishSQL.setCarbohydrates(dishHttp.getCarbohydrates());
     }
 
     /**
