@@ -76,22 +76,19 @@ public class MenuController implements GeneralController {
     /**
      * Delete 1 or more users dish
      *
-     * @param user               {@link User}
-     * @param idDishes           [] {@link Integer}
-     * @param modelAndView       {@link ModelAndView}
-     * @param redirectAttributes {@link RedirectAttributes}
+     * @param user         {@link User}
+     * @param idDishes     [] {@link Integer}
+     * @param modelAndView {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
     @RequestMapping(value = USER_DELETE_DISH, method = RequestMethod.GET)
     public ModelAndView actionDeleteUsersDish(@SessionAttribute(REQUEST_USER) User user,
                                               @RequestParam(value = REQUEST_ARR_DISH) Integer[] idDishes,
                                               @RequestParam(REQUEST_NUMBER_PAGE) Integer numPage,
-                                              RedirectAttributes redirectAttributes,
                                               ModelAndView modelAndView) {
 
         DISH_SERVICE_IMP.deleteArrayDishesByIdAndUser(Arrays.asList(idDishes), user.getId());
 
-        redirectAttributes.addAttribute(PAGE_NAME, PAGE_MENU_EDIT);
         modelAndView.setViewName(MENU_USERS_EDIT_REDIRECT + "?numPage=" + numPage);
 
         return modelAndView;
@@ -100,11 +97,10 @@ public class MenuController implements GeneralController {
     /**
      * Add users dish
      *
-     * @param formDish           {@link FormDish}
-     * @param bindingResult      {@link BindingResult}
-     * @param user               {@link User}
-     * @param modelAndView       {@link ModelAndView}
-     * @param redirectAttributes {@link RedirectAttributes}
+     * @param formDish      {@link FormDish}
+     * @param bindingResult {@link BindingResult}
+     * @param user          {@link User}
+     * @param modelAndView  {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
     @RequestMapping(value = USER_ADD_DISH, method = {RequestMethod.POST, RequestMethod.GET})
@@ -112,11 +108,11 @@ public class MenuController implements GeneralController {
                                            BindingResult bindingResult,
                                            @SessionAttribute(REQUEST_USER) User user,
                                            @RequestParam(REQUEST_NUMBER_PAGE) Integer numPage,
-                                           RedirectAttributes redirectAttributes,
                                            ModelAndView modelAndView) {
 
         modelAndView.addObject(PAGE_NAME, PAGE_MENU_EDIT)
                 .addObject(SHOW_COLLAPSE_MENU_ADD_DISH, SHOW_COLLAPSE_ATTRIBUTE_FOR_CCS_CLASS)
+                .addObject(REQUEST_NUMBER_PAGE, numPage)
                 .setViewName(MENU_USERS_EDIT_PAGE);
 
         if (bindingResult.hasErrors()) {
@@ -135,8 +131,6 @@ public class MenuController implements GeneralController {
         dishHttp.setGeneralFood(false);
         DISH_SERVICE_IMP.insertNewDish(dishHttp);
 
-        redirectAttributes.addAttribute(PAGE_NAME, PAGE_MENU_EDIT)
-                .addAttribute(SHOW_COLLAPSE_MENU_USERS_PAGE, SHOW_COLLAPSE_ATTRIBUTE_FOR_CCS_CLASS);
         modelAndView.setViewName(MENU_USERS_EDIT_REDIRECT + "?numPage=" + numPage);
 
         return modelAndView;

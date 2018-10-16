@@ -15,7 +15,6 @@
 </script>
 <%--Shows error for users--%>
 
-
 <div id="content">
 
     <div id="accordion">
@@ -211,8 +210,7 @@
                                             <spring:message code="valid.weight.size"/>
                                         </span>
                                     </form:label>
-                                    <form:input path="weight" type="number" class="form-control"
-                                                id="weight" step="0.1"
+                                    <form:input path="weight" type="number" class="form-control" id="weight" step="0.1"
                                                 placeholder="85,0" value="${formUser.weight}"
                                                 onkeyup="checkInputs('weight')"/>
                                     <p style="color:red" id="weightErrorAfterPost">
@@ -230,9 +228,8 @@
                                             <spring:message code="valid.weight.size"/>
                                         </span>
                                     </form:label>
-                                    <form:input path="weightDesired" type="number" class="form-control"
-                                                id="weightDesired" step="0.1"
-                                                placeholder="70,5" value="${formUser.weightDesired}"
+                                    <form:input path="weightDesired" type="number" class="form-control" id="weightDesired"
+                                                step="0.1" placeholder="70,5" value="${formUser.weightDesired}"
                                                 onkeyup="checkInputs('weightDesired')"/>
                                     <p style="color:red" id="weightDesiredErrorAfterPost">
                                         <spring:message code="${status.errorMessage}"/>

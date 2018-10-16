@@ -92,8 +92,8 @@
                     </form:label>
                     <spring:message code="register.newPassword" var="newPassword"/>
                     <form:input path="password" type="password" class="form-control" id="password"
-                                placeholder="${newPassword}"
-                                value="${formUser.password}" onkeyup="checkInputs('password')"/>
+                                placeholder="${newPassword}" value="${formUser.password}"
+                                onkeyup="checkInputs('password')"/>
 
                     <form:label path="passwordConfirm">
                         <span style="color:#D2691E; visibility: hidden" id="passwordConfirmError">
@@ -102,8 +102,8 @@
                     </form:label>
                     <spring:message code="register.confirmPassword" var="newPasswordConfirm"/>
                     <form:input path="passwordConfirm" type="password" class="form-control" id="passwordConfirm"
-                                placeholder="${newPasswordConfirm}"
-                                value="${formUser.passwordConfirm}" onkeyup="checkInputs('passwordConfirm')"/>
+                                placeholder="${newPasswordConfirm}" value="${formUser.passwordConfirm}"
+                                onkeyup="checkInputs('passwordConfirm')"/>
                     <p style="color:red" id="passwordErrorAfterPost">
                         <span id="passwordConfirmErrorAfterPost">
                             <spring:message code="${status.errorMessage}"/>
@@ -149,7 +149,7 @@
                 <spring:bind path="height">
                     <form:label path="height">
                         <spring:message code="register.height"/>,&nbsp;
-                        <spring:message code="register.cm"/>&nbsp;:&nbsp;
+                        <spring:message code="register.cm"/>:&nbsp;
                         <span style="color:#D2691E; visibility: hidden" id="heightError">
                               <spring:message code="valid.height.size"/>
                         </span>
@@ -167,7 +167,7 @@
                 <spring:bind path="weight">
                     <form:label path="weight">
                         <spring:message code="calories.currentWeight"/>,&nbsp;
-                        <spring:message code="register.kg"/>&nbsp;:&nbsp;
+                        <spring:message code="register.kg"/>:&nbsp;
                         <span style="color:#D2691E; visibility: hidden" id="weightError">
                               <spring:message code="valid.weight.size"/>
                         </span>
@@ -185,13 +185,12 @@
                 <spring:bind path="weightDesired">
                     <form:label path="weightDesired">
                         <spring:message code="calories.desireWeight"/>,&nbsp;
-                        <spring:message code="register.kg"/>&nbsp;:&nbsp;
+                        <spring:message code="register.kg"/>:&nbsp;
                         <span style="color:#D2691E; visibility: hidden" id="weightDesiredError">
                             <spring:message code="valid.weight.size"/>
                         </span>
                     </form:label>
-                    <form:input path="weightDesired" type="number" class="form-control"
-                                id="weightDesired" step="0.1"
+                    <form:input path="weightDesired" type="number" class="form-control" id="weightDesired" step="0.1"
                                 value="${empty formUser.weightDesired ? user.weightDesired/1000 : formUser.weightDesired}"
                                 onkeyup="checkInputs('weightDesired')"/>
                     <p style="color:red" id="weightDesiredErrorAfterPost">

@@ -11,6 +11,7 @@
         if (mess === '') {
             $('#userErrorData').css({display: 'none'});
         }
+        alert(Heloo);
     }
 </script>
 <%--Shows error with data--%>
@@ -24,7 +25,7 @@
                 <spring:message code="${userError}"/>
             </div>
         </div>
-
+        <%--Show users dishes--%>
         <div class="card bg-transparent">
             <div class="card-header">
                 <a class="card-link" data-toggle="collapse" href="#collapseOne">
@@ -84,52 +85,52 @@
                                            id="checkbox_${dishGeneral.id}"/>
                                 </td>
 
-                                <form:form method="POST" action="userUpdateDish?numDish=${dishGeneral.id}&numPage=${numPage}"
-                                           modelAttribute="formDish">
+                                <form:form method="POST" id="updateDish" modelAttribute="formDish"
+                                           action="userUpdateDish?numDish=${dishGeneral.id}&numPage=${numPage}">
                                     <td>
                                         <form:select path="foodCategory" class="form-control"
-                                                     id="foodCategory" name="foodCategory">
-                                            <form:option selected="${dishGeneral.foodCategory eq 'LUNCHEON' ? 'true' : 'false'}"
-                                                         value="LUNCHEON">
+                                                     id="foodCategoryUpdate" name="foodCategory">
+                                            <form:option value="LUNCHEON"
+                                                         selected="${dishGeneral.foodCategory eq 'LUNCHEON' ? 'selected' : ''}">
                                                 <spring:message code="category.luncheon"/>
                                             </form:option>
-                                            <form:option selected="${dishGeneral.foodCategory eq 'HOT' ? 'true' : 'false'}"
-                                                         value="HOT">
+                                            <form:option value="HOT"
+                                                         selected="${dishGeneral.foodCategory eq 'HOT' ? 'selected' : ''}">
                                                 <spring:message code="category.hot"/>
                                             </form:option>
-                                            <form:option selected="${dishGeneral.foodCategory eq 'SOUP' ? 'true' : 'false'}"
-                                                         value="SOUP">
+                                            <form:option value="SOUP"
+                                                         selected="${dishGeneral.foodCategory eq 'SOUP' ? 'selected' : ''}">
                                                 <spring:message code="category.soup"/>
                                             </form:option>
-                                            <form:option selected="${dishGeneral.foodCategory eq 'DESSERT' ? 'true' : 'false'}"
-                                                         value="DESSERT">
+                                            <form:option value="DESSERT"
+                                                         selected="${dishGeneral.foodCategory eq 'DESSERT' ? 'selected' : ''}">
                                                 <spring:message code="category.dessert"/>
                                             </form:option>
                                         </form:select>
                                     </td>
                                     <td>
                                         <form:input path="name" type="text" class="form-control"
-                                                    id="name" value="${dishGeneral.name}"/>
+                                                    id="nameUpdate" value="${dishGeneral.name}"/>
                                     </td>
                                     <td>
-                                        <form:input path="weight" type="number" class="form-control"
-                                                    step="0.1" value="${dishGeneral.weight/1000}"/>
+                                        <form:input path="weight" type="number" class="form-control" step="0.1"
+                                                    id="weightUpdate" value="${dishGeneral.weight/1000}"/>
                                     </td>
                                     <td>
-                                        <form:input path="calories" type="number" class="form-control"
-                                                    step="0.1" value="${dishGeneral.calories/1000}"/>
+                                        <form:input path="calories" type="number" class="form-control" step="0.1"
+                                                    id="caloriesUpdate" value="${dishGeneral.calories/1000}"/>
                                     </td>
                                     <td>
-                                        <form:input path="proteins" type="number" class="form-control"
-                                                    step="0.1" value="${dishGeneral.proteins/1000}"/>
+                                        <form:input path="proteins" type="number" class="form-control" step="0.1"
+                                                    id="proteinsUpdate" value="${dishGeneral.proteins/1000}"/>
                                     </td>
                                     <td>
-                                        <form:input path="fats" type="number" class="form-control"
-                                                    step="0.1" value="${dishGeneral.fats/1000}"/>
+                                        <form:input path="fats" type="number" class="form-control" step="0.1"
+                                                    id="fatsUpdate" value="${dishGeneral.fats/1000}"/>
                                     </td>
                                     <td>
-                                        <form:input path="carbohydrates" type="number" class="form-control"
-                                                    step="0.1" value="${dishGeneral.carbohydrates/1000}"/>
+                                        <form:input path="carbohydrates" type="number" class="form-control" step="0.1"
+                                                    id="carbohydratesUpdate" value="${dishGeneral.carbohydrates/1000}"/>
                                     </td>
                                     <td>
                                         <button type="submit" class="btn btn-success">
@@ -146,7 +147,6 @@
                 <nav aria-label="Page navigation example" class="">
                     <ul class="pagination">
                         &nbsp;&nbsp;
-
                         <li class="page-item">
                             <a class="page-link bg-transparent text-primary" id="numPage=${numPage-1}"
                                href="#" aria-label="Previous" onclick="clickPage(this)">
@@ -163,8 +163,7 @@
                             <c:if test="${loop ne numPage}">
                                 <li class="page-item">
                             </c:if>
-                            <a class="page-link bg-transparent text-primary"
-                               id="numPage=${loop}"
+                            <a class="page-link bg-transparent text-primary" id="numPage=${loop}"
                                href="#" onclick="clickPage(this)">
                                     ${loop}
                             </a>
@@ -183,7 +182,9 @@
                 </nav>
             </div>
         </div>
+        <%--Show users dishes--%>
 
+        <%--Add new users dishes--%>
         <div class="card bg-transparent">
             <div class="card-header">
                 <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
@@ -193,7 +194,8 @@
 
             <div id="collapseTwo" class="collapse ${showCollapseMenuAddDish}" data-parent="#accordion">
                 <div class="card-body">
-                    <form:form method="POST" action="addNewDish?numPage=${numPage}" id="addNewDish" modelAttribute="formDish">
+                    <form:form method="POST" action="addNewDish?numPage=${numPage}" id="addNewDish"
+                               modelAttribute="formDish">
                         <div class="form-group row">
                             <div class="col">
                                 <spring:bind path="foodCategory">
@@ -248,7 +250,7 @@
                                 <spring:bind path="weight">
                                     <form:label path="weight">
                                         <spring:message code="dish.weight"/>,&nbsp;
-                                        <spring:message code="dish.gr"/>&nbsp;:&nbsp;
+                                        <spring:message code="dish.gr"/>:&nbsp;
                                         <span style="color:#D2691E; visibility: hidden" id="weightError">
                                             <spring:message code="valid.dish.weight.size"/>
                                         </span>
@@ -284,7 +286,7 @@
                             <div class="col">
                                 <spring:bind path="proteins">
                                     <form:label path="proteins">
-                                        <spring:message code="dish.proteins"/>:&nbsp;<br/>
+                                        <spring:message code="dish.proteins"/>:&nbsp;
                                         <span style="color:#D2691E; visibility: hidden" id="proteinsError">
                                             <spring:message code="valid.dish.proteins.size"/>
                                         </span>
@@ -301,7 +303,7 @@
                             <div class="col">
                                 <spring:bind path="fats">
                                     <form:label path="fats">
-                                        <spring:message code="dish.fats"/>:&nbsp;<br/>
+                                        <spring:message code="dish.fats"/>:&nbsp;
                                         <span style="color:#D2691E; visibility: hidden" id="fatsError">
                                             <spring:message code="valid.dish.fats.size"/>
                                         </span>
@@ -318,14 +320,14 @@
                             <div class="col">
                                 <spring:bind path="carbohydrates">
                                     <form:label path="carbohydrates">
-                                        <spring:message code="dish.carbohydrates"/>:&nbsp;<br/>
+                                        <spring:message code="dish.carbohydrates"/>:&nbsp;
                                         <span style="color:#D2691E; visibility: hidden" id="carbohydratesError">
                                             <spring:message code="valid.dish.carbohydrates.size"/>
                                         </span>
                                     </form:label>
                                     <form:input path="carbohydrates" type="number" class="form-control"
-                                                id="carbohydrates"
-                                                step="0.1" placeholder="4,5" value="${formDish.carbohydrates}"
+                                                id="carbohydrates" step="0.1" placeholder="4,5"
+                                                value="${formDish.carbohydrates}"
                                                 onkeyup="checkInputs('carbohydrates')"/>
                                     <p style="color:red" id="carbohydratesErrorAfterPost">
                                         <spring:message code="${status.errorMessage}"/>
@@ -341,6 +343,8 @@
                 </div>
             </div>
         </div>
+        <%--Add new users dishes--%>
+
     </div>
 </div>
 
@@ -354,6 +358,7 @@
 <script type="text/javascript">
     function checkInputs(inputAttribute) {
         var checkAttribute = $('#' + inputAttribute).val();
+        // alert($('#addNewDish').find('input[id='+inputAttribute+']').val());
         $('#' + inputAttribute + 'Error').css({visibility: 'visible'});
         $('#' + inputAttribute + 'ErrorAfterPost').css({visibility: 'hidden'});
 
@@ -397,7 +402,7 @@
         });
 
         if (arrDish['toDelete[]'].length > 0) {
-            window.location.href = '${pageContext.request.contextPath}/swft/userDeleteDish?arrDish=' + arrDish['toDelete[]']+'&numPage='+${numPage};
+            window.location.href = '${pageContext.request.contextPath}/swft/userDeleteDish?arrDish=' + arrDish['toDelete[]'] + '&numPage=' +${numPage};
         }
     });
 </script>
