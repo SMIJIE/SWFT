@@ -12,7 +12,7 @@ public interface Attributes {
     String SHOW_COLLAPSE_SIGN_IN = "showCollapseSignIn";
     String SHOW_COLLAPSE_SIGN_UP = "showCollapseSignUp";
     String SHOW_COLLAPSE_MENU_USERS_PAGE = "showCollapseMenuUsersPage";
-    String SHOW_COLLAPSE_MENU_ADD_DISH= "showCollapseMenuAddDish";
+    String SHOW_COLLAPSE_MENU_ADD_DISH = "showCollapseMenuAddDish";
     String SHOW_COLLAPSE_ATTRIBUTE_FOR_CCS_CLASS = "show";
 
 

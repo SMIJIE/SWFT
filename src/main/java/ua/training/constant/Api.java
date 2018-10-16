@@ -17,5 +17,6 @@ public interface Api {
     String USER_SETTINGS_PAGE = "/userSettings";
     String USER_DELETE_DISH = "/userDeleteDish";
     String USER_ADD_DISH = "/addNewDish";
+    String USER_UPDATE_DISH = "/userUpdateDish";
     String USER_UPDATE_PARAMETERS = "/userUpdateParameters";
 }

@@ -50,4 +50,7 @@ public interface Mess {
     String DISH_VALID_PROTEINS_SIZE = "valid.dish.proteins.size";
     String DISH_VALID_FATS_SIZE = "valid.dish.fats.size";
     String DISH_VALID_CARBOHYDRATES_SIZE = "valid.dish.carbohydrates.size";
+
+    String PAGE_WRONG_DATA = "wrong.data";
+
 }
