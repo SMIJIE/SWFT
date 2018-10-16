@@ -49,7 +49,7 @@
             <div class="col">
                 <spring:bind path="dob">
                     <form:label path="dob">
-                        <spring:message code="register.dob"/>&nbsp;
+                        <spring:message code="register.dob"/>:&nbsp;
                         <span style="color:#D2691E; visibility: hidden" id="dobError">
                             <spring:message code="valid.dob.age.between"/>
                         </span>

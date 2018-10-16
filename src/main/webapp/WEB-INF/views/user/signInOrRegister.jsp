@@ -102,7 +102,7 @@
                             <div class="col">
                                 <spring:bind path="dob">
                                     <form:label path="dob">
-                                        <spring:message code="register.dob"/>&nbsp;
+                                        <spring:message code="register.dob"/>:&nbsp;
                                         <span style="color:#D2691E; visibility: hidden" id="dobError">
                                             <spring:message code="valid.dob.age.between"/>
                                         </span>
@@ -187,8 +187,8 @@
                             <div class="col">
                                 <spring:bind path="height">
                                     <form:label path="height">
-                                        <spring:message code="register.height"/>,&nbsp;
-                                        <spring:message code="register.cm"/>&nbsp;:&nbsp;
+                                        <spring:message code="register.height"/>,
+                                        <spring:message code="register.cm"/>:&nbsp;
                                         <span style="color:#D2691E; visibility: hidden" id="heightError">
                                           <spring:message code="valid.height.size"/>
                                         </span>
@@ -205,8 +205,8 @@
                             <div class="col">
                                 <spring:bind path="weight">
                                     <form:label path="weight">
-                                        <spring:message code="calories.currentWeight"/>,&nbsp;
-                                        <spring:message code="register.kg"/>&nbsp;:&nbsp;
+                                        <spring:message code="calories.currentWeight"/>,
+                                        <spring:message code="register.kg"/>:&nbsp;
                                         <span style="color:#D2691E; visibility: hidden" id="weightError">
                                             <spring:message code="valid.weight.size"/>
                                         </span>
@@ -224,8 +224,8 @@
                             <div class="col">
                                 <spring:bind path="weightDesired">
                                     <form:label path="weightDesired">
-                                        <spring:message code="calories.desireWeight"/>,&nbsp;
-                                        <spring:message code="register.kg"/>&nbsp;:&nbsp;
+                                        <spring:message code="calories.desireWeight"/>,
+                                        <spring:message code="register.kg"/>:&nbsp;
                                         <span style="color:#D2691E; visibility: hidden" id="weightDesiredError">
                                             <spring:message code="valid.weight.size"/>
                                         </span>
