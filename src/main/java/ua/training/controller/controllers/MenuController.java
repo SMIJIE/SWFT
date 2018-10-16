@@ -117,7 +117,7 @@ public class MenuController implements GeneralController {
 
         modelAndView.addObject(PAGE_NAME, PAGE_MENU_EDIT)
                 .addObject(SHOW_COLLAPSE_MENU_ADD_DISH, SHOW_COLLAPSE_ATTRIBUTE_FOR_CCS_CLASS)
-                .setViewName(MENU_USERS_EDIT_PAGE + "?numPage=" + numPage);
+                .setViewName(MENU_USERS_EDIT_PAGE);
 
         if (bindingResult.hasErrors()) {
             return modelAndView;
@@ -137,7 +137,7 @@ public class MenuController implements GeneralController {
 
         redirectAttributes.addAttribute(PAGE_NAME, PAGE_MENU_EDIT)
                 .addAttribute(SHOW_COLLAPSE_MENU_USERS_PAGE, SHOW_COLLAPSE_ATTRIBUTE_FOR_CCS_CLASS);
-        modelAndView.setViewName(MENU_USERS_EDIT_REDIRECT);
+        modelAndView.setViewName(MENU_USERS_EDIT_REDIRECT + "?numPage=" + numPage);
 
         return modelAndView;
     }

@@ -5,7 +5,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import ua.training.constant.Mess;
 import ua.training.constant.RegexExpress;
 
-import javax.persistence.Column;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 

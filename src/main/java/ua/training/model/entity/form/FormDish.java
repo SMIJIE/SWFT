@@ -44,19 +44,19 @@ public class FormDish implements Mess, RegexExpress {
     @NotNull(message = DISH_VALID_PROTEINS_SIZE)
     @Min(value = 0, message = DISH_VALID_PROTEINS_SIZE)
     @Max(value = 1000, message = DISH_VALID_PROTEINS_SIZE)
-    private Double  proteins;
+    private Double proteins;
     /**
      * Verify on not NULL and on MIN and MAX
      */
     @NotNull(message = DISH_VALID_FATS_SIZE)
     @Min(value = 0, message = DISH_VALID_FATS_SIZE)
     @Max(value = 1000, message = DISH_VALID_FATS_SIZE)
-    private Double  fats;
+    private Double fats;
     /**
      * Verify on not NULL and on MIN and MAX
      */
     @NotNull(message = DISH_VALID_CARBOHYDRATES_SIZE)
     @Min(value = 0, message = DISH_VALID_CARBOHYDRATES_SIZE)
     @Max(value = 1000, message = DISH_VALID_CARBOHYDRATES_SIZE)
-    private Double  carbohydrates;
+    private Double carbohydrates;
 }
