@@ -7,13 +7,12 @@ the system will inform him about this and write how much the norm was exceeded. 
 parameters of the client (age, height, weight, lifestyle, etc.).
 # Developer:
 Pavlo Zakusylo
-# Mentor:
-Maksym Liashenko
 
 # How to run project:
 1. Istall maven http://www.apache-maven.ru/install.html
-2. Select URL in src\main\resources\db.properties 'jdbc:mysql://62.80.166.79:3306/dbSWFT'
+2. Select URL in src\main\resources\db.properties 'jdbc:mysql://62.80.166.79:3306/oldSWFT'
 3. In project directory open PowerShell/CMD
 4. Enter command "mvn tomcat7:run"
 5. Open browser and follow the link http://localhost:8888/
+6. Login: 'pavlo@mail.ua'   Password: 'qwerty'
 
