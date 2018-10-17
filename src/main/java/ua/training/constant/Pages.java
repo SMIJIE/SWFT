@@ -22,15 +22,15 @@ public interface Pages {
     String USER_SETTINGS_REDIRECT_WITH_ERROR = "redirect:/userSettingsWithError";
 
     String MENU_PAGE = "/user/menu";
-    String MENU_GENERAL_EDIT = "/WEB-INF/admin/menuGeneralEdit.jsp";
-    String MENU_GENERAL_EDIT_REDIRECT = "redirect:/menuGeneralEdit";
+    String MENU_GENERAL_EDIT = "/admin/menuGeneralEdit";
+    String MENU_GENERAL_EDIT_REDIRECT = "redirect:/swft/admin/menuGeneralEdit";
     String MENU_GENERAL_EDIT_WITH_ERROR_REDIRECT = "redirect:/menuGeneralEditWithError";
     String MENU_USERS_EDIT_PAGE = "/user/menuUsersEdit";
     String MENU_USERS_EDIT_REDIRECT = "redirect:/swft/menuUsersEdit";
     String MENU_USERS_EDIT_REDIRECT_WITH_ERROR = "redirect:/menuUsersEditWithError";
     String MENU_USERS_EDIT_AFTER_UPDATE_REDIRECT = "redirect:/menuUsersEditAfterUpdate";
 
-    String SHOW_USERS = "/WEB-INF/admin/showUsers.jsp";
+    String SHOW_USERS = "/admin/showUsers";
     String SHOW_USERS_REDIRECT = "redirect:/showUsers";
     String SHOW_USERS_AFTER_UPDATE_OR_SEARCH_REDIRECT = "redirect:/showUsersAfterUpdateOrSearch";
 

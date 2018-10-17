@@ -5,9 +5,8 @@
 <jsp:include page="../components/footer.jsp"/>
 
 <script type="text/javascript">
-    <%--Shows row of menu--%>
-
     function menuItemForPageAndErrorData(messCurrentPage) {
+        <%--Shows row of menu--%>
         var showTrId;
         var hideTrId;
         var messArr;
@@ -37,8 +36,8 @@
         <%--Shows row of menu--%>
 
         <%--Shows error with data--%>
-        var mess = '${userErrorData}';
-        if (mess === 'nonErrorData') {
+        var mess = '${userError}';
+        if (mess === "") {
             $('#userErrorData').css({display: 'none'});
         }
         <%--Shows error with data--%>
@@ -50,464 +49,128 @@
     <div id="accordion">
         <div class="card text-light bg-danger" id="userErrorData">
             <div class="card-header">
-                <fmt:message key="${userErrorData}"/>
+                <fmt:message key="${userError}"/>
             </div>
         </div>
 
-        <div class="card bg-transparent">
-            <div class="card-header">
-                <a class="card-link text-danger" data-toggle="collapse" href="#luncheon">
-                    <fmt:message key="category.luncheon"/>
-                </a>
-            </div>
+        <c:forEach items="${generalDishes}" var="generalDish">
 
-            <div id="luncheon" class="collapse" data-parent="#accordion">
-                <div class="card-body">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col"></th>
-                            <th scope="col">
-                                <fmt:message key="dish.name"/>
-                            </th>
-                            <th scope="col">
-                                <fmt:message key="dish.weight"/>,
-                                <fmt:message key="dish.gr"/>
-                            </th>
-                            <th scope="col">
-                                <fmt:message key="dish.calories"/> /
-                                100 <fmt:message key="dish.gr"/>
-                            </th>
-                            <th scope="col">
-                                <fmt:message key="dish.proteins"/>
-                            </th>
-                            <th scope="col">
-                                <fmt:message key="dish.fats"/>
-                            </th>
-                            <th scope="col">
-                                <fmt:message key="dish.carbohydrates"/>
-                            </th>
-                            <th scope="col">
-                                <button type="button" id="delete_luncheon_dish" class="btn btn-danger navbar-btn">
-                                    <fmt:message key="page.delete"/>
-                                </button>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
+            <div class="card bg-transparent">
+                <div class="card-header">
+                    <a class="card-link text-danger" data-toggle="collapse" href="#${generalDish.key}">
+                        <spring:message code="category.${generalDish.key}"/>
+                    </a>
+                </div>
 
-                        <c:set var="countLuncheon" value="0" scope="page"/>
-                        <c:forEach items="${generalDishes}" var="dishGeneral">
-                            <c:if test="${dishGeneral.foodCategory eq 'LUNCHEON'}">
-                                <c:set var="foodCategory" value="${dishGeneral.foodCategory}" scope="page"/>
-                                <c:set var="countLuncheon" value="${countLuncheon + 1}" scope="page"/>
+                <div id="${generalDish.key}" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col"></th>
+                                <th scope="col">
+                                    <spring:message code="dish.name"/>
+                                </th>
+                                <th scope="col">
+                                    <spring:message code="dish.weight"/>,
+                                    <spring:message code="dish.gr"/>
+                                </th>
+                                <th scope="col">
+                                    <spring:message code="dish.calories"/> /
+                                    100 <spring:message code="dish.gr"/>
+                                </th>
+                                <th scope="col">
+                                    <spring:message code="dish.proteins"/>
+                                </th>
+                                <th scope="col">
+                                    <spring:message code="dish.fats"/>
+                                </th>
+                                <th scope="col">
+                                    <spring:message code="dish.carbohydrates"/>
+                                </th>
+                                <th scope="col">
+                                    <button type="button" id="delete_luncheon_dish" class="btn btn-danger navbar-btn">
+                                        <fmt:message key="page.delete"/>
+                                    </button>
+                                </th>
+                            </tr>
+                            </thead>
 
-                                <tr class="${dishGeneral.foodCategory}" id="${dishGeneral.foodCategory}${countLuncheon}"
-                                    style="display: none">
+                            <tbody>
+                            <c:set var="counter" value="0" scope="page"/>
+                            <c:forEach items="${generalDish.value}" var="dishGeneralValue">
+
+                                <c:set var="foodCategory" value="${dishGeneralValue.foodCategory}" scope="page"/>
+                                <c:set var="counter" value="${counter + 1}" scope="page"/>
+                                <tr style="display: none" class="${foodCategory}" id="${foodCategory}${counter}">
                                     <th scope="row">
-                                            ${countLuncheon}
+                                            ${counter}
                                     </th>
                                     <td>
                                         <input type="checkbox" name="toDelete[]"
-                                               value="${dishGeneral.id}" id="checkbox_${dishGeneral.id}"/>
+                                               value="${dishGeneralValue.id}" id="checkbox_${dishGeneralValue.id}"/>
                                     </td>
-                                    <form action="${pageContext.request.contextPath}/swft/updateGeneralDish?numDish=${dishGeneral.id}"
-                                          method="POST">
-                                        <td>
-                                            <fmt:message key="${dishGeneral.name}"/>
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control" name="weight"
-                                                   step="0.1" value="${dishGeneral.weight/1000}"/>
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control" name="calories"
-                                                   step="0.1" value="${dishGeneral.calories/1000}">
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control" name="proteins"
-                                                   step="0.1" value="${dishGeneral.proteins/1000}">
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control" name="fats"
-                                                   step="0.1" value="${dishGeneral.fats/1000}">
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control" name="carbohydrates"
-                                                   step="0.1" value="${dishGeneral.carbohydrates/1000}">
-                                        </td>
-                                        <td>
-                                            <button type="submit" class="btn btn-success">
-                                                <fmt:message key="page.update"/>
-                                            </button>
-                                        </td>
-                                    </form>
-                                </tr>
-                            </c:if>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
-
-                <nav aria-label="Page navigation example" class="">
-                    <ul class="pagination">
-                        &nbsp;&nbsp;
-                        <c:forEach begin="1" end="${0.99+countLuncheon/4}" var="loop">
-                            <li class="page-item">
-                                <a class="page-link bg-transparent text-danger" id="${foodCategory}+${loop}"
-                                   href="#" onclick="clickPage(this)">
-                                        ${loop}
-                                </a>
-                            </li>
-                            &nbsp;
-                        </c:forEach>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-
-        <div class="card bg-transparent">
-            <div class="card-header">
-                <a class="card-link text-danger" data-toggle="collapse" href="#soup">
-                    <fmt:message key="category.soup"/>
-                </a>
-            </div>
-
-            <div id="soup" class="collapse" data-parent="#accordion">
-                <div class="card-body">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col"></th>
-                            <th scope="col">
-                                <fmt:message key="dish.name"/>
-                            </th>
-                            <th scope="col">
-                                <fmt:message key="dish.weight"/>,
-                                <fmt:message key="dish.gr"/>
-                            </th>
-                            <th scope="col">
-                                <fmt:message key="dish.calories"/> /
-                                100 <fmt:message key="dish.gr"/>
-                            </th>
-                            <th scope="col">
-                                <fmt:message key="dish.proteins"/>
-                            </th>
-                            <th scope="col">
-                                <fmt:message key="dish.fats"/>
-                            </th>
-                            <th scope="col">
-                                <fmt:message key="dish.carbohydrates"/>
-                            </th>
-                            <th scope="col">
-                                <button type="button" id="delete_soup_dish" class="btn btn-danger navbar-btn">
-                                    <fmt:message key="page.delete"/>
-                                </button>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <c:set var="countSoup" value="0" scope="page"/>
-                        <c:forEach items="${generalDishes}" var="dishGeneral">
-                            <c:if test="${dishGeneral.foodCategory eq 'SOUP'}">
-                                <c:set var="foodCategory" value="${dishGeneral.foodCategory}" scope="page"/>
-                                <c:set var="countSoup" value="${countSoup + 1}" scope="page"/>
-
-                                <tr class="${dishGeneral.foodCategory}" id="${dishGeneral.foodCategory}${countSoup}"
-                                    style="display: none">
-                                    <th scope="row">
-                                            ${countSoup}
-                                    </th>
                                     <td>
-                                        <input type="checkbox" name="toDelete[]" value="${dishGeneral.id}"
-                                               id="checkbox_${dishGeneral.id}"/>
+                                        <spring:message code="${dishGeneralValue.name}"/>
                                     </td>
-                                    <form action="${pageContext.request.contextPath}/swft/updateGeneralDish?numDish=${dishGeneral.id}"
-                                          method="POST">
+                                    <form:form method="POST" id="updateDish" modelAttribute="formDish"
+                                               action="updateGeneralDish?numDish=${dishGeneralValue.id}">
+                                        <form:hidden path="foodCategory" value="${foodCategory}"/>
+                                        <form:hidden path="name" value="${dishGeneralValue.name}"/>
                                         <td>
-                                            <fmt:message key="${dishGeneral.name}"/>
+                                            <form:input path="weight" type="number" class="form-control" step="0.1"
+                                                        id="weightUpdate" value="${dishGeneralValue.weight/1000}"/>
                                         </td>
                                         <td>
-                                            <input type="number" class="form-control" name="weight"
-                                                   step="0.1" value="${dishGeneral.weight/1000}"/>
+                                            <form:input path="calories" type="number" class="form-control" step="0.1"
+                                                        id="caloriesUpdate" value="${dishGeneralValue.calories/1000}"/>
                                         </td>
                                         <td>
-                                            <input type="number" class="form-control" name="calories"
-                                                   step="0.1" value="${dishGeneral.calories/1000}">
+                                            <form:input path="proteins" type="number" class="form-control" step="0.1"
+                                                        id="proteinsUpdate" value="${dishGeneralValue.proteins/1000}"/>
                                         </td>
                                         <td>
-                                            <input type="number" class="form-control" name="proteins"
-                                                   step="0.1" value="${dishGeneral.proteins/1000}">
+                                            <form:input path="fats" type="number" class="form-control" step="0.1"
+                                                        id="fatsUpdate" value="${dishGeneralValue.fats/1000}"/>
                                         </td>
                                         <td>
-                                            <input type="number" class="form-control" name="fats"
-                                                   step="0.1" value="${dishGeneral.fats/1000}">
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control" name="carbohydrates"
-                                                   step="0.1" value="${dishGeneral.carbohydrates/1000}">
+                                            <form:input path="carbohydrates" type="number" class="form-control"
+                                                        step="0.1"
+                                                        id="carbohydratesUpdate"
+                                                        value="${dishGeneralValue.carbohydrates/1000}"/>
                                         </td>
                                         <td>
                                             <button type="submit" class="btn btn-success">
-                                                <fmt:message key="page.update"/>
+                                                <spring:message code="page.update"/>
                                             </button>
                                         </td>
-                                    </form>
+                                    </form:form>
                                 </tr>
-                            </c:if>
-                        </c:forEach>
-                        </tbody>
-                    </table>
+
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <nav aria-label="Page navigation example" class="">
+                        <ul class="pagination">
+                            &nbsp;&nbsp;
+                            <c:forEach begin="1" end="${0.99+counter/4}" var="loop">
+                                <li class="page-item">
+                                    <a class="page-link bg-transparent text-danger" id="${foodCategory}+${loop}"
+                                       href="#" onclick="clickPage(this)">
+                                            ${loop}
+                                    </a>
+                                </li>
+                                &nbsp;
+                            </c:forEach>
+                        </ul>
+                    </nav>
                 </div>
-
-                <nav aria-label="Page navigation example" class="">
-                    <ul class="pagination">
-                        &nbsp;&nbsp;
-                        <c:forEach begin="1" end="${0.99+countSoup/4}" var="loop">
-                            <li class="page-item">
-                                <a class="page-link bg-transparent text-danger"
-                                   id="${foodCategory}+${loop}"
-                                   href="#" onclick="clickPage(this)">
-                                        ${loop}
-                                </a>
-                            </li>
-                            &nbsp;
-                        </c:forEach>
-                    </ul>
-                </nav>
             </div>
-        </div>
+        </c:forEach>
 
-        <div class="card bg-transparent">
-            <div class="card-header">
-                <a class="card-link text-danger" data-toggle="collapse" href="#hot">
-                    <fmt:message key="category.hot"/>
-                </a>
-            </div>
-
-            <div id="hot" class="collapse" data-parent="#accordion">
-                <div class="card-body">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col"></th>
-                            <th scope="col">
-                                <fmt:message key="dish.name"/>
-                            </th>
-                            <th scope="col">
-                                <fmt:message key="dish.weight"/>,
-                                <fmt:message key="dish.gr"/>
-                            </th>
-                            <th scope="col">
-                                <fmt:message key="dish.calories"/> /
-                                100 <fmt:message key="dish.gr"/>
-                            </th>
-                            <th scope="col">
-                                <fmt:message key="dish.proteins"/>
-                            </th>
-                            <th scope="col">
-                                <fmt:message key="dish.fats"/>
-                            </th>
-                            <th scope="col">
-                                <fmt:message key="dish.carbohydrates"/>
-                            </th>
-                            <th scope="col">
-                                <button type="button" id="delete_hot_dish" class="btn btn-danger navbar-btn">
-                                    <fmt:message key="page.delete"/>
-                                </button>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <c:set var="countHot" value="0" scope="page"/>
-                        <c:forEach items="${generalDishes}" var="dishGeneral">
-                            <c:if test="${dishGeneral.foodCategory eq 'HOT'}">
-                                <c:set var="foodCategory" value="${dishGeneral.foodCategory}" scope="page"/>
-                                <c:set var="countHot" value="${countHot + 1}" scope="page"/>
-
-                                <tr class="${dishGeneral.foodCategory}"
-                                    id="${dishGeneral.foodCategory}${countHot}" style="display: none">
-                                    <th scope="row">
-                                            ${countHot}
-                                    </th>
-                                    <td>
-                                        <input type="checkbox" name="toDelete[]" value="${dishGeneral.id}"
-                                               id="checkbox_${dishGeneral.id}"/>
-                                    </td>
-                                    <form action="${pageContext.request.contextPath}/swft/updateGeneralDish?numDish=${dishGeneral.id}"
-                                          method="POST">
-                                        <td>
-                                            <fmt:message key="${dishGeneral.name}"/>
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control" name="weight"
-                                                   step="0.1" value="${dishGeneral.weight/1000}"/>
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control" name="calories"
-                                                   step="0.1" value="${dishGeneral.calories/1000}">
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control" name="proteins"
-                                                   step="0.1" value="${dishGeneral.proteins/1000}">
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control" name="fats"
-                                                   step="0.1" value="${dishGeneral.fats/1000}">
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control" name="carbohydrates"
-                                                   step="0.1" value="${dishGeneral.carbohydrates/1000}">
-                                        </td>
-                                        <td>
-                                            <button type="submit" class="btn btn-success">
-                                                <fmt:message key="page.update"/>
-                                            </button>
-                                        </td>
-                                    </form>
-                                </tr>
-                            </c:if>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
-
-                <nav aria-label="Page navigation example" class="">
-                    <ul class="pagination">
-                        &nbsp;&nbsp;
-                        <c:forEach begin="1" end="${0.99+countHot/4}" var="loop">
-                            <li class="page-item">
-                                <a class="page-link bg-transparent text-danger"
-                                   id="${foodCategory}+${loop}"
-                                   href="#" onclick="clickPage(this)">
-                                        ${loop}
-                                </a>
-                            </li>
-                            &nbsp;
-                        </c:forEach>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-
-        <div class="card bg-transparent">
-            <div class="card-header">
-                <a class="card-link text-danger" data-toggle="collapse" href="#dessert">
-                    <fmt:message key="category.dessert"/>
-                </a>
-            </div>
-
-            <div id="dessert" class="collapse" data-parent="#accordion">
-                <div class="card-body">
-                    <table class="table table-striped">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col"></th>
-                            <th scope="col">
-                                <fmt:message key="dish.name"/>
-                            </th>
-                            <th scope="col">
-                                <fmt:message key="dish.weight"/>,
-                                <fmt:message key="dish.gr"/>
-                            </th>
-                            <th scope="col">
-                                <fmt:message key="dish.calories"/> /
-                                100 <fmt:message key="dish.gr"/>
-                            </th>
-                            <th scope="col">
-                                <fmt:message key="dish.proteins"/>
-                            </th>
-                            <th scope="col">
-                                <fmt:message key="dish.fats"/>
-                            </th>
-                            <th scope="col">
-                                <fmt:message key="dish.carbohydrates"/>
-                            </th>
-                            <th scope="col">
-                                <button type="button" id="delete_dessert_dish" class="btn btn-danger navbar-btn">
-                                    <fmt:message key="page.delete"/>
-                                </button>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <c:set var="countDessert" value="0" scope="page"/>
-                        <c:forEach items="${generalDishes}" var="dishGeneral">
-                            <c:if test="${dishGeneral.foodCategory eq 'DESSERT'}">
-                                <c:set var="foodCategory" value="${dishGeneral.foodCategory}" scope="page"/>
-                                <c:set var="countDessert" value="${countDessert + 1}" scope="page"/>
-
-                                <tr class="${dishGeneral.foodCategory}"
-                                    id="${dishGeneral.foodCategory}${countDessert}" style="display: none">
-                                    <th scope="row">
-                                            ${countDessert}
-                                    </th>
-                                    <td>
-                                        <input type="checkbox" name="toDelete[]" value="${dishGeneral.id}"
-                                               id="checkbox_${dishGeneral.id}"/>
-                                    </td>
-                                    <form action="${pageContext.request.contextPath}/swft/updateGeneralDish?numDish=${dishGeneral.id}"
-                                          method="POST">
-                                        <td>
-                                            <fmt:message key="${dishGeneral.name}"/>
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control" name="weight"
-                                                   step="0.1" value="${dishGeneral.weight/1000}"/>
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control" name="calories"
-                                                   step="0.1" value="${dishGeneral.calories/1000}">
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control" name="proteins"
-                                                   step="0.1" value="${dishGeneral.proteins/1000}">
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control" name="fats"
-                                                   step="0.1" value="${dishGeneral.fats/1000}">
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control" name="carbohydrates"
-                                                   step="0.1" value="${dishGeneral.carbohydrates/1000}">
-                                        </td>
-                                        <td>
-                                            <button type="submit" class="btn btn-success">
-                                                <fmt:message key="page.update"/>
-                                            </button>
-                                        </td>
-                                    </form>
-                                </tr>
-                            </c:if>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
-
-                <nav aria-label="Page navigation example" class="">
-                    <ul class="pagination">
-                        &nbsp;&nbsp;
-                        <c:forEach begin="1" end="${0.99+countDessert/4}" var="loop">
-                            <li class="page-item">
-                                <a class="page-link bg-transparent text-danger"
-                                   id="${foodCategory}+${loop}"
-                                   href="#" onclick="clickPage(this)">
-                                        ${loop}
-                                </a>
-                            </li>
-                            &nbsp;
-                        </c:forEach>
-                    </ul>
-                </nav>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -515,7 +178,7 @@
 <script type="text/javascript">
     menuItemForPageAndErrorData()
 </script>
-<script>
+<script type="text/javascript">
     function clickPage(currentPage) {
         menuItemForPageAndErrorData(currentPage.id)
     }
@@ -530,7 +193,7 @@
         });
 
         if (arrDish['toDelete[]'].length > 0) {
-            window.location.href = '${pageContext.request.contextPath}/swft/deleteGeneralMenuItem?arrDish=' + arrDish['toDelete[]'];
+            window.location.href = '${pageContext.request.contextPath}/swft/admin/deleteGeneralDishItem?arrDish=' + arrDish['toDelete[]'];
         }
     });
 </script>

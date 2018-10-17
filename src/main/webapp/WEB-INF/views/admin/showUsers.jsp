@@ -148,7 +148,7 @@
 <%--Sent number of page--%>
 <script>
     function clickPage(currentPage) {
-        window.location.href = '${pageContext.request.contextPath}/swft/listUsersPage?' + currentPage.id;
+        window.location.href = '${pageContext.request.contextPath}/swft/admin/showUsers?' + currentPage.id;
     }
 </script>
 <%--Sent number of page--%>

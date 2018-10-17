@@ -146,7 +146,7 @@ public interface Attributes {
     String COMMAND_MENU = "menu";
     String COMMAND_MENU_GENERAL_EDIT = "menuGeneralEdit";
     String COMMAND_MENU_GENERAL_EDIT_WITH_ERROR = "menuGeneralEditWithError";
-    String COMMAND_MENU_GENERAL_DELETE = "deleteGeneralMenuItem";
+    String COMMAND_MENU_GENERAL_DELETE = "deleteGeneralDishItem";
     String COMMAND_MENU_GENERAL_UPDATE = "updateGeneralDish";
     String COMMAND_MENU_USERS_DELETE = "deleteUsersMenuItem";
     String COMMAND_MENU_USERS_UPDATE = "updateUsersDish";
