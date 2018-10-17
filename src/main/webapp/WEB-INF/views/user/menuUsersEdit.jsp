@@ -73,7 +73,7 @@
 
                         <tbody>
                         <c:set var="count" value="${((numPage-1)*5)}" scope="page"/>
-                        <c:forEach items="${usersDishes}" var="dishGeneral">
+                        <c:forEach items="${usersDishes}" var="userDish">
                             <c:set var="count" value="${count+ 1}" scope="page"/>
 
                             <tr>
@@ -81,56 +81,56 @@
                                         ${count}
                                 </th>
                                 <td>
-                                    <input type="checkbox" name="toDelete[]" value="${dishGeneral.id}"
-                                           id="checkbox_${dishGeneral.id}"/>
+                                    <input type="checkbox" name="toDelete[]" value="${userDish.id}"
+                                           id="checkbox_${userDish.id}"/>
                                 </td>
 
                                 <form:form method="POST" id="updateDish" modelAttribute="formDish"
-                                           action="userUpdateDish?numDish=${dishGeneral.id}&numPage=${numPage}">
+                                           action="userUpdateDish?numDish=${userDish.id}&numPage=${numPage}">
                                     <td>
                                         <form:select path="foodCategory" class="form-control"
                                                      id="foodCategoryUpdate" name="foodCategory">
                                             <form:option value="LUNCHEON"
-                                                         selected="${dishGeneral.foodCategory eq 'LUNCHEON' ? 'selected' : ''}">
+                                                         selected="${userDish.foodCategory eq 'LUNCHEON' ? 'selected' : ''}">
                                                 <spring:message code="category.luncheon"/>
                                             </form:option>
                                             <form:option value="HOT"
-                                                         selected="${dishGeneral.foodCategory eq 'HOT' ? 'selected' : ''}">
+                                                         selected="${userDish.foodCategory eq 'HOT' ? 'selected' : ''}">
                                                 <spring:message code="category.hot"/>
                                             </form:option>
                                             <form:option value="SOUP"
-                                                         selected="${dishGeneral.foodCategory eq 'SOUP' ? 'selected' : ''}">
+                                                         selected="${userDish.foodCategory eq 'SOUP' ? 'selected' : ''}">
                                                 <spring:message code="category.soup"/>
                                             </form:option>
                                             <form:option value="DESSERT"
-                                                         selected="${dishGeneral.foodCategory eq 'DESSERT' ? 'selected' : ''}">
+                                                         selected="${userDish.foodCategory eq 'DESSERT' ? 'selected' : ''}">
                                                 <spring:message code="category.dessert"/>
                                             </form:option>
                                         </form:select>
                                     </td>
                                     <td>
                                         <form:input path="name" type="text" class="form-control"
-                                                    id="nameUpdate" value="${dishGeneral.name}"/>
+                                                    id="nameUpdate" value="${userDish.name}"/>
                                     </td>
                                     <td>
                                         <form:input path="weight" type="number" class="form-control" step="0.1"
-                                                    id="weightUpdate" value="${dishGeneral.weight/1000}"/>
+                                                    id="weightUpdate" value="${userDish.weight/1000}"/>
                                     </td>
                                     <td>
                                         <form:input path="calories" type="number" class="form-control" step="0.1"
-                                                    id="caloriesUpdate" value="${dishGeneral.calories/1000}"/>
+                                                    id="caloriesUpdate" value="${userDish.calories/1000}"/>
                                     </td>
                                     <td>
                                         <form:input path="proteins" type="number" class="form-control" step="0.1"
-                                                    id="proteinsUpdate" value="${dishGeneral.proteins/1000}"/>
+                                                    id="proteinsUpdate" value="${userDish.proteins/1000}"/>
                                     </td>
                                     <td>
                                         <form:input path="fats" type="number" class="form-control" step="0.1"
-                                                    id="fatsUpdate" value="${dishGeneral.fats/1000}"/>
+                                                    id="fatsUpdate" value="${userDish.fats/1000}"/>
                                     </td>
                                     <td>
                                         <form:input path="carbohydrates" type="number" class="form-control" step="0.1"
-                                                    id="carbohydratesUpdate" value="${dishGeneral.carbohydrates/1000}"/>
+                                                    id="carbohydratesUpdate" value="${userDish.carbohydrates/1000}"/>
                                     </td>
                                     <td>
                                         <button type="submit" class="btn btn-success">
@@ -402,7 +402,7 @@
         });
 
         if (arrDish['toDelete[]'].length > 0) {
-            window.location.href = '${pageContext.request.contextPath}/swft/userDeleteDish?arrDish=' + arrDish['toDelete[]'] + '&numPage=' +${numPage};
+            window.location.href = '${pageContext.request.contextPath}/swft/userDeleteDishItem?arrDish=' + arrDish['toDelete[]'] + '&numPage=' +${numPage};
         }
     });
 </script>

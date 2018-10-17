@@ -20,7 +20,7 @@ import java.util.Optional;
  */
 @WebFilter(urlPatterns = {"/swft/homePage", "/swft/userSettings", "/swft/updateUserParameters",
         "/swft/userSettingsWithError", "/swft/logOut", "/swft/menuUsersEdit", "/swft/menuUsersEditAfterUpdate",
-        "/swft/addNewDish", "/swft/listDishPage", "/swft/deleteUsersMenuItem", "/swft/updateUsersDish", "/swft/dayRation",
+        "/swft/addNewDish", "/swft/listDishPage", "/swft/userDeleteDishItem", "/swft/updateUsersDish", "/swft/dayRation",
         "/swft/createNewRation", "/swft/listHomePage", "/swft/listUserDayRation", "/swft/deleteUsersComposition",
         "/swft/updateUsersComposition", "/swft/menuUsersEditWithError"})
 @Log4j2

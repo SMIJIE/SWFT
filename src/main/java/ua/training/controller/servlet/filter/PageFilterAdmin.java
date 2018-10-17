@@ -18,7 +18,7 @@ import java.util.Optional;
  *
  * @author Zakusylo Pavlo
  */
-@WebFilter(urlPatterns = {"/swft/admin/menuGeneralEdit", "/swft/admin/menuGeneralEditWithError", "/swft/admin/deleteGeneralMenuItem",
+@WebFilter(urlPatterns = {"/swft/admin/menuGeneralEdit", "/swft/admin/menuGeneralEditWithError", "/swft/admin/deleteGeneralDishItem",
         "/swft/admin/updateGeneralDish", "/swft/admin/showUsers", "/swft/admin/deleteUsers", "/swft/admin/listUsersPage", "/swft/admin/updateUsers",
         "/swft/admin/showUsersAfterUpdateOrSearch", "/swft/admin/searchUsersByEmail"})
 @Log4j2

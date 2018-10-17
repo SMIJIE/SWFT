@@ -28,7 +28,7 @@
         </li>
 
         <li id="showUsers">
-            <a class="text-light" href="${pageContext.request.contextPath}/swft/showUsers">
+            <a class="text-light" href="${pageContext.request.contextPath}/swft/admin/showUsers">
                 <spring:message code="page.users"/>
             </a>
         </li>
@@ -48,7 +48,7 @@
             <div class="collapse navbar-collapse" id="menuCollapse">
                 <ul class="nav navbar-nav" style="list-style: none">
                     <li>&#8211;
-                        <a class="text-light" href="${pageContext.request.contextPath}/swft/menuGeneralEdit">
+                        <a class="text-light" href="${pageContext.request.contextPath}/swft/admin/menuGeneralEdit">
                             <spring:message code="menu.edit"/>
                         </a>
                     </li>

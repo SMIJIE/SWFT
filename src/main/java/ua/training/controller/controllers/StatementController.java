@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 /**
- * Description: This is the statement controller
+ * Description: This is the statement action controller
  *
  * @author Zakusylo Pavlo
  */

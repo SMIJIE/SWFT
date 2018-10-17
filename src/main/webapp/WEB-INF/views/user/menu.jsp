@@ -86,8 +86,7 @@
 
                                 <c:set var="foodCategory" value="${dishGeneralValue.foodCategory}" scope="page"/>
                                 <c:set var="counter" value="${counter + 1}" scope="page"/>
-                                <tr style="display: none" class="${dishGeneralValue.foodCategory}"
-                                    id="${dishGeneralValue.foodCategory}${counter}">
+                                <tr style="display: none" class="${foodCategory}" id="${foodCategory}${counter}">
                                     <th scope="row">${counter}</th>
                                     <td><spring:message code="${dishGeneralValue.name}"/></td>
                                     <td>${dishGeneralValue.weight/1000}</td>
