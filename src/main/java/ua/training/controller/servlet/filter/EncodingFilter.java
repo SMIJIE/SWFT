@@ -1,6 +1,5 @@
 package ua.training.controller.servlet.filter;
 
-import ua.training.constant.Attributes;
 import ua.training.model.entity.User;
 
 import javax.servlet.FilterChain;
@@ -21,13 +20,9 @@ public class EncodingFilter extends AbstractFilter {
 
     @Override
     protected void filter(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, Optional<User> user) throws IOException, ServletException {
-        response.setContentType(Attributes.HTML_TEXT);
-        response.setCharacterEncoding(Attributes.HTML_ENCODE);
-        request.setCharacterEncoding(Attributes.HTML_ENCODE);
-
-        if (!user.isPresent()) {
-            request.getSession().setAttribute(Attributes.PAGE_NAME, Attributes.PAGE_DEMONSTRATION);
-        }
+        response.setContentType(HTML_TEXT);
+        response.setCharacterEncoding(HTML_ENCODE);
+        request.setCharacterEncoding(HTML_ENCODE);
 
         filterChain.doFilter(request, response);
     }

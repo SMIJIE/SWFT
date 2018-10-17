@@ -1,9 +1,7 @@
 package ua.training.controller.servlet.filter;
 
 import lombok.extern.log4j.Log4j2;
-import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
-import ua.training.constant.Pages;
 import ua.training.model.entity.User;
 import ua.training.model.entity.enums.Roles;
 
@@ -20,9 +18,9 @@ import java.util.Optional;
  *
  * @author Zakusylo Pavlo
  */
-@WebFilter(urlPatterns = {"/swft/menuGeneralEdit", "/swft/menuGeneralEditWithError", "/swft/deleteGeneralMenuItem",
-        "/swft/updateGeneralDish", "/swft/showUsers", "/swft/deleteUsers", "/swft/listUsersPage", "/swft/updateUsers",
-        "/swft/showUsersAfterUpdateOrSearch", "/swft/searchUsersByEmail"})
+@WebFilter(urlPatterns = {"/swft/admin/menuGeneralEdit", "/swft/admin/menuGeneralEditWithError", "/swft/admin/deleteGeneralMenuItem",
+        "/swft/admin/updateGeneralDish", "/swft/admin/showUsers", "/swft/admin/deleteUsers", "/swft/admin/listUsersPage", "/swft/admin/updateUsers",
+        "/swft/admin/showUsersAfterUpdateOrSearch", "/swft/admin/searchUsersByEmail"})
 @Log4j2
 public class PageFilterAdmin extends AbstractFilter {
 
@@ -36,12 +34,11 @@ public class PageFilterAdmin extends AbstractFilter {
                 filterChain.doFilter(request, response);
             } else {
                 log.warn(Mess.LOG_USER_GO_ADMIN_URL + " - [" + user.get().getEmail() + "]");
-                request.getSession().setAttribute(Attributes.PAGE_NAME, Attributes.PAGE_GENERAL);
-                request.getRequestDispatcher(Pages.HOME).forward(request, response);
+                request.getRequestDispatcher(HOME_PAGE).forward(request, response);
             }
         } else {
             log.warn(Mess.LOG_USER_GO_ADMIN_URL + " - [" + Roles.UNKNOWN + "]");
-            request.getRequestDispatcher(Pages.INDEX).forward(request, response);
+            request.getRequestDispatcher(DEFAULT).forward(request, response);
         }
     }
 }

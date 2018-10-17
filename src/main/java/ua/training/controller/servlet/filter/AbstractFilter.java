@@ -1,6 +1,8 @@
 package ua.training.controller.servlet.filter;
 
+import ua.training.constant.Api;
 import ua.training.constant.Attributes;
+import ua.training.constant.Pages;
 import ua.training.model.entity.User;
 
 import javax.servlet.*;
@@ -17,7 +19,7 @@ import java.util.Optional;
  * @see Filter
  * @see FilterChain
  */
-public abstract class AbstractFilter implements Filter {
+public abstract class AbstractFilter implements Filter,Attributes, Api {
 
     @Override
     public void init(FilterConfig filterConfig) {
@@ -28,7 +30,7 @@ public abstract class AbstractFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session = request.getSession();
-        Optional<User> user = Optional.ofNullable((User) session.getAttribute(Attributes.REQUEST_USER));
+        Optional<User> user = Optional.ofNullable((User) session.getAttribute(REQUEST_USER));
 
         filter(request, response, filterChain, user);
     }

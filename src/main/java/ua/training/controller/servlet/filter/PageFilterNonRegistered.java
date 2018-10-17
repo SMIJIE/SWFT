@@ -2,7 +2,6 @@ package ua.training.controller.servlet.filter;
 
 import lombok.extern.log4j.Log4j2;
 import ua.training.constant.Mess;
-import ua.training.constant.Pages;
 import ua.training.model.entity.User;
 import ua.training.model.entity.enums.Roles;
 
@@ -36,7 +35,7 @@ public class PageFilterNonRegistered extends AbstractFilter {
             filterChain.doFilter(request, response);
         } else {
             log.warn(Mess.LOG_USER_GO_USER_URL + " - [" + Roles.UNKNOWN + "]");
-            request.getRequestDispatcher(Pages.INDEX).forward(request, response);
+            request.getRequestDispatcher(DEFAULT).forward(request, response);
         }
     }
 }
