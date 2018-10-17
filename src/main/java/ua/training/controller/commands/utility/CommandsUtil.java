@@ -9,28 +9,25 @@ import ua.training.constant.Pages;
 import ua.training.controller.commands.Command;
 import ua.training.controller.commands.action.UserDayRation;
 import ua.training.controller.commands.action.add.CreateNewRation;
-import ua.training.controller.commands.action.admin.*;
+import ua.training.controller.commands.action.admin.DeleteUsers;
+import ua.training.controller.commands.action.admin.ListUsersPage;
+import ua.training.controller.commands.action.admin.SearchUsersByEmail;
+import ua.training.controller.commands.action.admin.UpdateUsersByAdmin;
 import ua.training.controller.commands.action.pages.ListUserDayRation;
 import ua.training.controller.commands.action.purge.DeleteUsersComposition;
 import ua.training.controller.commands.action.update.UpdateUsersComposition;
-import ua.training.controller.commands.direction.MenuGeneralEdit;
-import ua.training.controller.commands.direction.MenuGeneralEditWithError;
-import ua.training.controller.commands.direction.ShowUsersAfterUpdateOrSearch;
 import ua.training.controller.commands.exception.DataSqlException;
 import ua.training.model.dao.utility.DishComparator;
 import ua.training.model.dao.utility.SortAnnotation;
 import ua.training.model.entity.Dish;
 import ua.training.model.entity.User;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-//import ua.training.controller.commands.action.statement.LogOut;
-
-//import ua.training.controller.commands.action.statement.RegisterNewUser;
-//import ua.training.controller.commands.action.update.UpdateUsersParameters;
 
 /**
  * Description: This util class for commands
@@ -47,15 +44,9 @@ public abstract class CommandsUtil implements Command {
     public static Map<String, Command> commandMapInitialize() {
         Map<String, Command> commandMap = new HashMap<>();
 
-        commandMap.put(Attributes.COMMAND_MENU_GENERAL_EDIT, new MenuGeneralEdit());
-        commandMap.put(Attributes.COMMAND_MENU_GENERAL_DELETE, new DeleteGeneralMenuItem());
-        commandMap.put(Attributes.COMMAND_MENU_GENERAL_UPDATE, new UpdateGeneralDish());
-        commandMap.put(Attributes.COMMAND_SHOW_USERS, new ShowUsers());
         commandMap.put(Attributes.COMMAND_DELETE_USERS, new DeleteUsers());
         commandMap.put(Attributes.COMMAND_MENU_LIST_USERS_PAGE, new ListUsersPage());
-        commandMap.put(Attributes.COMMAND_MENU_GENERAL_EDIT_WITH_ERROR, new MenuGeneralEditWithError());
         commandMap.put(Attributes.COMMAND_USER_UPDATE_BY_ADMIN, new UpdateUsersByAdmin());
-        commandMap.put(Attributes.COMMAND_SHOW_USERS_UPDATE_SEARCH_BY_ADMIN, new ShowUsersAfterUpdateOrSearch());
         commandMap.put(Attributes.COMMAND_SHOW_USERS_BY_EMAIL_BY_ADMIN, new SearchUsersByEmail());
         commandMap.put(Attributes.COMMAND_DAY_RATION, new UserDayRation());
         commandMap.put(Attributes.COMMAND_CREATE_DAY_RATION, new CreateNewRation());
@@ -97,6 +88,30 @@ public abstract class CommandsUtil implements Command {
         }
 
         return modelAndView;
+    }
+
+    /**
+     * Add general dishes to ServletContext after delete/update
+     *
+     * @param servletContext ServletContext
+     */
+    public static void addGeneralDishToContext(ServletContext servletContext) {
+        List<Dish> generalList = DISH_SERVICE_IMP.getGeneralDishes();
+        CommandsUtil.sortListByAnnotationFields(generalList);
+
+        Map<String, List<Dish>> generalMap = new HashMap<>();
+        generalList.forEach(dish -> {
+            String category = dish
+                    .getFoodCategory()
+                    .toString()
+                    .toLowerCase();
+            generalMap.putIfAbsent(category, new ArrayList<>());
+            generalMap.get(category).add(dish);
+        });
+
+        if (!generalList.isEmpty()) {
+            servletContext.setAttribute(Attributes.REQUEST_GENERAL_DISHES, generalMap);
+        }
     }
 
     /**
@@ -151,12 +166,14 @@ public abstract class CommandsUtil implements Command {
      */
     public static void mergeDishParameters(Dish dishHttp, Dish dish) {
         dish.setFoodCategory(dishHttp.getFoodCategory());
-        dish.setName(dishHttp.getName());
         dish.setWeight(dishHttp.getWeight());
         dish.setCalories(dishHttp.getCalories());
         dish.setProteins(dishHttp.getProteins());
         dish.setFats(dishHttp.getFats());
         dish.setCarbohydrates(dishHttp.getCarbohydrates());
+
+        boolean flagName = dishHttp.getName().isEmpty();
+        dish.setName(flagName ? dish.getName() : dishHttp.getName());
     }
 
     /**
@@ -211,24 +228,6 @@ public abstract class CommandsUtil implements Command {
         if (!fieldsForSort.isEmpty()) {
             dishes.sort(comparator);
         }
-    }
-
-    /**
-     * Extract entity 'Dish' from HTTP request
-     *
-     * @param request HttpServletRequest
-     * @return dishHttp Optional<Dish>
-     */
-    public static Optional<Dish> extractDishFromHTTP(HttpServletRequest request) {
-        Optional<Dish> dishHttp;
-//        try {
-        dishHttp = Optional.ofNullable(/*DISH_MAPPER.extractUserFromHttpForm(request)*/null);
-//        } catch (DataHttpException e) {
-//            request.getSession().setAttribute(Attributes.PAGE_USER_ERROR_DATA, Attributes.PAGE_USER_WRONG_DATA);
-//            log.error(e.getMessage());
-//            dishHttp = Optional.empty();
-//        }
-        return dishHttp;
     }
 
     /**
