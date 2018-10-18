@@ -8,17 +8,19 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.training.controller.commands.exception.DataHttpException;
 import ua.training.controller.commands.utility.CommandsUtil;
+import ua.training.model.dao.utility.PasswordEncoder;
 import ua.training.model.entity.Dish;
 import ua.training.model.entity.User;
+import ua.training.model.entity.enums.Roles;
 import ua.training.model.entity.form.FormDish;
+import ua.training.model.entity.form.FormUser;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import static java.util.Objects.isNull;
+import static org.apache.logging.log4j.util.Strings.isEmpty;
 
 /**
  * Description: This is the admin controller
@@ -139,10 +141,113 @@ public class AdminController implements GeneralController {
         Integer forPage = USER_SERVICE_IMP.countUsers(user.getId());
 
         modelAndView.addObject(PAGE_NAME, PAGE_USERS_LIST)
+                .addObject(REQUEST_FORM_USER, new FormUser())
                 .addObject(REQUEST_NUMBER_PAGE, pageForSQL)
                 .addObject(REQUEST_NUMBER_USERS, forPage)
                 .addObject(REQUEST_LIST_USERS, listUsers)
                 .setViewName(SHOW_USERS);
+
+        return modelAndView;
+    }
+
+    /**
+     * Search users by email
+     *
+     * @param user         {@link User}
+     * @param email        {@link String}
+     * @param modelAndView {@link ModelAndView}
+     * @return modelAndView {@link ModelAndView}
+     */
+    @RequestMapping(value = ADMIN_USERS_SEARCH_BY_EMAIL, method = RequestMethod.POST)
+    public ModelAndView actionSearchUsersByEmail(@SessionAttribute(REQUEST_USER) User user,
+                                                 @RequestParam(REQUEST_EMAIL) String email,
+                                                 ModelAndView modelAndView) {
+
+        List<User> listUsers = new ArrayList<>();
+
+        if (!user.getEmail().equalsIgnoreCase(email)) {
+            USER_SERVICE_IMP.getOrCheckUserByEmail(email)
+                    .ifPresent(listUsers::add);
+        }
+
+        modelAndView.addObject(PAGE_NAME, PAGE_USERS_LIST)
+                .addObject(REQUEST_FORM_USER, new FormUser())
+                .addObject(REQUEST_NUMBER_PAGE, 1)
+                .addObject(REQUEST_LIST_USERS, listUsers)
+                .setViewName(SHOW_USERS);
+
+        return modelAndView;
+    }
+
+    /**
+     * Update users by email
+     *
+     * @param email              {@link String}
+     * @param password           {@link String}
+     * @param role               {@link String}
+     * @param numPage            {@link Integer}
+     * @param redirectAttributes {@link RedirectAttributes}
+     * @param modelAndView       {@link ModelAndView}
+     * @return modelAndView {@link ModelAndView}
+     */
+    @RequestMapping(value = ADMIN_USERS_UPDATE_BY_EMAIL, method = RequestMethod.POST)
+    public ModelAndView actionUpdateUsersByEmail(@RequestParam(REQUEST_EMAIL) String email,
+                                                 @RequestParam(REQUEST_PASSWORD) String password,
+                                                 @RequestParam(REQUEST_USER_ROLE) String role,
+                                                 @RequestParam(value = REQUEST_NUMBER_PAGE) Integer numPage,
+                                                 RedirectAttributes redirectAttributes,
+                                                 ModelAndView modelAndView) {
+
+        modelAndView.setViewName(SHOW_USERS_REDIRECT + "?numPage=" + numPage);
+
+        boolean flag = false;
+        boolean flagPassword = isEmpty(password);
+        boolean flagPasswordLength = password.length() >= 3;
+
+        Optional<User> userSQL = USER_SERVICE_IMP.getOrCheckUserByEmail(email);
+        if (userSQL.isPresent()) {
+            if (!flagPassword) {
+                if (!flagPasswordLength) {
+                    redirectAttributes.addFlashAttribute(PAGE_USER_ERROR, USER_VALID_PASSWORD_SIZE);
+                    modelAndView.setViewName(SHOW_USERS_REDIRECT + "?numPage=" + numPage);
+                    return modelAndView;
+                }
+                flag = true;
+                userSQL.get().setPassword(PasswordEncoder.encodePassword(password));
+            }
+
+            if (!Roles.valueOf(role).equals(userSQL.get().getRole())) {
+                flag = true;
+                userSQL.get().setRole(Roles.valueOf(role));
+            }
+        }
+
+        if (flag) {
+            USER_SERVICE_IMP.updateUserParameters(userSQL.get());
+        }
+
+        return modelAndView;
+    }
+
+    /**
+     * Delete 1 or more users by email
+     *
+     * @param emailUsers         [] {@link String}
+     * @param numPage            {@link Integer}
+     * @param httpServletRequest {@link HttpServletRequest}
+     * @param modelAndView       {@link ModelAndView}
+     * @return modelAndView {@link ModelAndView}
+     */
+    @RequestMapping(value = ADMIN_USERS_DELETE_BY_EMAIL, method = RequestMethod.GET)
+    public ModelAndView actionDeleteUsersByEmail(@RequestParam(REQUEST_ARR_EMAIL_USERS) String[] emailUsers,
+                                                 @RequestParam(REQUEST_NUMBER_PAGE) Integer numPage,
+                                                 HttpServletRequest httpServletRequest,
+                                                 ModelAndView modelAndView) {
+
+        USER_SERVICE_IMP.deleteArrayUsersByEmail(Arrays.asList(emailUsers));
+        CommandsUtil.deleteUsersFromContext(httpServletRequest, emailUsers);
+
+        modelAndView.setViewName(SHOW_USERS_REDIRECT + "?numPage=" + numPage);
 
         return modelAndView;
     }

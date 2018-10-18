@@ -4,13 +4,31 @@
 <jsp:include page="../components/sidePanel.jsp"/>
 <jsp:include page="../components/footer.jsp"/>
 
+<%--Shows error for users--%>
+<script type="text/javascript">
+    function showErrorWithData() {
+        var mess = '${userError}';
+        if (mess === "") {
+            $('#userErrorData').css({display: 'none'});
+        }
+    }
+</script>
+<%--Shows error for users--%>
+
 <div id="content">
 
     <div id="accordion">
+
+        <div class="card text-light bg-danger" id="userErrorData">
+            <div class="card-header">
+                <spring:message code="${userError}"/>
+            </div>
+        </div>
+
         <div class="card bg-transparent">
             <div class="card-header">
                 <a class="card-link text-success" data-toggle="collapse" href="#collapseOne">
-                    <fmt:message key="menu.users.list"/>
+                    <spring:message code="menu.users.list"/>
                 </a>
             </div>
 
@@ -22,34 +40,38 @@
                             <th scope="col">#</th>
                             <th scope="col"></th>
                             <th scope="col">
-                                <fmt:message key="register.email"/>
+                                <spring:message code="register.email"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="register.newPassword"/>
+                                <spring:message code="register.newPassword"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="user.role"/>
+                                <spring:message code="user.role"/>
                             </th>
                             <th scope="col">
                                 <button type="button" id="delete_users" class="btn btn-danger navbar-btn">
-                                    <fmt:message key="page.delete"/>
+                                    <spring:message code="page.delete"/>
                                 </button>
                             </th>
                         </tr>
                         </thead>
+
                         <tbody>
                         <tr>
-                            <form action="${pageContext.request.contextPath}/swft/searchUsersByEmail" method="POST">
+                            <%--Search users by email--%>
+                            <form:form method="POST" action="searchUsersByEmail" id="searchUsersByEmail"
+                                       modelAttribute="formUser">
                                 <td colspan="5">
-                                    <input type="email" class="form-control" name="email"
-                                           placeholder="ZakusyloP@gmail.com">
+                                    <form:input path="email" type="email" class="form-control" name="email"
+                                                placeholder="ZakusyloP@gmail.com"/>
                                 </td>
                                 <td>
                                     <button type="submit" class="btn btn-primary">
-                                        <fmt:message key="page.search"/>
+                                        <spring:message code="page.search"/>
                                     </button>
                                 </td>
-                            </form>
+                            </form:form>
+                            <%--Search users by email--%>
                         </tr>
 
                         <c:set var="count" value="${((numPage-1)*6)}" scope="page"/>
@@ -60,42 +82,36 @@
                                         ${count}
                                 </th>
                                 <td>
-                                    <input type="checkbox" name="toDelete[]" value="${user.email}"
-                                           id="checkbox_${user.id}"/>
+                                    <input type="checkbox" name="toDelete[]" value="${user.email}"/>
                                 </td>
                                 <td>
                                         ${user.email}
                                 </td>
-                                <form action="${pageContext.request.contextPath}/swft/updateUsers?emailUsers=${user.email}"
-                                      method="POST">
+                                <form:form method="POST" id="updateUsersByEmail" modelAttribute="formUser"
+                                           action="updateUsersByEmail?email=${user.email}&numPage=${numPage}">
                                     <td>
-                                        <input type="password" class="form-control" id="password" name="password"
-                                               placeholder="<fmt:message key="register.newPassword"/>">
+                                        <spring:message code="register.newPassword" var="newPassword"/>
+                                        <form:input path="password" type="password" class="form-control"
+                                                    id="password" name="password" placeholder="${newPassword}"/>
                                     </td>
                                     <td>
-                                        <select class="form-control" id="role" name="role">
-                                            <option
-                                                    <c:if test="${user.role eq 'ADMIN'}">
-                                                        selected
-                                                    </c:if>
-                                                    value="ADMIN">
-                                                <fmt:message key="user.role.admin"/>
-                                            </option>
-                                            <option
-                                                    <c:if test="${user.role eq 'USER'}">
-                                                        selected
-                                                    </c:if>
-                                                    value="USER">
-                                                <fmt:message key="user.role.user"/>
-                                            </option>
-                                        </select>
+                                        <form:select path="role" class="form-control" id="role" name="role">
+                                            <form:option value="ADMIN"
+                                                         selected="${user.role eq 'ADMIN' ? 'selected' : ''}">
+                                                <spring:message code="user.role.admin"/>
+                                            </form:option>
+                                            <form:option value="USER"
+                                                         selected="${user.role eq 'USER' ? 'selected' : ''}">
+                                                <spring:message code="user.role.user"/>
+                                            </form:option>
+                                        </form:select>
                                     </td>
                                     <td>
                                         <button type="submit" class="btn btn-success">
-                                            <fmt:message key="page.update"/>
+                                            <spring:message code="page.update"/>
                                         </button>
                                     </td>
-                                </form>
+                                </form:form>
                             </tr>
                         </c:forEach>
                         </tbody>
@@ -145,6 +161,12 @@
     </div>
 </div>
 
+
+<%--Shows error for users--%>
+<script type="text/javascript">
+    showErrorWithData()
+</script>
+<%--Shows error for users--%>
 <%--Sent number of page--%>
 <script>
     function clickPage(currentPage) {
@@ -161,7 +183,7 @@
         });
 
         if (arrDish['toDelete[]'].length > 0) {
-            window.location.href = '${pageContext.request.contextPath}/swft/deleteUsers?arrEmailUsers=' + arrDish['toDelete[]'];
+            window.location.href = '${pageContext.request.contextPath}/swft/admin/deleteUsersByEmail?arrEmailUsers=' + arrDish['toDelete[]'] + '&numPage=' +${numPage};
         }
     });
 </script>

@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import ua.training.constant.Mess;
 import ua.training.constant.RegexExpress;
+import ua.training.model.entity.enums.Roles;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
@@ -50,6 +51,11 @@ public class FormUser implements Mess, RegexExpress {
      * For confirm when want to change the password
      */
     private String passwordConfirm;
+    /**
+     * For change role by Admin
+     */
+    private Roles role;
+
     /**
      * Verify on not NULL and on MIN and MAX
      */
