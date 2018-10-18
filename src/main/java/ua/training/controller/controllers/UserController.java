@@ -9,6 +9,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.training.controller.commands.exception.DataHttpException;
 import ua.training.controller.commands.utility.CommandsUtil;
 import ua.training.model.entity.DayRation;
+import ua.training.model.entity.Dish;
+import ua.training.model.entity.RationComposition;
 import ua.training.model.entity.User;
 import ua.training.model.entity.form.FormUser;
 
@@ -150,6 +152,48 @@ public class UserController implements GeneralController {
         }
 
         modelAndView.setViewName(USER_SETTINGS_REDIRECT);
+
+        return modelAndView;
+    }
+
+    /**
+     * Display user day ration page with an opportunity pagination
+     *
+     * @param user               {@link User}
+     * @param numPage            {@link Integer}
+     * @param httpServletRequest {@link HttpServletRequest}
+     * @param modelAndView       {@link ModelAndView}
+     * @return modelAndView {@link ModelAndView}
+     */
+    @RequestMapping(value = USER_DAY_RATION, method = RequestMethod.GET)
+    public ModelAndView getUserDayRationPage(@SessionAttribute(REQUEST_USER) User user,
+                                             @RequestParam(value = REQUEST_NUMBER_PAGE, required = false) Integer numPage,
+                                             HttpServletRequest httpServletRequest,
+                                             ModelAndView modelAndView) {
+
+        Integer page = isNull(numPage) ? 0 : numPage;
+        LocalDate localDate = LocalDate.now().plusDays(page);
+
+        Map<String, List<Dish>> generalDishes = (Map<String, List<Dish>>) httpServletRequest.getServletContext().getAttribute(REQUEST_GENERAL_DISHES);
+        List<RationComposition> rationCompositions = new ArrayList<>();
+
+        List<Dish> dishesPerPage = new ArrayList<>();
+        generalDishes.values().forEach(dishesPerPage::addAll);
+
+        Optional.ofNullable(user.getListDishes())
+                .ifPresent(dishesPerPage::addAll);
+
+        CommandsUtil.sortListByAnnotationFields(dishesPerPage);
+
+        DAY_RATION_SERVICE_IMP.checkDayRationByDateAndUserId(localDate, user.getId())
+                .ifPresent(dayRation -> rationCompositions.addAll(dayRation.getCompositions()));
+
+        modelAndView.addObject(PAGE_NAME, PAGE_RATION)
+                .addObject(REQUEST_NUMBER_PAGE, page)
+                .addObject(REQUEST_LOCALE_DATE, localDate)
+                .addObject(REQUEST_USERS_COMPOSITION, rationCompositions)
+                .addObject(REQUEST_USERS_DISHES, dishesPerPage)
+                .setViewName(DAY_RATION_PAGE);
 
         return modelAndView;
     }

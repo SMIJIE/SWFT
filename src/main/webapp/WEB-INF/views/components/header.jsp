@@ -15,8 +15,6 @@
     <script src="<c:url value="../../../resources/js/popper.min.js"/>" type="text/javascript"></script>
     <script src="<c:url value="../../../resources/js/GoogleChartsLoader.js"/>" type="text/javascript"></script>
 
-    <spring:message code="page.langLocale" var="langLocale"/>
-
     <%--Calculate users calories--%>
     <script type="text/javascript">
         function calcCalories() {
@@ -63,6 +61,7 @@
             </div>
             <button type="button" class="btn btn-warning">
                 <spring:message code="calories.daily"/><br/>
+                <spring:message code="page.langLocale" var="langLocale"/>
                 <mytags:formatDate langCount="${langLocale}"/>
             </button>
         </div>

@@ -34,7 +34,7 @@ public interface Pages {
     String SHOW_USERS_REDIRECT = "redirect:/swft/admin/showUsers";
     String SHOW_USERS_AFTER_UPDATE_OR_SEARCH_REDIRECT = "redirect:/showUsersAfterUpdateOrSearch";
 
-    String DAY_RATION = "/WEB-INF/client/dayRation.jsp";
+    String DAY_RATION_PAGE = "/client/dayRation";
     String DAY_RATION_REDIRECT = "redirect:/dayRation";
     String DAY_RATION_LIST_REDIRECT = "redirect:/listUserDayRation";
 }

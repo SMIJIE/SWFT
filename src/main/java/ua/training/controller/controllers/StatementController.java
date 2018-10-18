@@ -67,8 +67,8 @@ public class StatementController implements GeneralController {
      * @return modelAndView {@link ModelAndView}
      */
     @RequestMapping(value = LOG_IN, method = RequestMethod.POST)
-    public ModelAndView actionLogIn(@RequestParam(value = REQUEST_EMAIL) String email,
-                                    @RequestParam(value = REQUEST_PASSWORD) String password,
+    public ModelAndView actionLogIn(@RequestParam(REQUEST_EMAIL) String email,
+                                    @RequestParam(REQUEST_PASSWORD) String password,
                                     ModelAndView modelAndView,
                                     RedirectAttributes redirectAttributes,
                                     HttpServletRequest request) {

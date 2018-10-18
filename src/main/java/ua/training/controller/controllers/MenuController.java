@@ -83,7 +83,7 @@ public class MenuController implements GeneralController {
      */
     @RequestMapping(value = USER_DELETE_DISH, method = RequestMethod.GET)
     public ModelAndView actionDeleteUsersDish(@SessionAttribute(REQUEST_USER) User user,
-                                              @RequestParam(value = REQUEST_ARR_DISH) Integer[] idDishes,
+                                              @RequestParam(REQUEST_ARR_DISH) Integer[] idDishes,
                                               @RequestParam(REQUEST_NUMBER_PAGE) Integer numPage,
                                               ModelAndView modelAndView) {
 

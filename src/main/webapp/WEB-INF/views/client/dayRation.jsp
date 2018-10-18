@@ -8,8 +8,8 @@
 <script type="text/javascript">
     function showRowAndErrorWithData(messCurrentPage) {
         <%--Shows error with data--%>
-        var mess = '${userErrorData}';
-        if (mess === 'nonErrorData') {
+        var mess = '${userError}';
+        if (mess === "") {
             $('#userErrorData').css({display: 'none'});
         }
         <%--Shows error with data--%>
@@ -45,15 +45,16 @@
 
         <div class="card text-light bg-danger" id="userErrorData">
             <div class="card-header">
-                <fmt:message key="${userErrorData}"/>
+                <spring:message code="${userError}"/>
             </div>
         </div>
 
         <div class="card bg-transparent">
             <div class="card-header">
                 <a class="card-link" data-toggle="collapse" href="#collapseOne">
-                    <fmt:message key="menu.edit"/>
-                    <mytags:formatDate langCount="${localeLang}" localDate="${localeDate}"/>
+                    <spring:message code="menu.edit"/>
+                    <spring:message code="page.langLocale" var="langLocale"/>
+                    <mytags:formatDate langCount="${langLocale}" localDate="${localeDate}"/>
                 </a>
             </div>
 
@@ -71,20 +72,20 @@
                             </th>
                             <th></th>
                             <th scope="col">
-                                <fmt:message key="page.ration"/>
+                                <spring:message code="page.ration"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="dish.name"/>
+                                <spring:message code="dish.name"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="dish.amount"/>
+                                <spring:message code="dish.amount"/>
                             </th>
                             <th scope="col">
-                                <fmt:message key="dish.calories"/>
+                                <spring:message code="dish.calories"/>
                             </th>
                             <th scope="col">
                                 <button type="button" id="delete_composition" class="btn btn-danger navbar-btn">
-                                    <fmt:message key="page.delete"/>
+                                    <spring:message code="page.delete"/>
                                 </button>
                             </th>
                             <th scope="col" style="width: 15px">
@@ -112,14 +113,14 @@
                                                value="${userCom.id}" id="checkbox_${userCom.id}"/>
                                     </td>
                                     <td>
-                                        <fmt:message key="ration.breakfast"/>
+                                        <spring:message code="ration.breakfast"/>
                                     </td>
                                     <td>
                                         <c:if test="${userCom.dish.generalFood eq false}">
                                             ${userCom.dish.name}
                                         </c:if>
                                         <c:if test="${userCom.dish.generalFood eq true}">
-                                            <fmt:message key="${userCom.dish.name}"/>
+                                            <spring:message code="${userCom.dish.name}"/>
                                         </c:if>
                                     </td>
                                     <form action="${pageContext.request.contextPath}/swft/updateUsersComposition?numComposition=${userCom.id}"
@@ -136,7 +137,7 @@
                                         </td>
                                         <td>
                                             <button type="submit" class="btn btn-success">
-                                                <fmt:message key="page.update"/>
+                                                <spring:message code="page.update"/>
                                             </button>
                                         </td>
                                     </form>
@@ -157,14 +158,14 @@
                                                id="checkbox_${userCom.id}"/>
                                     </td>
                                     <td>
-                                        <fmt:message key="ration.dinner"/>
+                                        <spring:message code="ration.dinner"/>
                                     </td>
                                     <td>
                                         <c:if test="${userCom.dish.generalFood eq false}">
                                             ${userCom.dish.name}
                                         </c:if>
                                         <c:if test="${userCom.dish.generalFood eq true}">
-                                            <fmt:message key="${userCom.dish.name}"/>
+                                            <spring:message code="${userCom.dish.name}"/>
                                         </c:if>
                                     </td>
                                     <form action="${pageContext.request.contextPath}/swft/updateUsersComposition?numComposition=${userCom.id}"
@@ -181,7 +182,7 @@
                                         </td>
                                         <td>
                                             <button type="submit" class="btn btn-success">
-                                                <fmt:message key="page.update"/>
+                                                <spring:message code="page.update"/>
                                             </button>
                                         </td>
                                     </form>
@@ -202,14 +203,14 @@
                                                id="checkbox_${userCom.id}"/>
                                     </td>
                                     <td>
-                                        <fmt:message key="ration.supper"/>
+                                        <spring:message code="ration.supper"/>
                                     </td>
                                     <td>
                                         <c:if test="${userCom.dish.generalFood eq false}">
                                             ${userCom.dish.name}
                                         </c:if>
                                         <c:if test="${userCom.dish.generalFood eq true}">
-                                            <fmt:message key="${userCom.dish.name}"/>
+                                            <spring:message code="${userCom.dish.name}"/>
                                         </c:if>
                                     </td>
                                     <form action="${pageContext.request.contextPath}/swft/updateUsersComposition?numComposition=${userCom.id}"
@@ -226,7 +227,7 @@
                                         </td>
                                         <td>
                                             <button type="submit" class="btn btn-success">
-                                                <fmt:message key="page.update"/>
+                                                <spring:message code="page.update"/>
                                             </button>
                                         </td>
                                     </form>
@@ -236,7 +237,7 @@
                         </c:forEach>
                         <tr>
                             <td colspan="5" style="text-align: center">
-                                <fmt:message key="calories.totalNumber"/>
+                                <spring:message code="calories.totalNumber"/>
                             </td>
                             <td>
                                 ${countCalories}
@@ -268,7 +269,7 @@
 
             <div class="card-header">
                 <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
-                    <fmt:message key="menu.add"/>
+                    <spring:message code="menu.add"/>
                 </a>
             </div>
 
@@ -277,11 +278,11 @@
                     <div class="form-group row">
                         <div class="col">
                             <label for="selectMenu">
-                                <fmt:message key="page.menu"/>:
+                                <spring:message code="page.menu"/>:
                             </label>
 
                             <select class="form-control" multiple="multiple" id="selectMenu" size="18">
-                                <optgroup label="<fmt:message key="category.luncheon"/>">
+                                <optgroup label="<spring:message code="category.luncheon"/>">
                                     <c:forEach items="${usersDishes}" var="dishUsers">
                                         <c:if test="${dishUsers.foodCategory eq 'LUNCHEON'}">
                                             <option value="${dishUsers.id}" id="${dishUsers.calories}">
@@ -289,14 +290,14 @@
                                                     ${dishUsers.name}
                                                 </c:if>
                                                 <c:if test="${dishUsers.generalFood eq true}">
-                                                    <fmt:message key="${dishUsers.name}"/>
+                                                    <spring:message code="${dishUsers.name}"/>
                                                 </c:if>
                                             </option>
                                         </c:if>
                                     </c:forEach>
                                 </optgroup>
 
-                                <optgroup label="<fmt:message key="category.soup"/>">
+                                <optgroup label="<spring:message code="category.soup"/>">
                                     <c:forEach items="${usersDishes}" var="dishUsers">
                                         <c:if test="${dishUsers.foodCategory eq 'SOUP'}">
                                             <option value="${dishUsers.id}" id="${dishUsers.calories}">
@@ -304,14 +305,14 @@
                                                     ${dishUsers.name}
                                                 </c:if>
                                                 <c:if test="${dishUsers.generalFood eq true}">
-                                                    <fmt:message key="${dishUsers.name}"/>
+                                                    <spring:message code="${dishUsers.name}"/>
                                                 </c:if>
                                             </option>
                                         </c:if>
                                     </c:forEach>
                                 </optgroup>
 
-                                <optgroup label="<fmt:message key="category.hot"/>">
+                                <optgroup label="<spring:message code="category.hot"/>">
                                     <c:forEach items="${usersDishes}" var="dishUsers">
                                         <c:if test="${dishUsers.foodCategory eq 'HOT'}">
                                             <option value="${dishUsers.id}" id="${dishUsers.calories}">
@@ -319,14 +320,14 @@
                                                     ${dishUsers.name}
                                                 </c:if>
                                                 <c:if test="${dishUsers.generalFood eq true}">
-                                                    <fmt:message key="${dishUsers.name}"/>
+                                                    <spring:message code="${dishUsers.name}"/>
                                                 </c:if>
                                             </option>
                                         </c:if>
                                     </c:forEach>
                                 </optgroup>
 
-                                <optgroup label="<fmt:message key="category.dessert"/>">
+                                <optgroup label="<spring:message code="category.dessert"/>">
                                     <c:forEach items="${usersDishes}" var="dishUsers">
                                         <c:if test="${dishUsers.foodCategory eq 'DESSERT'}">
                                             <option value="${dishUsers.id}" id="${dishUsers.calories}">
@@ -334,7 +335,7 @@
                                                     ${dishUsers.name}
                                                 </c:if>
                                                 <c:if test="${dishUsers.generalFood eq true}">
-                                                    <fmt:message key="${dishUsers.name}"/>
+                                                    <spring:message code="${dishUsers.name}"/>
                                                 </c:if>
                                             </option>
                                         </c:if>
@@ -348,17 +349,17 @@
                                   id="dayRation">
 
                                 <label style="text-align: right;display: block" for="breakfast">
-                                    <fmt:message key="ration.breakfast"/>:
+                                    <spring:message code="ration.breakfast"/>:
                                 </label>
                                 <div class="row" id="breakfast">
                                     <div class="btn-group-vertical" role="group">
                                         <button type="button" id="addToBreakfast" class="btn btn-success btn-sm">
-                                            &raquo;&nbsp;<fmt:message key="menu.add"/>&nbsp;&raquo;
+                                            &raquo;&nbsp;<spring:message code="menu.add"/>&nbsp;&raquo;
                                         </button>
                                         &nbsp;
                                         <button type="button" id="removeFromBreakfast"
                                                 class="btn btn-danger btn-sm">
-                                            &laquo;&nbsp;<fmt:message key="page.delete"/>&nbsp;&laquo;
+                                            &laquo;&nbsp;<spring:message code="page.delete"/>&nbsp;&laquo;
                                         </button>
                                     </div>
 
@@ -369,16 +370,16 @@
                                 </div>
 
                                 <label style="text-align: right;display: block" for="dinner">
-                                    <fmt:message key="ration.dinner"/>:
+                                    <spring:message code="ration.dinner"/>:
                                 </label>
                                 <div class="row" id="dinner">
                                     <div class="btn-group-vertical" role="group">
                                         <button type="button" id="addToDinner" class="btn btn-success btn-sm">
-                                            &raquo;&nbsp;<fmt:message key="menu.add"/>&nbsp;&raquo;
+                                            &raquo;&nbsp;<spring:message code="menu.add"/>&nbsp;&raquo;
                                         </button>
                                         &nbsp;
                                         <button type="button" id="removeFromDinner" class="btn btn-danger btn-sm">
-                                            &laquo;&nbsp;<fmt:message key="page.delete"/>&nbsp;&laquo;
+                                            &laquo;&nbsp;<spring:message code="page.delete"/>&nbsp;&laquo;
                                         </button>
                                     </div>
                                     <div class="col">
@@ -389,16 +390,16 @@
                                 </div>
 
                                 <label style="text-align: right;display: block" for="supper">
-                                    <fmt:message key="ration.supper"/>:
+                                    <spring:message code="ration.supper"/>:
                                 </label>
                                 <div class="row" id="supper">
                                     <div class="btn-group-vertical" role="group">
                                         <button type="button" id="addToSupper" class="btn btn-success btn-sm">
-                                            &raquo;&nbsp;<fmt:message key="menu.add"/>&nbsp;&raquo;
+                                            &raquo;&nbsp;<spring:message code="menu.add"/>&nbsp;&raquo;
                                         </button>
                                         &nbsp;
                                         <button type="button" id="removeFromSupper" class="btn btn-danger btn-sm">
-                                            &laquo;&nbsp;<fmt:message key="page.delete"/>&nbsp;&laquo;
+                                            &laquo;&nbsp;<spring:message code="page.delete"/>&nbsp;&laquo;
                                         </button>
                                     </div>
                                     <div class="col">
@@ -413,15 +414,15 @@
                                         <input type="date" class="form-control" id="date" name="date">
                                         &nbsp;
                                         <button type="submit" class="btn btn-primary">
-                                            <fmt:message key="page.write"/>
+                                            <spring:message code="page.write"/>
                                         </button>
                                         &nbsp;
                                         <button type="button" class="btn btn-primary" id="calculateCalories">
-                                            <fmt:message key="page.calculate"/>
+                                            <spring:message code="page.calculate"/>
                                         </button>
                                         &nbsp;
                                         <button type="button" class="btn btn-sm bg-transparent">
-                                            <fmt:message key="page.chosenCalories"/> =
+                                            <spring:message code="page.chosenCalories"/> =
                                             <span class="badge badge-secondary" id='resultChosenCalories'>0</span>
                                         </button>
                                     </div>
@@ -443,7 +444,7 @@
 <%--Sent number of page--%>
 <script>
     function serverPage(currentPage) {
-        window.location.href = '${pageContext.request.contextPath}/swft/listUserDayRation?' + currentPage.id;
+        window.location.href = '${pageContext.request.contextPath}/swft/user/dayRation?' + currentPage.id;
     }
 
     function jsPage(currentPage) {
@@ -520,7 +521,7 @@
                 if (diffDays > 14
                     || diffDays < -14) {
                     event.preventDefault();
-                    alert('<fmt:message key="wrong.user.date"/>');
+                    alert('<spring:message code="wrong.user.date"/>');
                     return;
                 }
             }

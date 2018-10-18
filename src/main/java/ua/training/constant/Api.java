@@ -20,6 +20,7 @@ public interface Api {
     String USER_UPDATE_DISH = "/user/userUpdateDish";
     String USER_UPDATE_PARAMETERS = "/user/userUpdateParameters";
     String USER_LOG_OUT = "/user/logOut";
+    String USER_DAY_RATION = "/user/dayRation";
 
     String ADMIN_MENU_GENERAL_EDIT = "/admin/menuGeneralEdit";
     String ADMIN_MENU_GENERAL_UPDATE_DISH = "/admin/updateGeneralDish";

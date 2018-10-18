@@ -107,7 +107,7 @@ public class AdminController implements GeneralController {
      * @return modelAndView {@link ModelAndView}
      */
     @RequestMapping(value = ADMIN_MENU_GENERAL_DELETE_ITEM, method = RequestMethod.GET)
-    public ModelAndView actionDeleteGeneralDishItem(@RequestParam(value = REQUEST_ARR_DISH) Integer[] idDishes,
+    public ModelAndView actionDeleteGeneralDishItem(@RequestParam(REQUEST_ARR_DISH) Integer[] idDishes,
                                                     HttpServletRequest servletRequest,
                                                     ModelAndView modelAndView) {
         modelAndView.setViewName(MENU_GENERAL_EDIT_REDIRECT);
@@ -194,7 +194,7 @@ public class AdminController implements GeneralController {
     public ModelAndView actionUpdateUsersByEmail(@RequestParam(REQUEST_EMAIL) String email,
                                                  @RequestParam(REQUEST_PASSWORD) String password,
                                                  @RequestParam(REQUEST_USER_ROLE) String role,
-                                                 @RequestParam(value = REQUEST_NUMBER_PAGE) Integer numPage,
+                                                 @RequestParam(REQUEST_NUMBER_PAGE) Integer numPage,
                                                  RedirectAttributes redirectAttributes,
                                                  ModelAndView modelAndView) {
 
