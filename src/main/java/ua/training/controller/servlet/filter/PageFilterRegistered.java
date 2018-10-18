@@ -17,8 +17,8 @@ import java.util.Optional;
  *
  * @author Zakusylo Pavlo
  */
-@WebFilter(urlPatterns = {"/swft/signInOrRegister", "/swft/signInOrRegisterWithError", "/swft/registerNewUser",
-        "/swft/logIn"})
+@WebFilter(urlPatterns = {"/swft/signInOrRegister", "/signInOrRegister", "/swft/registerNewUser", "/registerNewUser",
+        "/swft/logIn", "/logIn","/swft/","/"})
 @Log4j2
 public class PageFilterRegistered extends AbstractFilter {
 
@@ -29,7 +29,7 @@ public class PageFilterRegistered extends AbstractFilter {
 
         if (user.isPresent()) {
             log.warn(Mess.LOG_USER_GO_NON_REGISTERED_URL + " - [" + user.get().getEmail() + "]");
-            request.getRequestDispatcher(HOME_PAGE).forward(request, response);
+            request.getRequestDispatcher(USER_HOME_PAGE).forward(request, response);
         } else {
             filterChain.doFilter(request, response);
         }

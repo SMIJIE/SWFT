@@ -88,10 +88,10 @@
                 <option disabled selected>
                     ${user.name}
                 </option>
-                <option value="${pageContext.request.contextPath}/swft/logOut">
+                <option value="${pageContext.request.contextPath}/swft/user/logOut">
                     <spring:message code="page.logout"/>
                 </option>
-                <option value="${pageContext.request.contextPath}/swft/userSettings">
+                <option value="${pageContext.request.contextPath}/swft/user/userSettings">
                     <spring:message code="page.settings"/>
                 </option>
             </select>

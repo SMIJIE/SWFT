@@ -38,7 +38,7 @@ public class UserController implements GeneralController {
      * @param modelAndView {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = HOME_PAGE, method = RequestMethod.GET)
+    @RequestMapping(value = USER_HOME_PAGE, method = RequestMethod.GET)
     public ModelAndView getHomePage(@SessionAttribute(REQUEST_USER) User user,
                                     @RequestParam(value = REQUEST_NUMBER_PAGE, required = false) Integer numPage,
                                     ModelAndView modelAndView) {
@@ -115,8 +115,8 @@ public class UserController implements GeneralController {
             }
         }
 
-        if (isNotEmpty(tempPass) && isNotEmpty(tempPassConf)) {
-            if (tempPass.length() < 3 || tempPassConf.length() < 3 || !strEquals) {
+        if (isNotEmpty(tempPass) || isNotEmpty(tempPassConf)) {
+            if (tempPass.length() < 2 || tempPassConf.length() < 2 || !strEquals) {
                 modelAndView.addObject(PAGE_USER_ERROR, PAGE_USER_NOT_MATCH_PASSWORDS);
                 return modelAndView;
             }

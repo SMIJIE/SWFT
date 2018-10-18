@@ -389,7 +389,7 @@
 <%--Sent number of page--%>
 <script>
     function clickPage(currentPage) {
-        window.location.href = '${pageContext.request.contextPath}/swft/menuUsersEdit?' + currentPage.id;
+        window.location.href = '${pageContext.request.contextPath}/swft/user/menuUsersEdit?' + currentPage.id;
     }
 </script>
 <%--Sent number of page--%>
@@ -402,7 +402,7 @@
         });
 
         if (arrDish['toDelete[]'].length > 0) {
-            window.location.href = '${pageContext.request.contextPath}/swft/userDeleteDishItem?arrDish=' + arrDish['toDelete[]'] + '&numPage=' +${numPage};
+            window.location.href = '${pageContext.request.contextPath}/swft/user/userDeleteDishItem?arrDish=' + arrDish['toDelete[]'] + '&numPage=' +${numPage};
         }
     });
 </script>

@@ -148,7 +148,7 @@ public class StatementController implements GeneralController {
      * @param modelAndView       {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = LOG_OUT, method = RequestMethod.GET)
+    @RequestMapping(value = USER_LOG_OUT, method = RequestMethod.GET)
     public ModelAndView actionLogOut(@SessionAttribute(REQUEST_USER) User user,
                                      HttpServletRequest servletRequest,
                                      RedirectAttributes redirectAttributes,

@@ -14,15 +14,11 @@ import java.io.IOException;
 import java.util.Optional;
 
 /**
- * Description: Direct non registered users to users pages
+ * Description: Direct non registered users to demonstration pages
  *
  * @author Zakusylo Pavlo
  */
-@WebFilter(urlPatterns = {"/swft/homePage", "/swft/userSettings", "/swft/updateUserParameters",
-        "/swft/userSettingsWithError", "/swft/logOut", "/swft/menuUsersEdit", "/swft/menuUsersEditAfterUpdate",
-        "/swft/addNewDish", "/swft/listDishPage", "/swft/userDeleteDishItem", "/swft/updateUsersDish", "/swft/dayRation",
-        "/swft/createNewRation", "/swft/listHomePage", "/swft/listUserDayRation", "/swft/deleteUsersComposition",
-        "/swft/updateUsersComposition", "/swft/menuUsersEditWithError"})
+@WebFilter(urlPatterns = {"/swft/user/*", "/user/*"})
 @Log4j2
 public class PageFilterNonRegistered extends AbstractFilter {
 

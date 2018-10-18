@@ -18,9 +18,7 @@ import java.util.Optional;
  *
  * @author Zakusylo Pavlo
  */
-@WebFilter(urlPatterns = {"/swft/admin/menuGeneralEdit", "/swft/admin/menuGeneralEditWithError", "/swft/admin/deleteGeneralDishItem",
-        "/swft/admin/updateGeneralDish", "/swft/admin/showUsers", "/swft/admin/deleteUsers", "/swft/admin/listUsersPage", "/swft/admin/updateUsers",
-        "/swft/admin/showUsersAfterUpdateOrSearch", "/swft/admin/searchUsersByEmail"})
+@WebFilter(urlPatterns = {"/swft/admin/*", "/admin/*"})
 @Log4j2
 public class PageFilterAdmin extends AbstractFilter {
 
@@ -34,7 +32,7 @@ public class PageFilterAdmin extends AbstractFilter {
                 filterChain.doFilter(request, response);
             } else {
                 log.warn(Mess.LOG_USER_GO_ADMIN_URL + " - [" + user.get().getEmail() + "]");
-                request.getRequestDispatcher(HOME_PAGE).forward(request, response);
+                request.getRequestDispatcher(USER_HOME_PAGE).forward(request, response);
             }
         } else {
             log.warn(Mess.LOG_USER_GO_ADMIN_URL + " - [" + Roles.UNKNOWN + "]");

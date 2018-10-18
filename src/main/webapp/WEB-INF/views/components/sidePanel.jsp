@@ -22,7 +22,7 @@
 <div id="sidePanel">
     <ul class="text-danger">
         <li>
-            <a class="text-light" href="${pageContext.request.contextPath}/swft/homePage">
+            <a class="text-light" href="${pageContext.request.contextPath}/swft/user/homePage">
                 <spring:message code="page.general"/>
             </a>
         </li>
@@ -57,13 +57,13 @@
         </li>
 
         <li id="menuUsers">
-            <a class="text-light" href="${pageContext.request.contextPath}/swft/menuUsersEdit">
+            <a class="text-light" href="${pageContext.request.contextPath}/swft/user/menuUsersEdit">
                 <spring:message code="menu.own"/>
             </a>
         </li>
 
         <li id="rationUsers">
-            <a class="text-light" href="${pageContext.request.contextPath}/swft/dayRation">
+            <a class="text-light" href="${pageContext.request.contextPath}/swft/user/dayRation">
                 <spring:message code="page.ration"/>
             </a>
         </li>

@@ -49,7 +49,7 @@ public class MenuController implements GeneralController {
      * @param modelAndView {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = MENU_USERS_EDIT, method = RequestMethod.GET)
+    @RequestMapping(value = USER_MENU_EDIT, method = RequestMethod.GET)
     public ModelAndView getUsersMenuPage(@SessionAttribute(REQUEST_USER) User user,
                                          @RequestParam(value = REQUEST_NUMBER_PAGE, required = false) Integer numPage,
                                          ModelAndView modelAndView) {
