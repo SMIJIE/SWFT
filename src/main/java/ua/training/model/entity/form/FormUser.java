@@ -2,8 +2,6 @@ package ua.training.model.entity.form;
 
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
-import ua.training.constant.Mess;
-import ua.training.constant.RegexExpress;
 import ua.training.model.entity.enums.Roles;
 
 import javax.validation.constraints.*;
@@ -18,8 +16,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Builder
-@ToString
-public class FormUser implements Mess, RegexExpress {
+public class FormUser extends GeneralFormEntity {
     /**
      * Verify on not NULL and PATTERN
      */

@@ -1,8 +1,6 @@
 package ua.training.model.entity.form;
 
 import lombok.*;
-import ua.training.constant.Mess;
-import ua.training.constant.RegexExpress;
 import ua.training.model.entity.enums.FoodCategory;
 
 import javax.validation.constraints.*;
@@ -12,7 +10,7 @@ import javax.validation.constraints.*;
 @Getter
 @Setter
 @Builder
-public class FormDish implements Mess, RegexExpress {
+public class FormDish extends GeneralFormEntity {
     /**
      * Verify on not NULL
      */

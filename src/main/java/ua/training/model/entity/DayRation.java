@@ -11,9 +11,10 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@ToString
 @Entity
 @Table(name = "dayration")
-public class DayRation {
+public class DayRation extends GeneralEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idDR", nullable = false)
