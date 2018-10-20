@@ -6,7 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
-import ua.training.controller.commands.exception.DataSqlException;
+import ua.training.controller.controllers.exception.DataSqlException;
 import ua.training.model.dao.RationCompositionDao;
 import ua.training.model.entity.RationComposition;
 import ua.training.model.entity.enums.FoodIntake;

@@ -3,7 +3,7 @@ package ua.training.model.dao.utility;
 import lombok.extern.log4j.Log4j2;
 import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
-import ua.training.controller.commands.exception.DataSqlException;
+import ua.training.controller.controllers.exception.DataSqlException;
 
 import java.io.IOException;
 import java.io.InputStream;
