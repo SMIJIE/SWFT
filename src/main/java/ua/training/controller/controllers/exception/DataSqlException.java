@@ -1,4 +1,4 @@
-package ua.training.controller.commands.exception;
+package ua.training.controller.controllers.exception;
 
 /**
  * Description: This exception says to user about wrong work with Data base

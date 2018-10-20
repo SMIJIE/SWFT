@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.training.constant.Attributes;
-import ua.training.controller.commands.exception.DataHttpException;
-import ua.training.controller.commands.utility.CommandsUtil;
+import ua.training.controller.controllers.exception.DataHttpException;
+import ua.training.controller.controllers.utility.ControllerUtil;
 import ua.training.model.dao.utility.PasswordEncoder;
 import ua.training.model.entity.User;
 import ua.training.model.entity.form.FormUser;
@@ -83,7 +83,7 @@ public class StatementController implements GeneralController {
         Optional<User> userSQL = USER_SERVICE_IMP.getOrCheckUserByEmail(emailSQL);
 
         if (userSQL.isPresent() && userSQL.get().getPassword().equals(passwordSQL)) {
-            return CommandsUtil.openUsersSession(request, userSQL.get(), modelAndView, redirectAttributes);
+            return ControllerUtil.openUsersSession(request, userSQL.get(), modelAndView, redirectAttributes);
         } else if (userSQL.isPresent() && !userSQL.get().getPassword().equals(passwordSQL)) {
             redirectAttributes.addFlashAttribute(PAGE_USER_ERROR, PAGE_USER_WRONG_PASSWORD);
         } else {
@@ -120,7 +120,7 @@ public class StatementController implements GeneralController {
 
         User userHttp;
         try {
-            userHttp = USER_MAPPER.extractUserFromHttpForm(formUser, modelAndView);
+            userHttp = USER_MAPPER.extractEntityFromHttpForm(formUser, modelAndView);
         } catch (DataHttpException e) {
             log.error(e.getMessage());
             return modelAndView;
@@ -131,7 +131,7 @@ public class StatementController implements GeneralController {
         if (!userSQL.isPresent()) {
             USER_SERVICE_IMP.registerNewUser(userHttp);
             log.info(LOG_USER_REGISTERED + "[" + userHttp.getEmail() + "]");
-            return CommandsUtil.openUsersSession(servletRequest, userHttp, modelAndView, redirectAttributes);
+            return ControllerUtil.openUsersSession(servletRequest, userHttp, modelAndView, redirectAttributes);
         } else {
             modelAndView.addObject(PAGE_USER_ERROR, PAGE_USER_EXIST);
         }
@@ -154,7 +154,7 @@ public class StatementController implements GeneralController {
                                      RedirectAttributes redirectAttributes,
                                      ModelAndView modelAndView) {
 
-        CommandsUtil.deleteUsersFromContext(servletRequest, user.getEmail());
+        ControllerUtil.deleteUsersFromContext(servletRequest, user.getEmail());
 
         servletRequest.getSession().setAttribute(Attributes.REQUEST_USER, null);
 

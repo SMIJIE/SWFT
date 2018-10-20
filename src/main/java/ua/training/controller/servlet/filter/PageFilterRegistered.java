@@ -18,7 +18,7 @@ import java.util.Optional;
  * @author Zakusylo Pavlo
  */
 @WebFilter(urlPatterns = {"/swft/signInOrRegister", "/signInOrRegister", "/swft/registerNewUser", "/registerNewUser",
-        "/swft/logIn", "/logIn","/swft/","/"})
+        "/swft/logIn", "/logIn", "/swft/", "/"})
 @Log4j2
 public class PageFilterRegistered extends AbstractFilter {
 

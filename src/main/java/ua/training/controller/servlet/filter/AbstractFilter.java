@@ -2,7 +2,6 @@ package ua.training.controller.servlet.filter;
 
 import ua.training.constant.Api;
 import ua.training.constant.Attributes;
-import ua.training.constant.Pages;
 import ua.training.model.entity.User;
 
 import javax.servlet.*;
@@ -19,7 +18,7 @@ import java.util.Optional;
  * @see Filter
  * @see FilterChain
  */
-public abstract class AbstractFilter implements Filter,Attributes, Api {
+public abstract class AbstractFilter implements Filter, Attributes, Api {
 
     @Override
     public void init(FilterConfig filterConfig) {

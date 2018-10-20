@@ -6,8 +6,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ua.training.controller.commands.exception.DataHttpException;
-import ua.training.controller.commands.utility.CommandsUtil;
+import ua.training.controller.controllers.exception.DataHttpException;
+import ua.training.controller.controllers.utility.ControllerUtil;
 import ua.training.model.dao.utility.PasswordEncoder;
 import ua.training.model.entity.Dish;
 import ua.training.model.entity.User;
@@ -78,7 +78,7 @@ public class AdminController implements GeneralController {
 
         Dish dishHttp;
         try {
-            dishHttp = DISH_MAPPER.extractDishFromHttpForm(formDish, modelAndView);
+            dishHttp = DISH_MAPPER.extractEntityFromHttpForm(formDish, modelAndView);
             dishHttp.setName("");
         } catch (DataHttpException e) {
             log.error(e.getMessage());
@@ -88,12 +88,18 @@ public class AdminController implements GeneralController {
 
         DISH_SERVICE_IMP.getDishById(Integer.valueOf(idDish))
                 .ifPresent(dishSQL -> {
-                    CommandsUtil.mergeDishParameters(dishHttp, dishSQL);
+                    ControllerUtil.mergeDishParameters(dishHttp, dishSQL);
                     DISH_SERVICE_IMP.updateDishParameters(dishSQL);
                 });
 
+        List<Dish> generalList = DISH_SERVICE_IMP.getGeneralDishes();
+        ControllerUtil.sortListByAnnotationFields(generalList);
 
-        CommandsUtil.addGeneralDishToContext(servletRequest.getServletContext());
+        Map<String, List<Dish>> dishes = ControllerUtil.addGeneralDishToContext(generalList);
+
+        if (!generalList.isEmpty()) {
+            servletRequest.getServletContext().setAttribute(REQUEST_GENERAL_DISHES, dishes);
+        }
 
         return modelAndView;
     }
@@ -114,7 +120,14 @@ public class AdminController implements GeneralController {
 
         DISH_SERVICE_IMP.deleteArrayDishesById(Arrays.asList(idDishes));
 
-        CommandsUtil.addGeneralDishToContext(servletRequest.getServletContext());
+        List<Dish> generalList = DISH_SERVICE_IMP.getGeneralDishes();
+        ControllerUtil.sortListByAnnotationFields(generalList);
+
+        Map<String, List<Dish>> dishes = ControllerUtil.addGeneralDishToContext(generalList);
+
+        if (!generalList.isEmpty()) {
+            servletRequest.getServletContext().setAttribute(REQUEST_GENERAL_DISHES, dishes);
+        }
 
         return modelAndView;
     }
@@ -132,8 +145,8 @@ public class AdminController implements GeneralController {
 
         Integer page = isNull(numPage) ? 1 : numPage;
         Integer numberUsers = USER_SERVICE_IMP.countUsers(user.getId());
-        Integer maxPage = CommandsUtil.getCountPages(numberUsers, 6);
-        Integer pageForSQL = CommandsUtil.getPageOrAmountForSQL(page, maxPage);
+        Integer maxPage = ControllerUtil.getCountPages(numberUsers, 6);
+        Integer pageForSQL = ControllerUtil.getPageOrAmountForSQL(page, maxPage);
 
         List<User> listUsers = USER_SERVICE_IMP.getLimitUsersWithoutAdmin(user.getId(), 6, 6 * (pageForSQL - 1));
         listUsers.sort(Comparator.comparing(User::getEmail));
@@ -245,7 +258,7 @@ public class AdminController implements GeneralController {
                                                  ModelAndView modelAndView) {
 
         USER_SERVICE_IMP.deleteArrayUsersByEmail(Arrays.asList(emailUsers));
-        CommandsUtil.deleteUsersFromContext(httpServletRequest, emailUsers);
+        ControllerUtil.deleteUsersFromContext(httpServletRequest, emailUsers);
 
         modelAndView.setViewName(SHOW_USERS_REDIRECT + "?numPage=" + numPage);
 

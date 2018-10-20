@@ -6,12 +6,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ua.training.controller.commands.exception.DataHttpException;
-import ua.training.controller.commands.utility.CommandsUtil;
+import ua.training.controller.controllers.exception.DataHttpException;
+import ua.training.controller.controllers.utility.ControllerUtil;
 import ua.training.model.entity.DayRation;
 import ua.training.model.entity.Dish;
 import ua.training.model.entity.RationComposition;
 import ua.training.model.entity.User;
+import ua.training.model.entity.enums.FoodIntake;
+import ua.training.model.entity.form.FormDayRationComposition;
 import ua.training.model.entity.form.FormUser;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static org.apache.logging.log4j.util.Strings.isNotEmpty;
 
 /**
@@ -128,7 +131,7 @@ public class UserController implements GeneralController {
 
         User userHttp;
         try {
-            userHttp = USER_MAPPER.extractUserFromHttpForm(formUser, modelAndView);
+            userHttp = USER_MAPPER.extractEntityFromHttpForm(formUser, modelAndView);
         } catch (DataHttpException e) {
             log.error(e.getMessage());
             return modelAndView;
@@ -138,10 +141,10 @@ public class UserController implements GeneralController {
         if (!userSQL.isPresent() ||
                 userSQL.get().getEmail().equalsIgnoreCase(user.getEmail())) {
 
-            CommandsUtil.deleteUsersFromContext(servletRequest, user.getEmail());
-            CommandsUtil.addUsersToContext(servletRequest, userHttp.getEmail());
+            ControllerUtil.deleteUsersFromContext(servletRequest, user.getEmail());
+            ControllerUtil.addUsersToContext(servletRequest, userHttp.getEmail());
 
-            CommandsUtil.mergeUserParameters(userHttp, user);
+            ControllerUtil.mergeUserParameters(userHttp, user);
             USER_SERVICE_IMP.updateUserParameters(user);
 
             log.info(LOG_USER_UPDATE_PARAMETERS + "[" + user.getEmail() + "]");
@@ -175,7 +178,12 @@ public class UserController implements GeneralController {
         LocalDate localDate = LocalDate.now().plusDays(page);
 
         Map<String, List<Dish>> generalDishes = (Map<String, List<Dish>>) httpServletRequest.getServletContext().getAttribute(REQUEST_GENERAL_DISHES);
+
         List<RationComposition> rationCompositions = new ArrayList<>();
+        DAY_RATION_SERVICE_IMP.checkDayRationByDateAndUserId(localDate, user.getId())
+                .ifPresent(dayRation -> rationCompositions.addAll(dayRation.getCompositions()));
+
+        Map<String, List<RationComposition>> usersRC = ControllerUtil.getDatRationByFoodIntake(rationCompositions);
 
         List<Dish> dishesPerPage = new ArrayList<>();
         generalDishes.values().forEach(dishesPerPage::addAll);
@@ -183,17 +191,120 @@ public class UserController implements GeneralController {
         Optional.ofNullable(user.getListDishes())
                 .ifPresent(dishesPerPage::addAll);
 
-        CommandsUtil.sortListByAnnotationFields(dishesPerPage);
+        ControllerUtil.sortListByAnnotationFields(dishesPerPage);
 
-        DAY_RATION_SERVICE_IMP.checkDayRationByDateAndUserId(localDate, user.getId())
-                .ifPresent(dayRation -> rationCompositions.addAll(dayRation.getCompositions()));
+        Map<String, List<Dish>> allDishes = ControllerUtil.addGeneralDishToContext(dishesPerPage);
 
         modelAndView.addObject(PAGE_NAME, PAGE_RATION)
+                .addObject(REQUEST_FORM_RATION_COMPOSITION, new FormDayRationComposition())
                 .addObject(REQUEST_NUMBER_PAGE, page)
                 .addObject(REQUEST_LOCALE_DATE, localDate)
-                .addObject(REQUEST_USERS_COMPOSITION, rationCompositions)
-                .addObject(REQUEST_USERS_DISHES, dishesPerPage)
+                .addObject(REQUEST_USERS_COMPOSITION, usersRC)
+                .addObject(REQUEST_USERS_DISHES, allDishes)
+                .addObject(SHOW_COLLAPSE_DAY_RATION_COMPOSITION, SHOW_COLLAPSE_ATTRIBUTE_FOR_CCS_CLASS)
                 .setViewName(DAY_RATION_PAGE);
+
+        return modelAndView;
+    }
+
+    /**
+     * Update user day ration composition
+     *
+     * @param numPage      {@link Integer}
+     * @param idRC         {@link Integer}
+     * @param formDRC      {@link FormDayRationComposition}
+     * @param modelAndView {@link ModelAndView}
+     * @return modelAndView {@link ModelAndView}
+     */
+    @RequestMapping(value = USER_UPDATE_COMPOSITION, method = RequestMethod.POST)
+    public ModelAndView actionUpdateUsersComposition(@RequestParam(REQUEST_NUMBER_PAGE) Integer numPage,
+                                                     @RequestParam(REQUEST_NUMBER_COMPOSITION) Integer idRC,
+                                                     @ModelAttribute(REQUEST_FORM_RATION_COMPOSITION) FormDayRationComposition formDRC,
+                                                     ModelAndView modelAndView) {
+
+        Integer setAmount = formDRC.getNumberOfDish() <= 1 ? 1 : formDRC.getNumberOfDish();
+
+        Optional<RationComposition> rationCompositionSQL;
+        rationCompositionSQL = RATION_COMPOSITION_SERVICE_IMP.getCompositionById(idRC);
+
+        if (rationCompositionSQL.isPresent()) {
+            if (rationCompositionSQL.get().getNumberOfDish() != setAmount ||
+                    rationCompositionSQL.get().getFoodIntake() != formDRC.getFoodIntake()) {
+                rationCompositionSQL.get().setNumberOfDish(setAmount);
+                rationCompositionSQL.get().setFoodIntake(formDRC.getFoodIntake());
+                RATION_COMPOSITION_SERVICE_IMP.updateCompositionById(rationCompositionSQL.get());
+            }
+        }
+
+        modelAndView.setViewName(DAY_RATION_REDIRECT + "?numPage=" + numPage);
+
+        return modelAndView;
+    }
+
+    /**
+     * Delete 1 or more users ration compositions
+     *
+     * @param idCompositions [] {@link Integer}
+     * @param numPage        {@link Integer}
+     * @param modelAndView   {@link ModelAndView}
+     * @return modelAndView {@link ModelAndView}
+     */
+    @RequestMapping(value = USER_DELETE_COMPOSITION, method = RequestMethod.GET)
+    public ModelAndView actionDeleteUsersComposition(@RequestParam(REQUEST_ARR_COMPOSITION) Integer[] idCompositions,
+                                                     @RequestParam(REQUEST_NUMBER_PAGE) Integer numPage,
+                                                     ModelAndView modelAndView) {
+
+        RATION_COMPOSITION_SERVICE_IMP.deleteArrayCompositionById(Arrays.asList(idCompositions));
+
+        modelAndView.setViewName(DAY_RATION_REDIRECT + "?numPage=" + numPage);
+
+        return modelAndView;
+    }
+
+    /**
+     * Create users ration compositions
+     *
+     * @param numPage      {@link Integer}
+     * @param formDRC      {@link FormDayRationComposition}
+     * @param modelAndView {@link ModelAndView}
+     * @return modelAndView {@link ModelAndView}
+     */
+    @RequestMapping(value = USER_CREATE_DAY_RATION, method = RequestMethod.POST)
+    public ModelAndView actionCreateUsersDayRation(@SessionAttribute(REQUEST_USER) User user,
+                                                   @RequestParam(REQUEST_NUMBER_PAGE) Integer numPage,
+                                                   @ModelAttribute(REQUEST_FORM_RATION_COMPOSITION) FormDayRationComposition formDRC,
+                                                   RedirectAttributes redirectAttributes,
+                                                   ModelAndView modelAndView) {
+
+        modelAndView.setViewName(DAY_RATION_REDIRECT + "?numPage=" + numPage);
+
+        Optional<DayRation> dayRationSql;
+
+        if (nonNull(formDRC.getBreakfast()) || nonNull(formDRC.getDinner()) || nonNull(formDRC.getSupper())) {
+            formDRC.setUser(user);
+
+            DayRation dayRationHttp;
+            try {
+                dayRationHttp = DAY_RATION.extractEntityFromHttpForm(formDRC, modelAndView);
+            } catch (DataHttpException e) {
+                log.error(e.getMessage());
+                redirectAttributes.addFlashAttribute(PAGE_USER_ERROR, modelAndView.getModel().get(PAGE_USER_ERROR));
+                return modelAndView;
+            }
+
+            dayRationSql = DAY_RATION_SERVICE_IMP.checkDayRationByDateAndUserId(dayRationHttp.getDate(),
+                    dayRationHttp.getUser().getId());
+
+            if (!dayRationSql.isPresent()) {
+                DAY_RATION_SERVICE_IMP.insertNewDayRation(dayRationHttp);
+                dayRationHttp.setCompositions(new ArrayList<>());
+                dayRationSql = Optional.of(dayRationHttp);
+            }
+
+            ControllerUtil.createRationComposition(formDRC.getBreakfast(), dayRationSql.get(), FoodIntake.BREAKFAST);
+            ControllerUtil.createRationComposition(formDRC.getDinner(), dayRationSql.get(), FoodIntake.DINNER);
+            ControllerUtil.createRationComposition(formDRC.getSupper(), dayRationSql.get(), FoodIntake.SUPPER);
+        }
 
         return modelAndView;
     }

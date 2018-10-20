@@ -6,8 +6,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ua.training.controller.commands.exception.DataHttpException;
-import ua.training.controller.commands.utility.CommandsUtil;
+import ua.training.controller.controllers.exception.DataHttpException;
+import ua.training.controller.controllers.utility.ControllerUtil;
 import ua.training.model.entity.Dish;
 import ua.training.model.entity.User;
 import ua.training.model.entity.form.FormDish;
@@ -56,11 +56,11 @@ public class MenuController implements GeneralController {
         Integer page = isNull(numPage) ? 1 : numPage;
         Integer numberDish = DISH_SERVICE_IMP.counterDishByUserId(user.getId());
 
-        Integer maxPage = CommandsUtil.getCountPages(numberDish, 5);
-        Integer pageForSQL = CommandsUtil.getPageOrAmountForSQL(page, maxPage);
+        Integer maxPage = ControllerUtil.getCountPages(numberDish, 5);
+        Integer pageForSQL = ControllerUtil.getPageOrAmountForSQL(page, maxPage);
 
         List<Dish> usersDish = DISH_SERVICE_IMP.getLimitDishesByUserId(user.getId(), 5, 5 * (pageForSQL - 1));
-        CommandsUtil.sortListByAnnotationFields(usersDish);
+        ControllerUtil.sortListByAnnotationFields(usersDish);
 
         modelAndView.addObject(PAGE_NAME, PAGE_MENU_EDIT)
                 .addObject(REQUEST_FORM_DISH, new FormDish())
@@ -121,7 +121,7 @@ public class MenuController implements GeneralController {
 
         Dish dishHttp;
         try {
-            dishHttp = DISH_MAPPER.extractDishFromHttpForm(formDish, modelAndView);
+            dishHttp = DISH_MAPPER.extractEntityFromHttpForm(formDish, modelAndView);
         } catch (DataHttpException e) {
             log.error(e.getMessage());
             return modelAndView;
@@ -163,7 +163,7 @@ public class MenuController implements GeneralController {
 
         Dish dishHttp;
         try {
-            dishHttp = DISH_MAPPER.extractDishFromHttpForm(formDish, modelAndView);
+            dishHttp = DISH_MAPPER.extractEntityFromHttpForm(formDish, modelAndView);
         } catch (DataHttpException e) {
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute(PAGE_USER_ERROR, modelAndView.getModel().get(PAGE_USER_ERROR));
@@ -172,7 +172,7 @@ public class MenuController implements GeneralController {
 
         DISH_SERVICE_IMP.getDishById(idDish)
                 .ifPresent(dishSQL -> {
-                    CommandsUtil.mergeDishParameters(dishHttp, dishSQL);
+                    ControllerUtil.mergeDishParameters(dishHttp, dishSQL);
                     DISH_SERVICE_IMP.updateDishParameters(dishSQL);
                 });
 
