@@ -13,6 +13,8 @@ public interface Attributes {
     String SHOW_COLLAPSE_SIGN_UP = "showCollapseSignUp";
     String SHOW_COLLAPSE_MENU_USERS_PAGE = "showCollapseMenuUsersPage";
     String SHOW_COLLAPSE_MENU_ADD_DISH = "showCollapseMenuAddDish";
+    String SHOW_COLLAPSE_DAY_RATION_COMPOSITION = "showCollapseDayRationComposition";
+    String SHOW_COLLAPSE_DAY_RATION_ADD_COMPOSITION = "showCollapseDayRationAddComposition";
     String SHOW_COLLAPSE_ATTRIBUTE_FOR_CCS_CLASS = "show";
 
 
@@ -55,6 +57,7 @@ public interface Attributes {
     String REQUEST_USER = "user";
     String REQUEST_FORM_USER = "formUser";
     String REQUEST_FORM_DISH = "formDish";
+    String REQUEST_FORM_RATION_COMPOSITION = "formRC";
     String REQUEST_USERS_ALL = "allUsers";
     String REQUEST_USER_ROLE = "role";
     String REQUEST_USERS_DISHES = "usersDishes";
@@ -86,7 +89,8 @@ public interface Attributes {
     String REQUEST_LIFESTYLE = "lifestyle";
     String REQUEST_GENERAL_DISHES = "generalDishes";
     String REQUEST_LIST_USERS = "listUsers";
-    String REQUEST_AMOUNT = "amount";
+    String REQUEST_AMOUNT_DISH = "numberOfDish";
+    String REQUEST_FOOD_INTAKE = "foodIntake";
     String REQUEST_EMAIL_USERS = "emailUsers";
     String REQUEST_DATE = "date";
     String REQUEST_MONTHLY_DAY_RATION = "monthlyDR";

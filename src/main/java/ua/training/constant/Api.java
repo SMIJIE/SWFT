@@ -21,6 +21,9 @@ public interface Api {
     String USER_UPDATE_PARAMETERS = "/user/userUpdateParameters";
     String USER_LOG_OUT = "/user/logOut";
     String USER_DAY_RATION = "/user/dayRation";
+    String USER_CREATE_DAY_RATION = "/user/createNewRation";
+    String USER_UPDATE_COMPOSITION = "/user/userUpdateComposition";
+    String USER_DELETE_COMPOSITION = "/user/userDeleteComposition";
 
     String ADMIN_MENU_GENERAL_EDIT = "/admin/menuGeneralEdit";
     String ADMIN_MENU_GENERAL_UPDATE_DISH = "/admin/updateGeneralDish";
