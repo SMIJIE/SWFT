@@ -2,12 +2,12 @@ package ua.training.model.dao.mapper;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.servlet.ModelAndView;
-import ua.training.controller.commands.exception.DataHttpException;
+import ua.training.controller.controllers.exception.DataHttpException;
 import ua.training.model.entity.Dish;
 import ua.training.model.entity.form.FormDish;
 
 @Log4j2
-public class DishMapper implements ObjectMapper<Dish> {
+public class DishMapper implements ObjectMapper<Dish, FormDish> {
     /**
      * Extract entity 'Dish' from HTTP form
      *
@@ -16,12 +16,13 @@ public class DishMapper implements ObjectMapper<Dish> {
      * @return new {@link Dish}
      * @throws DataHttpException
      */
-    public Dish extractDishFromHttpForm(FormDish formDish, ModelAndView modelAndView) throws DataHttpException {
-        Integer weight;
-        Integer calories;
-        Integer proteins;
-        Integer fats;
-        Integer carbohydrates;
+    @Override
+    public Dish extractEntityFromHttpForm(FormDish formDish, ModelAndView modelAndView) throws DataHttpException {
+        int weight;
+        int calories;
+        int proteins;
+        int fats;
+        int carbohydrates;
 
         weight = (int) (formDish.getWeight() * 1000);
         calories = (int) (formDish.getCalories() * 1000);

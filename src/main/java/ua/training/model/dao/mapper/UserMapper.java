@@ -1,7 +1,7 @@
 package ua.training.model.dao.mapper;
 
 import org.springframework.web.servlet.ModelAndView;
-import ua.training.controller.commands.exception.DataHttpException;
+import ua.training.controller.controllers.exception.DataHttpException;
 import ua.training.model.dao.utility.PasswordEncoder;
 import ua.training.model.entity.User;
 import ua.training.model.entity.enums.Roles;
@@ -10,7 +10,7 @@ import ua.training.model.entity.form.FormUser;
 import java.time.LocalDate;
 import java.time.Period;
 
-public class UserMapper implements ObjectMapper<User> {
+public class UserMapper implements ObjectMapper<User, FormUser> {
     /**
      * Extract entity 'User' from HTTP form
      *
@@ -19,7 +19,8 @@ public class UserMapper implements ObjectMapper<User> {
      * @return new {@link User}
      * @throws DataHttpException
      */
-    public User extractUserFromHttpForm(FormUser formUser, ModelAndView modelAndView) throws DataHttpException {
+    @Override
+    public User extractEntityFromHttpForm(FormUser formUser, ModelAndView modelAndView) throws DataHttpException {
         String email;
         String password;
         int height;
