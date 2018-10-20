@@ -1,6 +1,8 @@
 package ua.training.model.dao;
 
-import ua.training.model.dao.utility.DbProperties;
+import ua.training.constant.Attributes;
+import ua.training.constant.Mess;
+import ua.training.model.utility.DbProperties;
 
 import java.util.Optional;
 
@@ -9,13 +11,7 @@ import java.util.Optional;
  *
  * @author Zakusylo Pavlo
  */
-public interface GenericDao<T> extends AutoCloseable {
-    /**
-     * DbProperties for GenericDao<T> classes
-     *
-     * @see DbProperties
-     */
-    DbProperties DB_PROPERTIES = new DbProperties();
+public interface GenericDao<T> extends AutoCloseable, Mess, Attributes {
 
     void create(T entity);
 

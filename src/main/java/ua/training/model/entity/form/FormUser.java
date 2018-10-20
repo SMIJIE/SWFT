@@ -7,10 +7,6 @@ import ua.training.model.entity.enums.Roles;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 
-/**
- * Verify input from http form
- * {@link ua.training.model.entity.User}
- */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

@@ -1,19 +1,23 @@
 package ua.training.controller.controllers;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ua.training.controller.controllers.exception.DataHttpException;
-import ua.training.controller.controllers.utility.ControllerUtil;
-import ua.training.model.dao.utility.PasswordEncoder;
+import ua.training.controller.exception.DataHttpException;
+import ua.training.controller.mapper.DishMapper;
+import ua.training.controller.utility.ControllerUtil;
 import ua.training.model.entity.Dish;
 import ua.training.model.entity.User;
 import ua.training.model.entity.enums.Roles;
 import ua.training.model.entity.form.FormDish;
 import ua.training.model.entity.form.FormUser;
+import ua.training.model.service.implementation.DishServiceImp;
+import ua.training.model.service.implementation.UserServiceImp;
+import ua.training.model.utility.PasswordEncoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -30,6 +34,13 @@ import static org.apache.logging.log4j.util.Strings.isEmpty;
 @Log4j2
 @Controller
 public class AdminController implements GeneralController {
+    @Autowired
+    private UserServiceImp userServiceImp;
+    @Autowired
+    private DishServiceImp dishServiceImp;
+    @Autowired
+    private DishMapper dishMapper;
+
     /**
      * Display general menu edit page
      *
@@ -78,7 +89,7 @@ public class AdminController implements GeneralController {
 
         Dish dishHttp;
         try {
-            dishHttp = DISH_MAPPER.extractEntityFromHttpForm(formDish, modelAndView);
+            dishHttp = dishMapper.extractEntityFromHttpForm(formDish, modelAndView);
             dishHttp.setName("");
         } catch (DataHttpException e) {
             log.error(e.getMessage());
@@ -86,13 +97,13 @@ public class AdminController implements GeneralController {
             return modelAndView;
         }
 
-        DISH_SERVICE_IMP.getDishById(Integer.valueOf(idDish))
+        dishServiceImp.getDishById(Integer.valueOf(idDish))
                 .ifPresent(dishSQL -> {
                     ControllerUtil.mergeDishParameters(dishHttp, dishSQL);
-                    DISH_SERVICE_IMP.updateDishParameters(dishSQL);
+                    dishServiceImp.updateDishParameters(dishSQL);
                 });
 
-        List<Dish> generalList = DISH_SERVICE_IMP.getGeneralDishes();
+        List<Dish> generalList = dishServiceImp.getGeneralDishes();
         ControllerUtil.sortListByAnnotationFields(generalList);
 
         Map<String, List<Dish>> dishes = ControllerUtil.addGeneralDishToContext(generalList);
@@ -118,9 +129,9 @@ public class AdminController implements GeneralController {
                                                     ModelAndView modelAndView) {
         modelAndView.setViewName(MENU_GENERAL_EDIT_REDIRECT);
 
-        DISH_SERVICE_IMP.deleteArrayDishesById(Arrays.asList(idDishes));
+        dishServiceImp.deleteArrayDishesById(Arrays.asList(idDishes));
 
-        List<Dish> generalList = DISH_SERVICE_IMP.getGeneralDishes();
+        List<Dish> generalList = dishServiceImp.getGeneralDishes();
         ControllerUtil.sortListByAnnotationFields(generalList);
 
         Map<String, List<Dish>> dishes = ControllerUtil.addGeneralDishToContext(generalList);
@@ -144,14 +155,14 @@ public class AdminController implements GeneralController {
                                          ModelAndView modelAndView) {
 
         Integer page = isNull(numPage) ? 1 : numPage;
-        Integer numberUsers = USER_SERVICE_IMP.countUsers(user.getId());
+        Integer numberUsers = userServiceImp.countUsers(user.getId());
         Integer maxPage = ControllerUtil.getCountPages(numberUsers, 6);
-        Integer pageForSQL = ControllerUtil.getPageOrAmountForSQL(page, maxPage);
+        Integer pageForSQL = ControllerUtil.getMinMaxCurrentPage(page, maxPage);
 
-        List<User> listUsers = USER_SERVICE_IMP.getLimitUsersWithoutAdmin(user.getId(), 6, 6 * (pageForSQL - 1));
+        List<User> listUsers = userServiceImp.getLimitUsersWithoutAdmin(user.getId(), 6, 6 * (pageForSQL - 1));
         listUsers.sort(Comparator.comparing(User::getEmail));
 
-        Integer forPage = USER_SERVICE_IMP.countUsers(user.getId());
+        Integer forPage = userServiceImp.countUsers(user.getId());
 
         modelAndView.addObject(PAGE_NAME, PAGE_USERS_LIST)
                 .addObject(REQUEST_FORM_USER, new FormUser())
@@ -179,7 +190,7 @@ public class AdminController implements GeneralController {
         List<User> listUsers = new ArrayList<>();
 
         if (!user.getEmail().equalsIgnoreCase(email)) {
-            USER_SERVICE_IMP.getOrCheckUserByEmail(email)
+            userServiceImp.getOrCheckUserByEmail(email)
                     .ifPresent(listUsers::add);
         }
 
@@ -217,7 +228,7 @@ public class AdminController implements GeneralController {
         boolean flagPassword = isEmpty(password);
         boolean flagPasswordLength = password.length() >= 3;
 
-        Optional<User> userSQL = USER_SERVICE_IMP.getOrCheckUserByEmail(email);
+        Optional<User> userSQL = userServiceImp.getOrCheckUserByEmail(email);
         if (userSQL.isPresent()) {
             if (!flagPassword) {
                 if (!flagPasswordLength) {
@@ -236,7 +247,7 @@ public class AdminController implements GeneralController {
         }
 
         if (flag) {
-            USER_SERVICE_IMP.updateUserParameters(userSQL.get());
+            userServiceImp.updateUserParameters(userSQL.get());
         }
 
         return modelAndView;
@@ -257,7 +268,7 @@ public class AdminController implements GeneralController {
                                                  HttpServletRequest httpServletRequest,
                                                  ModelAndView modelAndView) {
 
-        USER_SERVICE_IMP.deleteArrayUsersByEmail(Arrays.asList(emailUsers));
+        userServiceImp.deleteArrayUsersByEmail(Arrays.asList(emailUsers));
         ControllerUtil.deleteUsersFromContext(httpServletRequest, emailUsers);
 
         modelAndView.setViewName(SHOW_USERS_REDIRECT + "?numPage=" + numPage);

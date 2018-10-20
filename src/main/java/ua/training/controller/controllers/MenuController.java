@@ -1,16 +1,19 @@
 package ua.training.controller.controllers;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ua.training.controller.controllers.exception.DataHttpException;
-import ua.training.controller.controllers.utility.ControllerUtil;
+import ua.training.controller.exception.DataHttpException;
+import ua.training.controller.mapper.DishMapper;
+import ua.training.controller.utility.ControllerUtil;
 import ua.training.model.entity.Dish;
 import ua.training.model.entity.User;
 import ua.training.model.entity.form.FormDish;
+import ua.training.model.service.implementation.DishServiceImp;
 
 import javax.validation.Valid;
 import java.util.Arrays;
@@ -26,6 +29,10 @@ import static java.util.Objects.isNull;
 @Log4j2
 @Controller
 public class MenuController implements GeneralController {
+    @Autowired
+    private DishServiceImp dishServiceImp;
+    @Autowired
+    private DishMapper dishMapper;
 
     /**
      * Display general menu page
@@ -54,12 +61,12 @@ public class MenuController implements GeneralController {
                                          @RequestParam(value = REQUEST_NUMBER_PAGE, required = false) Integer numPage,
                                          ModelAndView modelAndView) {
         Integer page = isNull(numPage) ? 1 : numPage;
-        Integer numberDish = DISH_SERVICE_IMP.counterDishByUserId(user.getId());
+        Integer numberDish = dishServiceImp.counterDishByUserId(user.getId());
 
         Integer maxPage = ControllerUtil.getCountPages(numberDish, 5);
-        Integer pageForSQL = ControllerUtil.getPageOrAmountForSQL(page, maxPage);
+        Integer pageForSQL = ControllerUtil.getMinMaxCurrentPage(page, maxPage);
 
-        List<Dish> usersDish = DISH_SERVICE_IMP.getLimitDishesByUserId(user.getId(), 5, 5 * (pageForSQL - 1));
+        List<Dish> usersDish = dishServiceImp.getLimitDishesByUserId(user.getId(), 5, 5 * (pageForSQL - 1));
         ControllerUtil.sortListByAnnotationFields(usersDish);
 
         modelAndView.addObject(PAGE_NAME, PAGE_MENU_EDIT)
@@ -87,7 +94,7 @@ public class MenuController implements GeneralController {
                                               @RequestParam(REQUEST_NUMBER_PAGE) Integer numPage,
                                               ModelAndView modelAndView) {
 
-        DISH_SERVICE_IMP.deleteArrayDishesByIdAndUser(Arrays.asList(idDishes), user.getId());
+        dishServiceImp.deleteArrayDishesByIdAndUser(Arrays.asList(idDishes), user.getId());
 
         modelAndView.setViewName(MENU_USERS_EDIT_REDIRECT + "?numPage=" + numPage);
 
@@ -121,7 +128,7 @@ public class MenuController implements GeneralController {
 
         Dish dishHttp;
         try {
-            dishHttp = DISH_MAPPER.extractEntityFromHttpForm(formDish, modelAndView);
+            dishHttp = dishMapper.extractEntityFromHttpForm(formDish, modelAndView);
         } catch (DataHttpException e) {
             log.error(e.getMessage());
             return modelAndView;
@@ -129,7 +136,7 @@ public class MenuController implements GeneralController {
 
         dishHttp.setUser(user);
         dishHttp.setGeneralFood(false);
-        DISH_SERVICE_IMP.insertNewDish(dishHttp);
+        dishServiceImp.insertNewDish(dishHttp);
 
         modelAndView.setViewName(MENU_USERS_EDIT_REDIRECT + "?numPage=" + numPage);
 
@@ -163,17 +170,17 @@ public class MenuController implements GeneralController {
 
         Dish dishHttp;
         try {
-            dishHttp = DISH_MAPPER.extractEntityFromHttpForm(formDish, modelAndView);
+            dishHttp = dishMapper.extractEntityFromHttpForm(formDish, modelAndView);
         } catch (DataHttpException e) {
             log.error(e.getMessage());
             redirectAttributes.addFlashAttribute(PAGE_USER_ERROR, modelAndView.getModel().get(PAGE_USER_ERROR));
             return modelAndView;
         }
 
-        DISH_SERVICE_IMP.getDishById(idDish)
+        dishServiceImp.getDishById(idDish)
                 .ifPresent(dishSQL -> {
                     ControllerUtil.mergeDishParameters(dishHttp, dishSQL);
-                    DISH_SERVICE_IMP.updateDishParameters(dishSQL);
+                    dishServiceImp.updateDishParameters(dishSQL);
                 });
 
         return modelAndView;

@@ -5,7 +5,7 @@ import ua.training.constant.RegexExpress;
 
 /**
  * Description: This is the abstract class for all HTTP form entities
- * {@link ua.training.model.dao.mapper.ObjectMapper}
+ * {@link ua.training.controller.mapper.ObjectMapper}
  *
  * @author Zakusylo Pavlo
  */

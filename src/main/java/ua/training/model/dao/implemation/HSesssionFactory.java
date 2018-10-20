@@ -6,63 +6,70 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.MySQL5Dialect;
-import ua.training.model.dao.utility.DbProperties;
-import ua.training.model.dao.utility.converter.DateConverter;
-import ua.training.model.dao.utility.converter.FoodCategoryConverter;
-import ua.training.model.dao.utility.converter.FoodIntakeConverter;
-import ua.training.model.dao.utility.converter.RolesConverter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ua.training.model.entity.DayRation;
 import ua.training.model.entity.Dish;
 import ua.training.model.entity.RationComposition;
 import ua.training.model.entity.User;
+import ua.training.model.utility.DbProperties;
+import ua.training.model.utility.converter.DateConverter;
+import ua.training.model.utility.converter.FoodCategoryConverter;
+import ua.training.model.utility.converter.FoodIntakeConverter;
+import ua.training.model.utility.converter.RolesConverter;
 
 import java.util.Properties;
 
 /**
  * Description: This is the class for Hibernate Session
- * {@link ua.training.model.dao.DaoFactory}
  *
  * @author Zakusylo Pavlo
  */
+@Component
 public class HSesssionFactory {
     /**
      * DbProperties for Hibernate Session
      *
      * @see DbProperties
      */
-    private static DbProperties dbProperties = new DbProperties();
+    @Autowired
+    private DbProperties dbProperties;
     /**
      * Represents one approach for bootstrapping Hibernate.
      *
      * @see Configuration
      */
-    private static volatile Configuration CONFIG;
+    private volatile Configuration config;
     /**
      * The main contract here is the creation of {@link Session} instances.
      *
      * @see SessionFactory
      */
-    private static final SessionFactory SESSION_FACTORY = initializeSessionFactory();
+    private final SessionFactory sessionFactory;
+
+    public HSesssionFactory() {
+        sessionFactory = initializeSessionFactory();
+    }
 
     /**
      * Build and return Session Factory
      *
      * @return object SessionFactory
      */
-    private static SessionFactory initializeSessionFactory() {
-        if (CONFIG == null) {
+    private SessionFactory initializeSessionFactory() {
+        if (config == null) {
             synchronized (SessionFactory.class) {
-                if (CONFIG == null) {
+                if (config == null) {
                     Properties jpaProps = getProperties();
-                    CONFIG = getConfig(jpaProps);
+                    config = getConfig(jpaProps);
                 }
             }
         }
-        return CONFIG.buildSessionFactory();
+        return config.buildSessionFactory();
     }
 
-    public static Session getSession() {
-        return SESSION_FACTORY.openSession();
+    public Session getSession() {
+        return sessionFactory.openSession();
     }
 
     /**
@@ -70,7 +77,7 @@ public class HSesssionFactory {
      *
      * @return properties Properties
      */
-    private static Properties getProperties() {
+    private Properties getProperties() {
         Properties properties = new Properties();
 
         properties.put(Environment.DRIVER, Driver.class.getCanonicalName());
@@ -90,7 +97,7 @@ public class HSesssionFactory {
      * @param jpaProps Properties
      * @return config Configuration
      */
-    private static Configuration getConfig(Properties jpaProps) {
+    private Configuration getConfig(Properties jpaProps) {
         Configuration config = new Configuration();
 
         config.addAnnotatedClass(User.class);

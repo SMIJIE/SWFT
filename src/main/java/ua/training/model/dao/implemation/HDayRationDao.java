@@ -4,11 +4,12 @@ import lombok.extern.log4j.Log4j2;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import ua.training.constant.Attributes;
-import ua.training.constant.Mess;
-import ua.training.controller.controllers.exception.DataSqlException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import ua.training.controller.exception.DataSqlException;
 import ua.training.model.dao.DayRationDao;
 import ua.training.model.entity.DayRation;
+import ua.training.model.utility.DbProperties;
 
 import javax.persistence.NoResultException;
 import java.time.LocalDate;
@@ -16,17 +17,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Log4j2
+@Repository
 public class HDayRationDao implements DayRationDao {
-    /**
-     * The main runtime interface between a Java application and Hibernate.
-     *
-     * @see Session
-     */
-    private Session session;
-
-    HDayRationDao(Session session) {
-        this.session = session;
-    }
+    @Autowired
+    private HSesssionFactory hSesssionFactory;
+    private Session session = hSesssionFactory.getSession();
+    @Autowired
+    private DbProperties dbProperties;
 
     @Override
     public void create(DayRation entity) {
@@ -47,8 +44,8 @@ public class HDayRationDao implements DayRationDao {
         try {
             return Optional.of(session.load(DayRation.class, id));
         } catch (ObjectNotFoundException e) {
-            log.error(e.getMessage() + Mess.LOG_DAY_RATION_GET_BY_ID);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
+            log.error(e.getMessage() + LOG_DAY_RATION_GET_BY_ID);
+            throw new DataSqlException(SQL_EXCEPTION);
         }
     }
 
@@ -66,7 +63,7 @@ public class HDayRationDao implements DayRationDao {
      */
     @Override
     public void delete(Integer id) {
-        String hqlDelRationCompos = DB_PROPERTIES.deleteCompositionByDayRationId();
+        String hqlDelRationCompos = dbProperties.deleteCompositionByDayRationId();
         findById(id).ifPresent(dr -> {
             session.beginTransaction();
 
@@ -95,7 +92,7 @@ public class HDayRationDao implements DayRationDao {
      */
     @Override
     public Optional<DayRation> checkDayRationByDateAndUserId(LocalDate localDate, Integer idUser) {
-        String hql = DB_PROPERTIES.getDayRationByDateAndUser();
+        String hql = dbProperties.getDayRationByDateAndUser();
         Optional<DayRation> dayRation;
 
         Query<DayRation> query = session.createQuery(hql, DayRation.class);
@@ -121,7 +118,7 @@ public class HDayRationDao implements DayRationDao {
      */
     @Override
     public List<DayRation> getMonthlyDayRationByUser(Integer month, Integer year, Integer userId) {
-        String hql = DB_PROPERTIES.getMonthlyDayRationByUser();
+        String hql = dbProperties.getMonthlyDayRationByUser();
 
         Query<DayRation> query = session.createQuery(hql, DayRation.class);
         query.setParameter("mDate", month);

@@ -1,17 +1,20 @@
 package ua.training.controller.controllers;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ua.training.constant.Attributes;
-import ua.training.controller.controllers.exception.DataHttpException;
-import ua.training.controller.controllers.utility.ControllerUtil;
-import ua.training.model.dao.utility.PasswordEncoder;
+import ua.training.controller.exception.DataHttpException;
+import ua.training.controller.mapper.UserMapper;
+import ua.training.controller.utility.ControllerUtil;
 import ua.training.model.entity.User;
 import ua.training.model.entity.form.FormUser;
+import ua.training.model.service.implementation.UserServiceImp;
+import ua.training.model.utility.PasswordEncoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -25,6 +28,10 @@ import java.util.Optional;
 @Log4j2
 @Controller
 public class StatementController implements GeneralController {
+    @Autowired
+    private UserServiceImp userServiceImp;
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * Display welcome(initial) page
@@ -80,7 +87,7 @@ public class StatementController implements GeneralController {
         String emailSQL = email.toLowerCase();
         String passwordSQL = PasswordEncoder.encodePassword(password);
 
-        Optional<User> userSQL = USER_SERVICE_IMP.getOrCheckUserByEmail(emailSQL);
+        Optional<User> userSQL = userServiceImp.getOrCheckUserByEmail(emailSQL);
 
         if (userSQL.isPresent() && userSQL.get().getPassword().equals(passwordSQL)) {
             return ControllerUtil.openUsersSession(request, userSQL.get(), modelAndView, redirectAttributes);
@@ -120,16 +127,16 @@ public class StatementController implements GeneralController {
 
         User userHttp;
         try {
-            userHttp = USER_MAPPER.extractEntityFromHttpForm(formUser, modelAndView);
+            userHttp = userMapper.extractEntityFromHttpForm(formUser, modelAndView);
         } catch (DataHttpException e) {
             log.error(e.getMessage());
             return modelAndView;
         }
 
-        Optional<User> userSQL = USER_SERVICE_IMP.getOrCheckUserByEmail(userHttp.getEmail());
+        Optional<User> userSQL = userServiceImp.getOrCheckUserByEmail(userHttp.getEmail());
 
         if (!userSQL.isPresent()) {
-            USER_SERVICE_IMP.registerNewUser(userHttp);
+            userServiceImp.registerNewUser(userHttp);
             log.info(LOG_USER_REGISTERED + "[" + userHttp.getEmail() + "]");
             return ControllerUtil.openUsersSession(servletRequest, userHttp, modelAndView, redirectAttributes);
         } else {

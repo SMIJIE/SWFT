@@ -4,27 +4,24 @@ import lombok.extern.log4j.Log4j2;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import ua.training.constant.Attributes;
-import ua.training.constant.Mess;
-import ua.training.controller.controllers.exception.DataSqlException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import ua.training.controller.exception.DataSqlException;
 import ua.training.model.dao.DishDao;
 import ua.training.model.entity.Dish;
+import ua.training.model.utility.DbProperties;
 
 import java.util.List;
 import java.util.Optional;
 
 @Log4j2
+@Repository
 public class HDishDao implements DishDao {
-    /**
-     * The main runtime interface between a Java application and Hibernate.
-     *
-     * @see Session
-     */
-    private Session session;
-
-    HDishDao(Session session) {
-        this.session = session;
-    }
+    @Autowired
+    private HSesssionFactory hSesssionFactory;
+    private Session session = hSesssionFactory.getSession();
+    @Autowired
+    private DbProperties dbProperties;
 
     @Override
     public void create(Dish entity) {
@@ -45,8 +42,8 @@ public class HDishDao implements DishDao {
         try {
             return Optional.of(session.load(Dish.class, id));
         } catch (ObjectNotFoundException e) {
-            log.error(e.getMessage() + Mess.LOG_DISH_GET_BY_ID);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
+            log.error(e.getMessage() + LOG_DISH_GET_BY_ID);
+            throw new DataSqlException(SQL_EXCEPTION);
         }
     }
 
@@ -64,7 +61,7 @@ public class HDishDao implements DishDao {
      */
     @Override
     public void delete(Integer id) {
-        String hqlDelRationCompos = DB_PROPERTIES.deleteCompositionArrayByDish();
+        String hqlDelRationCompos = dbProperties.deleteCompositionArrayByDish();
         findById(id).ifPresent(d -> {
             session.beginTransaction();
 
@@ -91,7 +88,7 @@ public class HDishDao implements DishDao {
      */
     @Override
     public List<Dish> getAllGeneralDishes() {
-        String hql = DB_PROPERTIES.getGeneralDishes();
+        String hql = dbProperties.getGeneralDishes();
 
         Query<Dish> query = session.createQuery(hql, Dish.class);
         query.setParameter("isGeneralFood", true);
@@ -109,7 +106,7 @@ public class HDishDao implements DishDao {
      */
     @Override
     public List<Dish> getLimitDishesByUserId(Integer userId, Integer limit, Integer skip) {
-        String hql = DB_PROPERTIES.getDishByUserId();
+        String hql = dbProperties.getDishByUserId();
 
         Query<Dish> query = session.createQuery(hql, Dish.class);
         query.setParameter("idUser", userId);
@@ -126,8 +123,8 @@ public class HDishDao implements DishDao {
      */
     @Override
     public void deleteArrayDishesById(List<Integer> array) {
-        String hqlDeleteDish = DB_PROPERTIES.deleteArrayDishById();
-        String hqlDelRationCompos = DB_PROPERTIES.deleteCompositionArrayByDish();
+        String hqlDeleteDish = dbProperties.deleteArrayDishById();
+        String hqlDelRationCompos = dbProperties.deleteCompositionArrayByDish();
 
         session.beginTransaction();
 
@@ -152,8 +149,8 @@ public class HDishDao implements DishDao {
      */
     @Override
     public void deleteArrayDishesByIdAndUser(List<Integer> array, Integer userId) {
-        String hqlDeleteDish = DB_PROPERTIES.deleteArrayDishByIdAndUser();
-        String hqlDelRationCompos = DB_PROPERTIES.deleteCompositionArrayByDishAndUser();
+        String hqlDeleteDish = dbProperties.deleteArrayDishByIdAndUser();
+        String hqlDelRationCompos = dbProperties.deleteCompositionArrayByDishAndUser();
 
         session.beginTransaction();
 
@@ -180,7 +177,7 @@ public class HDishDao implements DishDao {
      */
     @Override
     public Integer countDishes(Integer userId) {
-        String hql = DB_PROPERTIES.getCountDishesByUserId();
+        String hql = dbProperties.getCountDishesByUserId();
 
         Query query = session.createQuery(hql);
         query.setParameter("idUser", userId);

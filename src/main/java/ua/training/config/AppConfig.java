@@ -27,7 +27,7 @@ import java.util.Locale;
 @EnableWebMvc
 @EnableTransactionManagement
 @PropertySource("classpath:db.properties")
-@ComponentScan({"ua.training"})
+@ComponentScan("ua.training")
 public class AppConfig implements WebMvcConfigurer {
 
     /**

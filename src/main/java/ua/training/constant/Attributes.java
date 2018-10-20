@@ -14,21 +14,11 @@ public interface Attributes {
     String SHOW_COLLAPSE_MENU_USERS_PAGE = "showCollapseMenuUsersPage";
     String SHOW_COLLAPSE_MENU_ADD_DISH = "showCollapseMenuAddDish";
     String SHOW_COLLAPSE_DAY_RATION_COMPOSITION = "showCollapseDayRationComposition";
-    String SHOW_COLLAPSE_DAY_RATION_ADD_COMPOSITION = "showCollapseDayRationAddComposition";
     String SHOW_COLLAPSE_ATTRIBUTE_FOR_CCS_CLASS = "show";
 
-
-    String PAGE_PATH = "/swft/";
     String PAGE_NAME = "pageName";
     String PAGE_VALUE_EMAIL_LOG_IN = "valueEmailLogIn";
     String PAGE_VALUE_PASSWORD_LOG_IN = "valuePasswordLogIn";
-    String PAGE_VALUE_PASSWORD_REG = "valuePasswordReg";
-    String PAGE_VALUE_EMAIL_REG = "valueEmailReg";
-    String PAGE_VALUE_NAME_REG = "valueNameReg";
-    String PAGE_VALUE_DOB_REG = "valueDobReg";
-    String PAGE_VALUE_HEIGHT_REG = "valueHeightReg";
-    String PAGE_VALUE_WEIGHT_REG = "valueWeightReg";
-    String PAGE_VALUE_WEIGHT_DESIRED_REG = "valueWeightDesiredReg";
     String PAGE_GENERAL = "page.general";
     String PAGE_RATION = "page.ration";
     String PAGE_MENU = "page.menu";
@@ -39,21 +29,13 @@ public interface Attributes {
     String PAGE_SETTINGS = "page.settings";
 
     String PAGE_USER_EXIST = "user.email.exist";
-    String PAGE_USER_WRONG_DATA = "wrong.data";
     String PAGE_USER_NOT_EXIST = "user.email.not.exist";
     String PAGE_USER_WRONG_PASSWORD = "user.inappropriate.password";
     String PAGE_USER_NOT_MATCH_PASSWORDS = "user.not.match.passwords";
     String PAGE_USER_LOGGED = "user.email.logged";
-    String PAGE_USER_ERROR_EMAIL = "wrong.user.email";
-    String PAGE_USER_ERROR_DATA = "userErrorData";
-    String PAGE_NON_ERROR = "nonError";
     String PAGE_USER_ERROR = "userError";
-    String PAGE_USER_NON_ERROR_DATA = "nonErrorData";
 
-    String REQUEST_LANGUAGE = "lang";
-    String REQUEST_LOCALE_LANGUAGE = "localeLang";
     String REQUEST_LOCALE_DATE = "localeDate";
-    String REQUEST_CURRENT_PAGE = "currPage";
     String REQUEST_USER = "user";
     String REQUEST_FORM_USER = "formUser";
     String REQUEST_FORM_DISH = "formDish";
@@ -71,28 +53,11 @@ public interface Attributes {
     String REQUEST_NUMBER_MONTH = "numMonth";
     String REQUEST_NUMBER_USER_DISH = "numUserDish";
     String REQUEST_NUMBER_USERS = "numUsers";
-    String REQUEST_SELECT_BREAKFAST = "selectBreakfast";
-    String REQUEST_SELECT_DINNER = "selectDinner";
-    String REQUEST_SELECT_SUPPER = "selectSupper";
     String REQUEST_NAME = "name";
-    String REQUEST_CATEGORY = "category";
-    String REQUEST_DATE_OF_BIRTHDAY = "dob";
     String REQUEST_EMAIL = "email";
     String REQUEST_PASSWORD = "password";
-    String REQUEST_HEIGHT = "height";
-    String REQUEST_WEIGHT = "weight";
-    String REQUEST_CALORIES = "calories";
-    String REQUEST_PROTEINS = "proteins";
-    String REQUEST_FATS = "fats";
-    String REQUEST_CARBOHYDRATES = "carbohydrates";
-    String REQUEST_WEIGHT_DESIRED = "weightDesired";
-    String REQUEST_LIFESTYLE = "lifestyle";
     String REQUEST_GENERAL_DISHES = "generalDishes";
     String REQUEST_LIST_USERS = "listUsers";
-    String REQUEST_AMOUNT_DISH = "numberOfDish";
-    String REQUEST_FOOD_INTAKE = "foodIntake";
-    String REQUEST_EMAIL_USERS = "emailUsers";
-    String REQUEST_DATE = "date";
     String REQUEST_MONTHLY_DAY_RATION = "monthlyDR";
 
     String SQL_EXCEPTION = "wrong.work.server";
@@ -125,39 +90,4 @@ public interface Attributes {
     String DB_SQL_RATION_COMPOSITION_DELETE_ARRAY_BY_DISH_AND_USER = "sql.rationCompositionDeleteArrayByDishAndUser";
     String DB_SQL_RATION_COMPOSITION_DELETE_ARRAY_BY_DISH = "sql.rationCompositionDeleteArrayByDish";
     String DB_SQL_RATION_COMPOSITION_DELETE_ARRAY_BY_USER_EMAIL = "sql.rationCompositionDeleteArrayByUserEmail";
-
-    String COMMAND_SIGN_OR_REGISTER = "signInOrRegister";
-    String COMMAND_SIGN_OR_REGISTER_WITH_ERROR = "signInOrRegisterWithError";
-    String COMMAND_LOG_IN = "logIn";
-    String COMMAND_LOG_OUT = "logOut";
-    String COMMAND_REGISTER_NEW_USER = "registerNewUser";
-    String COMMAND_HOME_PAGE = "homePage";
-    String COMMAND_CHANGE_LANGUAGE = "changeLanguage";
-    String COMMAND_USER_SETTINGS = "userSettings";
-    String COMMAND_USER_SETTINGS_WITH_ERROR = "userSettingsWithError";
-    String COMMAND_USER_UPDATE_PARAMETERS = "updateUserParameters";
-    String COMMAND_USER_UPDATE_BY_ADMIN = "updateUsers";
-    String COMMAND_SHOW_USERS = "showUsers";
-    String COMMAND_SHOW_USERS_UPDATE_SEARCH_BY_ADMIN = "showUsersAfterUpdateOrSearch";
-    String COMMAND_SHOW_USERS_BY_EMAIL_BY_ADMIN = "searchUsersByEmail";
-    String COMMAND_DELETE_USERS = "deleteUsers";
-    String COMMAND_DAY_RATION = "dayRation";
-    String COMMAND_CREATE_DAY_RATION = "createNewRation";
-    String COMMAND_LIST_HOME_PAGE = "listHomePage";
-    String COMMAND_LIST_USER_DAY_RATION = "listUserDayRation";
-    String COMMAND_DELETE_USER_COMPOSITION = "deleteUsersComposition";
-    String COMMAND_UPDATE_USER_COMPOSITION = "updateUsersComposition";
-    String COMMAND_MENU = "menu";
-    String COMMAND_MENU_GENERAL_EDIT = "menuGeneralEdit";
-    String COMMAND_MENU_GENERAL_EDIT_WITH_ERROR = "menuGeneralEditWithError";
-    String COMMAND_MENU_GENERAL_DELETE = "deleteGeneralDishItem";
-    String COMMAND_MENU_GENERAL_UPDATE = "updateGeneralDish";
-    String COMMAND_MENU_USERS_DELETE = "deleteUsersMenuItem";
-    String COMMAND_MENU_USERS_UPDATE = "updateUsersDish";
-    String COMMAND_MENU_USERS_EDIT = "menuUsersEdit";
-    String COMMAND_MENU_USERS_EDIT_WITH_ERROR = "menuUsersEditWithError";
-    String COMMAND_MENU_USERS_EDIT_AFTER_UPDATE = "menuUsersEditAfterUpdate";
-    String COMMAND_MENU_ADD_DISH = "addNewDish";
-    String COMMAND_MENU_LIST_DISH_PAGE = "listDishPage";
-    String COMMAND_MENU_LIST_USERS_PAGE = "listUsersPage";
 }

@@ -1,9 +1,11 @@
 package ua.training.controller.servlet.listener;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import ua.training.constant.Attributes;
-import ua.training.controller.controllers.utility.ControllerUtil;
-import ua.training.model.dao.service.implementation.DishServiceImp;
+import ua.training.controller.utility.ControllerUtil;
 import ua.training.model.entity.Dish;
+import ua.training.model.service.implementation.DishServiceImp;
+import ua.training.model.utility.DbProperties;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -20,7 +22,8 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @WebListener
 public class ServContListener implements ServletContextListener, Attributes {
     private CopyOnWriteArraySet allUsers = new CopyOnWriteArraySet();
-    private DishServiceImp dishServiceImp = new DishServiceImp();
+    @Autowired
+    private DishServiceImp dishServiceImp;
 
     /**
      * Initialize 'set' of users and 'list' of general dishes

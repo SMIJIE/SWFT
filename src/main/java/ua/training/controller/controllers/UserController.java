@@ -1,13 +1,16 @@
 package ua.training.controller.controllers;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ua.training.controller.controllers.exception.DataHttpException;
-import ua.training.controller.controllers.utility.ControllerUtil;
+import ua.training.controller.exception.DataHttpException;
+import ua.training.controller.mapper.DayRationMapper;
+import ua.training.controller.mapper.UserMapper;
+import ua.training.controller.utility.ControllerUtil;
 import ua.training.model.entity.DayRation;
 import ua.training.model.entity.Dish;
 import ua.training.model.entity.RationComposition;
@@ -15,6 +18,9 @@ import ua.training.model.entity.User;
 import ua.training.model.entity.enums.FoodIntake;
 import ua.training.model.entity.form.FormDayRationComposition;
 import ua.training.model.entity.form.FormUser;
+import ua.training.model.service.implementation.DayRationServiceImp;
+import ua.training.model.service.implementation.RationCompositionServiceImp;
+import ua.training.model.service.implementation.UserServiceImp;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -35,6 +41,17 @@ import static org.apache.logging.log4j.util.Strings.isNotEmpty;
 @Log4j2
 @Controller
 public class UserController implements GeneralController {
+    @Autowired
+    private UserServiceImp userServiceImp;
+    @Autowired
+    private DayRationServiceImp dayRationServiceImp;
+    @Autowired
+    private RationCompositionServiceImp rationCompositionServiceImp;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private DayRationMapper dayRationMapper;
+
     /**
      * Display home page with an opportunity pagination
      *
@@ -51,13 +68,13 @@ public class UserController implements GeneralController {
         Integer page = isNull(numPage) ? 0 : numPage;
         LocalDate localDate = LocalDate.now().plusMonths(page);
 
-        List<DayRation> dayRations = DAY_RATION_SERVICE_IMP.getMonthlyDayRationByUser(localDate.getMonthValue(),
+        List<DayRation> dayRations = dayRationServiceImp.getMonthlyDayRationByUser(localDate.getMonthValue(),
                 localDate.getYear(), user.getId());
 
         Map<DayRation, Integer> rationsWithCalories = dayRations.stream()
                 .sorted(Comparator.comparing(rwc -> rwc.getDate().getDayOfMonth()))
                 .collect(Collectors.toMap(Function.identity(),
-                        dr -> RATION_COMPOSITION_SERVICE_IMP.sumCaloriesCompositionByRationId(dr.getId()),
+                        dr -> rationCompositionServiceImp.sumCaloriesCompositionByRationId(dr.getId()),
                         (e1, e2) -> e1, LinkedHashMap::new));
 
 
@@ -131,13 +148,13 @@ public class UserController implements GeneralController {
 
         User userHttp;
         try {
-            userHttp = USER_MAPPER.extractEntityFromHttpForm(formUser, modelAndView);
+            userHttp = userMapper.extractEntityFromHttpForm(formUser, modelAndView);
         } catch (DataHttpException e) {
             log.error(e.getMessage());
             return modelAndView;
         }
 
-        Optional<User> userSQL = USER_SERVICE_IMP.getOrCheckUserByEmail(userHttp.getEmail());
+        Optional<User> userSQL = userServiceImp.getOrCheckUserByEmail(userHttp.getEmail());
         if (!userSQL.isPresent() ||
                 userSQL.get().getEmail().equalsIgnoreCase(user.getEmail())) {
 
@@ -145,7 +162,7 @@ public class UserController implements GeneralController {
             ControllerUtil.addUsersToContext(servletRequest, userHttp.getEmail());
 
             ControllerUtil.mergeUserParameters(userHttp, user);
-            USER_SERVICE_IMP.updateUserParameters(user);
+            userServiceImp.updateUserParameters(user);
 
             log.info(LOG_USER_UPDATE_PARAMETERS + "[" + user.getEmail() + "]");
 
@@ -180,7 +197,7 @@ public class UserController implements GeneralController {
         Map<String, List<Dish>> generalDishes = (Map<String, List<Dish>>) httpServletRequest.getServletContext().getAttribute(REQUEST_GENERAL_DISHES);
 
         List<RationComposition> rationCompositions = new ArrayList<>();
-        DAY_RATION_SERVICE_IMP.checkDayRationByDateAndUserId(localDate, user.getId())
+        dayRationServiceImp.checkDayRationByDateAndUserId(localDate, user.getId())
                 .ifPresent(dayRation -> rationCompositions.addAll(dayRation.getCompositions()));
 
         Map<String, List<RationComposition>> usersRC = ControllerUtil.getDatRationByFoodIntake(rationCompositions);
@@ -225,14 +242,14 @@ public class UserController implements GeneralController {
         Integer setAmount = formDRC.getNumberOfDish() <= 1 ? 1 : formDRC.getNumberOfDish();
 
         Optional<RationComposition> rationCompositionSQL;
-        rationCompositionSQL = RATION_COMPOSITION_SERVICE_IMP.getCompositionById(idRC);
+        rationCompositionSQL = rationCompositionServiceImp.getCompositionById(idRC);
 
         if (rationCompositionSQL.isPresent()) {
             if (rationCompositionSQL.get().getNumberOfDish() != setAmount ||
                     rationCompositionSQL.get().getFoodIntake() != formDRC.getFoodIntake()) {
                 rationCompositionSQL.get().setNumberOfDish(setAmount);
                 rationCompositionSQL.get().setFoodIntake(formDRC.getFoodIntake());
-                RATION_COMPOSITION_SERVICE_IMP.updateCompositionById(rationCompositionSQL.get());
+                rationCompositionServiceImp.updateCompositionById(rationCompositionSQL.get());
             }
         }
 
@@ -254,7 +271,7 @@ public class UserController implements GeneralController {
                                                      @RequestParam(REQUEST_NUMBER_PAGE) Integer numPage,
                                                      ModelAndView modelAndView) {
 
-        RATION_COMPOSITION_SERVICE_IMP.deleteArrayCompositionById(Arrays.asList(idCompositions));
+        rationCompositionServiceImp.deleteArrayCompositionById(Arrays.asList(idCompositions));
 
         modelAndView.setViewName(DAY_RATION_REDIRECT + "?numPage=" + numPage);
 
@@ -285,18 +302,18 @@ public class UserController implements GeneralController {
 
             DayRation dayRationHttp;
             try {
-                dayRationHttp = DAY_RATION.extractEntityFromHttpForm(formDRC, modelAndView);
+                dayRationHttp = dayRationMapper.extractEntityFromHttpForm(formDRC, modelAndView);
             } catch (DataHttpException e) {
                 log.error(e.getMessage());
                 redirectAttributes.addFlashAttribute(PAGE_USER_ERROR, modelAndView.getModel().get(PAGE_USER_ERROR));
                 return modelAndView;
             }
 
-            dayRationSql = DAY_RATION_SERVICE_IMP.checkDayRationByDateAndUserId(dayRationHttp.getDate(),
+            dayRationSql = dayRationServiceImp.checkDayRationByDateAndUserId(dayRationHttp.getDate(),
                     dayRationHttp.getUser().getId());
 
             if (!dayRationSql.isPresent()) {
-                DAY_RATION_SERVICE_IMP.insertNewDayRation(dayRationHttp);
+                dayRationServiceImp.insertNewDayRation(dayRationHttp);
                 dayRationHttp.setCompositions(new ArrayList<>());
                 dayRationSql = Optional.of(dayRationHttp);
             }

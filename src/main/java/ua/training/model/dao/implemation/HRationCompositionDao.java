@@ -4,29 +4,26 @@ import lombok.extern.log4j.Log4j2;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import ua.training.constant.Attributes;
-import ua.training.constant.Mess;
-import ua.training.controller.controllers.exception.DataSqlException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import ua.training.controller.exception.DataSqlException;
 import ua.training.model.dao.RationCompositionDao;
 import ua.training.model.entity.RationComposition;
 import ua.training.model.entity.enums.FoodIntake;
+import ua.training.model.utility.DbProperties;
 
 import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Optional;
 
 @Log4j2
+@Repository
 public class HRationCompositionDao implements RationCompositionDao {
-    /**
-     * The main runtime interface between a Java application and Hibernate.
-     *
-     * @see Session
-     */
-    private Session session;
-
-    HRationCompositionDao(Session session) {
-        this.session = session;
-    }
+    @Autowired
+    private HSesssionFactory hSesssionFactory;
+    private Session session = hSesssionFactory.getSession();
+    @Autowired
+    private DbProperties dbProperties;
 
     @Override
     public void create(RationComposition entity) {
@@ -46,8 +43,8 @@ public class HRationCompositionDao implements RationCompositionDao {
         try {
             return Optional.of(session.load(RationComposition.class, id));
         } catch (ObjectNotFoundException e) {
-            log.error(e.getMessage() + Mess.LOG_RATION_COMPOSITION_GET_BY_ID);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
+            log.error(e.getMessage() + LOG_RATION_COMPOSITION_GET_BY_ID);
+            throw new DataSqlException(SQL_EXCEPTION);
         }
     }
 
@@ -82,7 +79,7 @@ public class HRationCompositionDao implements RationCompositionDao {
      */
     @Override
     public Integer getSumCaloriesCompositionByRationId(Integer idDayRation) {
-        String hql = DB_PROPERTIES.getSumCaloriesCompositionByRationId();
+        String hql = dbProperties.getSumCaloriesCompositionByRationId();
         Long sumCalories = 0L;
 
         Query query = session.createQuery(hql);
@@ -109,7 +106,7 @@ public class HRationCompositionDao implements RationCompositionDao {
                                                                             FoodIntake foodIntake,
                                                                             Integer dishId) {
         Optional<RationComposition> rationComposition;
-        String hql = DB_PROPERTIES.getCompositionByRationAndDish();
+        String hql = dbProperties.getCompositionByRationAndDish();
 
         try {
             Query<RationComposition> query = session.createQuery(hql, RationComposition.class);
@@ -132,7 +129,7 @@ public class HRationCompositionDao implements RationCompositionDao {
      */
     @Override
     public void deleteArrayCompositionById(List<Integer> compositionId) {
-        String hql = DB_PROPERTIES.deleteArrayCompositionById();
+        String hql = dbProperties.deleteArrayCompositionById();
 
         session.beginTransaction();
 

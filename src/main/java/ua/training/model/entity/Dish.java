@@ -1,8 +1,8 @@
 package ua.training.model.entity;
 
 import lombok.*;
-import ua.training.model.dao.utility.SortAnnotation;
 import ua.training.model.entity.enums.FoodCategory;
+import ua.training.model.utility.SortAnnotation;
 
 import javax.persistence.*;
 

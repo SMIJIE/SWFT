@@ -4,13 +4,14 @@ import lombok.extern.log4j.Log4j2;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import ua.training.constant.Attributes;
-import ua.training.constant.Mess;
-import ua.training.controller.controllers.exception.DataSqlException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+import ua.training.controller.exception.DataSqlException;
+import ua.training.controller.mapper.DayRationMapper;
 import ua.training.model.dao.UserDao;
-import ua.training.model.dao.mapper.DayRationMapper;
 import ua.training.model.entity.DayRation;
 import ua.training.model.entity.User;
+import ua.training.model.utility.DbProperties;
 
 import javax.persistence.NoResultException;
 import java.time.LocalDate;
@@ -19,17 +20,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Log4j2
+@Repository
 public class HUserDao implements UserDao {
-    /**
-     * The main runtime interface between a Java application and Hibernate.
-     *
-     * @see Session
-     */
-    private Session session;
-
-    HUserDao(Session session) {
-        this.session = session;
-    }
+    @Autowired
+    private HSesssionFactory hSesssionFactory;
+    private Session session = hSesssionFactory.getSession();
+    @Autowired
+    private DbProperties dbProperties;
 
     @Override
     public void create(User entity) {
@@ -50,8 +47,8 @@ public class HUserDao implements UserDao {
         try {
             return Optional.of(session.load(User.class, id));
         } catch (ObjectNotFoundException e) {
-            log.error(e.getMessage() + Mess.LOG_USER_GET_BY_ID);
-            throw new DataSqlException(Attributes.SQL_EXCEPTION);
+            log.error(e.getMessage() + LOG_USER_GET_BY_ID);
+            throw new DataSqlException(SQL_EXCEPTION);
         }
     }
 
@@ -62,7 +59,7 @@ public class HUserDao implements UserDao {
      */
     @Override
     public void update(User entity) {
-        String hql = DB_PROPERTIES.getDayRationByDateAndUser();
+        String hql = dbProperties.getDayRationByDateAndUser();
         LocalDate localDate = LocalDate.now();
         Period period = Period.between(entity.getDob(), localDate);
 
@@ -86,7 +83,7 @@ public class HUserDao implements UserDao {
                         session.update(dr);
                     });
         } catch (NoResultException e) {
-            log.info(e.getMessage() + Mess.LOG_DAY_RATION_GET_BY_DATE_AND_USER);
+            log.info(e.getMessage() + LOG_DAY_RATION_GET_BY_DATE_AND_USER);
         }
 
         session.getTransaction().commit();
@@ -94,9 +91,9 @@ public class HUserDao implements UserDao {
 
     @Override
     public void delete(Integer id) {
-        String hqlDelRationCompos = DB_PROPERTIES.deleteCompositionByRationAndUser();
-        String hqlDelDayRation = DB_PROPERTIES.deleteDayRationByUserId();
-        String hqlDelDish = DB_PROPERTIES.deleteDishByUserId();
+        String hqlDelRationCompos = dbProperties.deleteCompositionByRationAndUser();
+        String hqlDelDayRation = dbProperties.deleteDayRationByUserId();
+        String hqlDelDish = dbProperties.deleteDishByUserId();
 
         findById(id).ifPresent(u -> {
             session.beginTransaction();
@@ -133,7 +130,7 @@ public class HUserDao implements UserDao {
      */
     @Override
     public Optional<User> getOrCheckUserByEmail(String email) {
-        String hql = DB_PROPERTIES.getOrCheckUserByEmail();
+        String hql = dbProperties.getOrCheckUserByEmail();
         Optional<User> user;
 
         Query<User> query = session.createQuery(hql, User.class);
@@ -158,7 +155,7 @@ public class HUserDao implements UserDao {
      */
     @Override
     public List<User> getLimitUsersWithoutAdmin(Integer adminId, Integer limit, Integer skip) {
-        String hql = DB_PROPERTIES.getAllUsersWithoutAdmin();
+        String hql = dbProperties.getAllUsersWithoutAdmin();
 
         Query<User> query = session.createQuery(hql, User.class);
         query.setParameter("idUser", adminId);
@@ -176,7 +173,7 @@ public class HUserDao implements UserDao {
      */
     @Override
     public Integer countUsers(Integer userId) {
-        String hql = DB_PROPERTIES.countUsersForPage();
+        String hql = dbProperties.countUsersForPage();
 
         Query query = session.createQuery(hql);
         query.setParameter("idUser", userId);
@@ -192,10 +189,10 @@ public class HUserDao implements UserDao {
      */
     @Override
     public void deleteArrayUsersByEmail(List<String> emails) {
-        String hqlDelRationCompos = DB_PROPERTIES.deleteCompositionArrayByUserEmail();
-        String hqlDelDayRation = DB_PROPERTIES.deleteDayRationByUserEmail();
-        String hqlDelDish = DB_PROPERTIES.deleteDishByUserEmail();
-        String hqlDelUser = DB_PROPERTIES.deleteArrayUsersByEmail();
+        String hqlDelRationCompos = dbProperties.deleteCompositionArrayByUserEmail();
+        String hqlDelDayRation = dbProperties.deleteDayRationByUserEmail();
+        String hqlDelDish = dbProperties.deleteDishByUserEmail();
+        String hqlDelUser = dbProperties.deleteArrayUsersByEmail();
 
         session.beginTransaction();
 
