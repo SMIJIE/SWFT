@@ -228,7 +228,8 @@
                                             <spring:message code="valid.weight.size"/>
                                         </span>
                                     </form:label>
-                                    <form:input path="weightDesired" type="number" class="form-control" id="weightDesired"
+                                    <form:input path="weightDesired" type="number" class="form-control"
+                                                id="weightDesired"
                                                 step="0.1" placeholder="70,5" value="${formUser.weightDesired}"
                                                 onkeyup="checkInputs('weightDesired')"/>
                                     <p style="color:red" id="weightDesiredErrorAfterPost">

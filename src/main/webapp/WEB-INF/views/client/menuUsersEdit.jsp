@@ -81,8 +81,7 @@
                                         ${count}
                                 </th>
                                 <td>
-                                    <input type="checkbox" name="toDelete[]" value="${userDish.id}"
-                                           id="checkbox_${userDish.id}"/>
+                                    <input type="checkbox" name="toDelete[]" value="${userDish.id}"/>
                                 </td>
 
                                 <form:form method="POST" id="updateDish" modelAttribute="formDish"

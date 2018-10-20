@@ -19,14 +19,14 @@
         var hideTrId;
         var messArr;
         if (messCurrentPage == null) {
-            for (var i = 1; i <= 6; i++) {
+            for (var i = 1; i <= 5; i++) {
                 showTrId = '#FoodIntake' + i;
                 $(showTrId).show();
             }
         } else {
             messArr = messCurrentPage.split('+');
-            var end = parseInt(messArr[1]) * 6;
-            var start = end - 5;
+            var end = parseInt(messArr[1]) * 5;
+            var start = end - 4;
             hideTrId = '.' + messArr[0];
             $(hideTrId).hide();
 
@@ -58,7 +58,7 @@
                 </a>
             </div>
 
-            <div id="collapseOne" class="collapse show" data-parent="#accordion">
+            <div id="collapseOne" class="collapse ${showCollapseDayRationComposition}" data-parent="#accordion">
                 <div class="card-body">
                     <table class="table table-striped">
                         <thead>
@@ -97,144 +97,73 @@
                             </th>
                         </tr>
                         </thead>
-                        <tbody>
 
+                        <tbody>
                         <c:set var="countCalories" value="0" scope="page"/>
                         <c:set var="count" value="0" scope="page"/>
-                        <c:forEach items="${usersComposition}" var="userCom">
-                            <c:if test="${userCom.foodIntake eq 'BREAKFAST'}">
-                                <c:set var="count" value="${count + 1}" scope="page"/>
-                                <tr class="FoodIntake" id="FoodIntake${count}" style="display: none">
-                                    <td>
-                                            ${count}
-                                    </td>
-                                    <td>
-                                        <input type="checkbox" name="toDelete[]"
-                                               value="${userCom.id}" id="checkbox_${userCom.id}"/>
-                                    </td>
-                                    <td>
-                                        <spring:message code="ration.breakfast"/>
-                                    </td>
-                                    <td>
-                                        <c:if test="${userCom.dish.generalFood eq false}">
-                                            ${userCom.dish.name}
-                                        </c:if>
-                                        <c:if test="${userCom.dish.generalFood eq true}">
-                                            <spring:message code="${userCom.dish.name}"/>
-                                        </c:if>
-                                    </td>
-                                    <form action="${pageContext.request.contextPath}/swft/updateUsersComposition?numComposition=${userCom.id}"
-                                          method="POST">
-                                        <td>
-                                            <input type="number" class="form-control" name="amount"
-                                                   value="${userCom.numberOfDish}" min="1" max="5"/>
-                                        </td>
-                                        <td>
-                                            <c:set var="countCalories"
-                                                   value="${countCalories+ (userCom.numberOfDish * userCom.dish.calories)/1000}"
-                                                   scope="page"/>
-                                                ${(userCom.numberOfDish * userCom.dish.calories)/1000}
-                                        </td>
-                                        <td>
-                                            <button type="submit" class="btn btn-success">
-                                                <spring:message code="page.update"/>
-                                            </button>
-                                        </td>
-                                    </form>
-                                    <td></td>
-                                </tr>
-                            </c:if>
-                        </c:forEach>
+                        <c:set var="countPages" value="0" scope="page"/>
 
                         <c:forEach items="${usersComposition}" var="userCom">
-                            <c:if test="${userCom.foodIntake eq 'DINNER'}">
+
+                            <c:set var="countPages" value="${countPages+userCom.value.size()}" scope="page"/>
+                            <c:forEach items="${userCom.value}" var="userComValue">
+
                                 <c:set var="count" value="${count + 1}" scope="page"/>
                                 <tr class="FoodIntake" id="FoodIntake${count}" style="display: none">
                                     <td>
                                             ${count}
                                     </td>
                                     <td>
-                                        <input type="checkbox" name="toDelete[]" value="${userCom.id}"
-                                               id="checkbox_${userCom.id}"/>
+                                        <input type="checkbox" name="toDelete[]" value="${userComValue.id}"/>
                                     </td>
-                                    <td>
-                                        <spring:message code="ration.dinner"/>
-                                    </td>
-                                    <td>
-                                        <c:if test="${userCom.dish.generalFood eq false}">
-                                            ${userCom.dish.name}
-                                        </c:if>
-                                        <c:if test="${userCom.dish.generalFood eq true}">
-                                            <spring:message code="${userCom.dish.name}"/>
-                                        </c:if>
-                                    </td>
-                                    <form action="${pageContext.request.contextPath}/swft/updateUsersComposition?numComposition=${userCom.id}"
-                                          method="POST">
+                                    <form:form method="POST" id="userUpdateComposition" modelAttribute="formRC"
+                                               action="userUpdateComposition?numComposition=${userComValue.id}&numPage=${numPage}">
                                         <td>
-                                            <input type="number" class="form-control" name="amount"
-                                                   value="${userCom.numberOfDish}" min="1" max="5"/>
+                                            <form:select path="foodIntake" class="form-control" id="foodIntake"
+                                                         name="foodIntake">
+                                                <form:option value="BREAKFAST"
+                                                             selected="${userComValue.foodIntake eq 'BREAKFAST' ? 'selected' : ''}">
+                                                    <spring:message code="ration.breakfast"/>
+                                                </form:option>
+                                                <form:option value="DINNER"
+                                                             selected="${userComValue.foodIntake eq 'DINNER' ? 'selected' : ''}">
+                                                    <spring:message code="ration.dinner"/>
+                                                </form:option>
+                                                <form:option value="SUPPER"
+                                                             selected="${userComValue.foodIntake eq 'SUPPER' ? 'selected' : ''}">
+                                                    <spring:message code="ration.supper"/>
+                                                </form:option>
+                                            </form:select>
                                         </td>
                                         <td>
-                                            <c:set var="countCalories"
-                                                   value="${countCalories+ (userCom.numberOfDish * userCom.dish.calories)/1000}"
-                                                   scope="page"/>
-                                                ${(userCom.numberOfDish * userCom.dish.calories)/1000}
+                                            <c:if test="${userComValue.dish.generalFood eq false}">
+                                                ${userComValue.dish.name}
+                                            </c:if>
+                                            <c:if test="${userComValue.dish.generalFood eq true}">
+                                                <spring:message code="${userComValue.dish.name}"/>
+                                            </c:if>
+                                        </td>
+                                        <td>
+                                            <form:input path="numberOfDish" type="number" class="form-control"
+                                                        name="numberOfDish" min="1"
+                                                        value="${userComValue.numberOfDish}"/>
+                                        </td>
+                                        <td>
+                                            <c:set var="countCalories" scope="page"
+                                                   value="${countCalories+ (userComValue.numberOfDish * userComValue.dish.calories)/1000}"/>
+                                                ${(userComValue.numberOfDish * userComValue.dish.calories)/1000}
                                         </td>
                                         <td>
                                             <button type="submit" class="btn btn-success">
                                                 <spring:message code="page.update"/>
                                             </button>
                                         </td>
-                                    </form>
+                                    </form:form>
                                     <td></td>
                                 </tr>
-                            </c:if>
+                            </c:forEach>
                         </c:forEach>
 
-                        <c:forEach items="${usersComposition}" var="userCom">
-                            <c:if test="${userCom.foodIntake eq 'SUPPER'}">
-                                <c:set var="count" value="${count + 1}" scope="page"/>
-                                <tr class="FoodIntake" id="FoodIntake${count}" style="display: none">
-                                    <td>
-                                            ${count}
-                                    </td>
-                                    <td>
-                                        <input type="checkbox" name="toDelete[]" value="${userCom.id}"
-                                               id="checkbox_${userCom.id}"/>
-                                    </td>
-                                    <td>
-                                        <spring:message code="ration.supper"/>
-                                    </td>
-                                    <td>
-                                        <c:if test="${userCom.dish.generalFood eq false}">
-                                            ${userCom.dish.name}
-                                        </c:if>
-                                        <c:if test="${userCom.dish.generalFood eq true}">
-                                            <spring:message code="${userCom.dish.name}"/>
-                                        </c:if>
-                                    </td>
-                                    <form action="${pageContext.request.contextPath}/swft/updateUsersComposition?numComposition=${userCom.id}"
-                                          method="POST">
-                                        <td>
-                                            <input type="number" class="form-control" name="amount"
-                                                   value="${userCom.numberOfDish}" min="1" max="5"/>
-                                        </td>
-                                        <td>
-                                            <c:set var="countCalories"
-                                                   value="${countCalories+ (userCom.numberOfDish * userCom.dish.calories)/1000}"
-                                                   scope="page"/>
-                                                ${(userCom.numberOfDish * userCom.dish.calories)/1000}
-                                        </td>
-                                        <td>
-                                            <button type="submit" class="btn btn-success">
-                                                <spring:message code="page.update"/>
-                                            </button>
-                                        </td>
-                                    </form>
-                                    <td></td>
-                                </tr>
-                            </c:if>
-                        </c:forEach>
                         <tr>
                             <td colspan="5" style="text-align: center">
                                 <spring:message code="calories.totalNumber"/>
@@ -250,7 +179,7 @@
                     <nav aria-label="Page navigation example" class="">
                         <ul class="pagination">
                             &nbsp;&nbsp;
-                            <c:forEach begin="1" end="${0.99+usersComposition.size()/6}" var="loop">
+                            <c:forEach begin="1" end="${0.99+countPages/5}" var="loop">
                                 <li class="page-item">
                                     <a class="page-link bg-transparent text-danger" id="FoodIntake+${loop}"
                                        href="#" onclick="jsPage(this)">
@@ -269,11 +198,14 @@
 
             <div class="card-header">
                 <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
-                    <spring:message code="menu.add"/>
+                    <spring:message code="menu.add"/>&nbsp;&nbsp;&nbsp;
+                    <span style="color:#D2691E; visibility: hidden" id="dateError">
+                        <spring:message code="valid.dayRation.date"/>
+                    </span>
                 </a>
             </div>
 
-            <div id="collapseTwo" class="collapse" data-parent="#accordion">
+            <div id="collapseTwo" class="collapse ${showCollapseDayRationAddComposition}" data-parent="#accordion">
                 <div class="card-body">
                     <div class="form-group row">
                         <div class="col">
@@ -282,96 +214,50 @@
                             </label>
 
                             <select class="form-control" multiple="multiple" id="selectMenu" size="18">
-                                <optgroup label="<spring:message code="category.luncheon"/>">
-                                    <c:forEach items="${usersDishes}" var="dishUsers">
-                                        <c:if test="${dishUsers.foodCategory eq 'LUNCHEON'}">
-                                            <option value="${dishUsers.id}" id="${dishUsers.calories}">
-                                                <c:if test="${dishUsers.generalFood eq false}">
-                                                    ${dishUsers.name}
+                                <c:forEach items="${usersDishes}" var="dishUsers">
+                                    <optgroup label="<spring:message code="category.${dishUsers.key}"/>">
+                                        <c:forEach items="${dishUsers.value}" var="dishUsersValue">
+                                            <option value="${dishUsersValue.id}" id="${dishUsersValue.calories}">
+                                                <c:if test="${dishUsersValue.generalFood eq false}">
+                                                    ${dishUsersValue.name}
                                                 </c:if>
-                                                <c:if test="${dishUsers.generalFood eq true}">
-                                                    <spring:message code="${dishUsers.name}"/>
-                                                </c:if>
-                                            </option>
-                                        </c:if>
-                                    </c:forEach>
-                                </optgroup>
-
-                                <optgroup label="<spring:message code="category.soup"/>">
-                                    <c:forEach items="${usersDishes}" var="dishUsers">
-                                        <c:if test="${dishUsers.foodCategory eq 'SOUP'}">
-                                            <option value="${dishUsers.id}" id="${dishUsers.calories}">
-                                                <c:if test="${dishUsers.generalFood eq false}">
-                                                    ${dishUsers.name}
-                                                </c:if>
-                                                <c:if test="${dishUsers.generalFood eq true}">
-                                                    <spring:message code="${dishUsers.name}"/>
+                                                <c:if test="${dishUsersValue.generalFood eq true}">
+                                                    <spring:message code="${dishUsersValue.name}"/>
                                                 </c:if>
                                             </option>
-                                        </c:if>
-                                    </c:forEach>
-                                </optgroup>
-
-                                <optgroup label="<spring:message code="category.hot"/>">
-                                    <c:forEach items="${usersDishes}" var="dishUsers">
-                                        <c:if test="${dishUsers.foodCategory eq 'HOT'}">
-                                            <option value="${dishUsers.id}" id="${dishUsers.calories}">
-                                                <c:if test="${dishUsers.generalFood eq false}">
-                                                    ${dishUsers.name}
-                                                </c:if>
-                                                <c:if test="${dishUsers.generalFood eq true}">
-                                                    <spring:message code="${dishUsers.name}"/>
-                                                </c:if>
-                                            </option>
-                                        </c:if>
-                                    </c:forEach>
-                                </optgroup>
-
-                                <optgroup label="<spring:message code="category.dessert"/>">
-                                    <c:forEach items="${usersDishes}" var="dishUsers">
-                                        <c:if test="${dishUsers.foodCategory eq 'DESSERT'}">
-                                            <option value="${dishUsers.id}" id="${dishUsers.calories}">
-                                                <c:if test="${dishUsers.generalFood eq false}">
-                                                    ${dishUsers.name}
-                                                </c:if>
-                                                <c:if test="${dishUsers.generalFood eq true}">
-                                                    <spring:message code="${dishUsers.name}"/>
-                                                </c:if>
-                                            </option>
-                                        </c:if>
-                                    </c:forEach>
-                                </optgroup>
+                                        </c:forEach>
+                                    </optgroup>
+                                </c:forEach>
                             </select>
                         </div>
 
                         <div class="col">
-                            <form method="POST" action="${pageContext.request.contextPath}/swft/createNewRation"
-                                  id="dayRation">
+                            <form:form method="POST" id="dayRation" modelAttribute="formRC"
+                                       action="createNewRation?numPage=${numPage}">
 
-                                <label style="text-align: right;display: block" for="breakfast">
+                                <form:label path="breakfast" style="text-align: right;display: block">
                                     <spring:message code="ration.breakfast"/>:
-                                </label>
+                                </form:label>
                                 <div class="row" id="breakfast">
                                     <div class="btn-group-vertical" role="group">
                                         <button type="button" id="addToBreakfast" class="btn btn-success btn-sm">
                                             &raquo;&nbsp;<spring:message code="menu.add"/>&nbsp;&raquo;
                                         </button>
                                         &nbsp;
-                                        <button type="button" id="removeFromBreakfast"
-                                                class="btn btn-danger btn-sm">
+                                        <button type="button" id="removeFromBreakfast" class="btn btn-danger btn-sm">
                                             &laquo;&nbsp;<spring:message code="page.delete"/>&nbsp;&laquo;
                                         </button>
                                     </div>
-
                                     <div class="col">
-                                        <select class="form-control" multiple="multiple" id="selectBreakfast"
-                                                name="selectBreakfast" size="4"></select>
+                                        <form:select path="breakfast" class="form-control" multiple="multiple"
+                                                     id="selectBreakfast" name="selectBreakfast" size="4">
+                                        </form:select>
                                     </div>
                                 </div>
 
-                                <label style="text-align: right;display: block" for="dinner">
+                                <form:label path="dinner" style="text-align: right;display: block">
                                     <spring:message code="ration.dinner"/>:
-                                </label>
+                                </form:label>
                                 <div class="row" id="dinner">
                                     <div class="btn-group-vertical" role="group">
                                         <button type="button" id="addToDinner" class="btn btn-success btn-sm">
@@ -383,15 +269,15 @@
                                         </button>
                                     </div>
                                     <div class="col">
-                                        <select class="form-control" multiple="multiple" id="selectDinner"
-                                                name="selectDinner" size="4">
-                                        </select>
+                                        <form:select path="dinner" class="form-control" multiple="multiple"
+                                                     id="selectDinner" name="selectDinner" size="4">
+                                        </form:select>
                                     </div>
                                 </div>
 
-                                <label style="text-align: right;display: block" for="supper">
+                                <form:label path="supper" style="text-align: right;display: block">
                                     <spring:message code="ration.supper"/>:
-                                </label>
+                                </form:label>
                                 <div class="row" id="supper">
                                     <div class="btn-group-vertical" role="group">
                                         <button type="button" id="addToSupper" class="btn btn-success btn-sm">
@@ -403,15 +289,15 @@
                                         </button>
                                     </div>
                                     <div class="col">
-                                        <select class="form-control" multiple="multiple" id="selectSupper"
-                                                name="selectSupper" size="4">
-                                        </select>
+                                        <form:select path="supper" class="form-control" multiple="multiple"
+                                                     id="selectSupper" name="selectSupper" size="4">
+                                        </form:select>
                                     </div>
                                 </div>
 
                                 <div class="row" style="margin-top: 10px">
                                     <div class="btn-group" role="group">
-                                        <input type="date" class="form-control" id="date" name="date">
+                                        <form:input path="date" type="date" class="form-control" id="date" name="date"/>
                                         &nbsp;
                                         <button type="submit" class="btn btn-primary">
                                             <spring:message code="page.write"/>
@@ -427,7 +313,7 @@
                                         </button>
                                     </div>
                                 </div>
-                            </form>
+                            </form:form>
                         </div>
                     </div>
                 </div>
@@ -440,9 +326,9 @@
 <script type="text/javascript">
     showRowAndErrorWithData()
 </script>
-<%--Shows row for users and  error with data--%>
+<%--Shows row for`x` users and  error with data--%>
 <%--Sent number of page--%>
-<script>
+<script type="text/javascript">
     function serverPage(currentPage) {
         window.location.href = '${pageContext.request.contextPath}/swft/user/dayRation?' + currentPage.id;
     }
@@ -453,7 +339,7 @@
 </script>
 <%--Sent number of page--%>
 <%--Delete array of composition item--%>
-<script>
+<script type="text/javascript">
     $('#delete_composition').click(function () {
         var arrDish = {'toDelete[]': []};
         $(":input:checked").each(function () {
@@ -461,7 +347,7 @@
         });
 
         if (arrDish['toDelete[]'].length > 0) {
-            window.location.href = '${pageContext.request.contextPath}/swft/deleteUsersComposition?arrComposition=' + arrDish['toDelete[]'];
+            window.location.href = '${pageContext.request.contextPath}/swft//user/userDeleteComposition?arrComposition=' + arrDish['toDelete[]'] + '&numPage=' +${numPage};
         }
     });
 </script>
@@ -469,7 +355,7 @@
 <%--For selecting menu item for food intake--%>
 <script type="text/javascript">
     $(document).ready(function () {
-        // Breakfast
+        <%--Breakfast--%>
         $('#addToBreakfast').click(function () {
             $('#selectMenu option:selected').each(function () {
                 var tempDish = $(this).clone();
@@ -481,9 +367,9 @@
                 $(this).remove();
             });
         });
-        // Breakfast
+        <%--Breakfast--%>
 
-        // Dinner
+        <%--Dinner--%>
         $('#addToDinner').click(function () {
             $('#selectMenu option:selected').each(function () {
                 var tempDish = $(this).clone();
@@ -495,9 +381,9 @@
                 $(this).remove();
             });
         });
-        // Dinner
+        <%--Dinner--%>
 
-        // Supper
+        <%--Supper--%>
         $('#addToSupper').click(function () {
             $('#selectMenu option:selected').each(function () {
                 var tempDish = $(this).clone();
@@ -509,20 +395,21 @@
                 $(this).remove();
             });
         });
-        // Supper
+        <%--Supper--%>
 
-        /*Selected all dishes and sent to server*/
+        <%--Selected all dishes and sent to server--%>
         $('#dayRation').submit(function (event) {
             var myDate = new Date($('#date').val());
             var currentDate = new Date();
             var timeDiff = Math.abs(currentDate.getTime() - myDate.getTime());
             var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
             if (!isNaN(myDate)) {
-                if (diffDays > 14
-                    || diffDays < -14) {
+                if (diffDays > 14 || diffDays < -14) {
                     event.preventDefault();
-                    alert('<spring:message code="wrong.user.date"/>');
+                    $('#dateError').css({visibility: 'visible'});
                     return;
+                } else {
+                    $('#dateError').css({visibility: 'hidden'});
                 }
             }
 
@@ -537,9 +424,9 @@
             $('#selectDinner option').prop('selected', true);
             $('#selectSupper option').prop('selected', true);
         });
-        /*Selected all dishes and sent to server*/
+        <%--Selected all dishes and sent to server--%>
 
-        /*Calculate chosen calories*/
+        <%--Calculate chosen calories--%>
         $('#calculateCalories').click(function () {
             var sumCalories = 0;
             $('#selectBreakfast option').each(function () {
@@ -553,7 +440,7 @@
             });
             $('span#resultChosenCalories').text(sumCalories / 1000);
         });
-        /*Calculate chosen calories*/
+        <%--Calculate chosen calories--%>
     });
 </script>
 <%--For selecting menu item for food intake--%>

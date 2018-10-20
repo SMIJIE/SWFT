@@ -108,8 +108,7 @@
                                             ${counter}
                                     </th>
                                     <td>
-                                        <input type="checkbox" name="toDelete[]"
-                                               value="${dishGeneralValue.id}" id="checkbox_${dishGeneralValue.id}"/>
+                                        <input type="checkbox" name="toDelete[]" value="${dishGeneralValue.id}"/>
                                     </td>
                                     <td>
                                         <spring:message code="${dishGeneralValue.name}"/>
