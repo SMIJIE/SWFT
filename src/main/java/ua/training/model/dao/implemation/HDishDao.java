@@ -11,6 +11,7 @@ import ua.training.model.dao.DishDao;
 import ua.training.model.entity.Dish;
 import ua.training.model.utility.DbProperties;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,10 +19,15 @@ import java.util.Optional;
 @Repository
 public class HDishDao implements DishDao {
     @Autowired
-    private HSesssionFactory hSesssionFactory;
-    private Session session = hSesssionFactory.getSession();
+    private HSessionFactory hSessionFactory;
+    private Session session;
     @Autowired
     private DbProperties dbProperties;
+
+    @PostConstruct
+    public void init() {
+        session = hSessionFactory.getSession();
+    }
 
     @Override
     public void create(Dish entity) {

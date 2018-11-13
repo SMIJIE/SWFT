@@ -5,7 +5,6 @@ import ua.training.constant.Attributes;
 import ua.training.controller.utility.ControllerUtil;
 import ua.training.model.entity.Dish;
 import ua.training.model.service.implementation.DishServiceImp;
-import ua.training.model.utility.DbProperties;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

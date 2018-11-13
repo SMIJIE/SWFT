@@ -11,6 +11,7 @@ import ua.training.model.dao.DayRationDao;
 import ua.training.model.entity.DayRation;
 import ua.training.model.utility.DbProperties;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.NoResultException;
 import java.time.LocalDate;
 import java.util.List;
@@ -20,10 +21,15 @@ import java.util.Optional;
 @Repository
 public class HDayRationDao implements DayRationDao {
     @Autowired
-    private HSesssionFactory hSesssionFactory;
-    private Session session = hSesssionFactory.getSession();
+    private HSessionFactory hSessionFactory;
+    private Session session;
     @Autowired
     private DbProperties dbProperties;
+
+    @PostConstruct
+    public void init() {
+        session = hSessionFactory.getSession();
+    }
 
     @Override
     public void create(DayRation entity) {

@@ -12,6 +12,7 @@ import ua.training.model.entity.RationComposition;
 import ua.training.model.entity.enums.FoodIntake;
 import ua.training.model.utility.DbProperties;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Optional;
@@ -20,10 +21,15 @@ import java.util.Optional;
 @Repository
 public class HRationCompositionDao implements RationCompositionDao {
     @Autowired
-    private HSesssionFactory hSesssionFactory;
-    private Session session = hSesssionFactory.getSession();
+    private HSessionFactory hSessionFactory;
+    private Session session;
     @Autowired
     private DbProperties dbProperties;
+
+    @PostConstruct
+    public void init() {
+        session = hSessionFactory.getSession();
+    }
 
     @Override
     public void create(RationComposition entity) {

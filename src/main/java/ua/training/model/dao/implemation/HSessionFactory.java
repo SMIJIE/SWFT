@@ -6,13 +6,12 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.MySQL5Dialect;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ua.training.model.entity.DayRation;
 import ua.training.model.entity.Dish;
 import ua.training.model.entity.RationComposition;
 import ua.training.model.entity.User;
-import ua.training.model.utility.DbProperties;
 import ua.training.model.utility.converter.DateConverter;
 import ua.training.model.utility.converter.FoodCategoryConverter;
 import ua.training.model.utility.converter.FoodIntakeConverter;
@@ -26,14 +25,13 @@ import java.util.Properties;
  * @author Zakusylo Pavlo
  */
 @Component
-public class HSesssionFactory {
-    /**
-     * DbProperties for Hibernate Session
-     *
-     * @see DbProperties
-     */
-    @Autowired
-    private DbProperties dbProperties;
+public class HSessionFactory {
+    @Value("db.url")
+    private String url;
+    @Value("${db.user}")
+    private String user;
+    @Value("${db.password}")
+    private String password;
     /**
      * Represents one approach for bootstrapping Hibernate.
      *
@@ -45,11 +43,7 @@ public class HSesssionFactory {
      *
      * @see SessionFactory
      */
-    private final SessionFactory sessionFactory;
-
-    public HSesssionFactory() {
-        sessionFactory = initializeSessionFactory();
-    }
+    private final SessionFactory sessionFactory = initializeSessionFactory();
 
     /**
      * Build and return Session Factory
@@ -80,11 +74,15 @@ public class HSesssionFactory {
     private Properties getProperties() {
         Properties properties = new Properties();
 
+        System.out.println(url);
+        System.out.println(user);
+        System.out.println("=========================================================================================");
+
         properties.put(Environment.DRIVER, Driver.class.getCanonicalName());
         properties.put(Environment.DIALECT, MySQL5Dialect.class.getCanonicalName());
-        properties.put(Environment.URL, dbProperties.getUrl());
-        properties.put(Environment.USER, dbProperties.getUser());
-        properties.put(Environment.PASS, dbProperties.getPassword());
+        properties.put(Environment.URL, url);
+        properties.put(Environment.USER, user);
+        properties.put(Environment.PASS, password);
         properties.put(Environment.HBM2DDL_AUTO, "validate");
         properties.put(Environment.SHOW_SQL, true);
 

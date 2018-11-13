@@ -13,6 +13,7 @@ import ua.training.model.entity.DayRation;
 import ua.training.model.entity.User;
 import ua.training.model.utility.DbProperties;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.NoResultException;
 import java.time.LocalDate;
 import java.time.Period;
@@ -23,10 +24,15 @@ import java.util.Optional;
 @Repository
 public class HUserDao implements UserDao {
     @Autowired
-    private HSesssionFactory hSesssionFactory;
-    private Session session = hSesssionFactory.getSession();
+    private HSessionFactory hSessionFactory;
+    private Session session;
     @Autowired
     private DbProperties dbProperties;
+
+    @PostConstruct
+    public void init() {
+        session = hSessionFactory.getSession();
+    }
 
     @Override
     public void create(User entity) {

@@ -2,7 +2,6 @@ package ua.training.model.dao;
 
 import ua.training.constant.Attributes;
 import ua.training.constant.Mess;
-import ua.training.model.utility.DbProperties;
 
 import java.util.Optional;
 
