@@ -26,12 +26,12 @@ public class HUserDao implements UserDao {
     @Autowired
     private HSessionFactory hSessionFactory;
     private Session session;
-    @Autowired
     private DbProperties dbProperties;
 
     @PostConstruct
     public void init() {
         session = hSessionFactory.getSession();
+        dbProperties = new DbProperties();
     }
 
     @Override

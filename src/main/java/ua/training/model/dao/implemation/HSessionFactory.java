@@ -17,6 +17,7 @@ import ua.training.model.utility.converter.FoodCategoryConverter;
 import ua.training.model.utility.converter.FoodIntakeConverter;
 import ua.training.model.utility.converter.RolesConverter;
 
+import javax.annotation.PostConstruct;
 import java.util.Properties;
 
 /**
@@ -26,12 +27,13 @@ import java.util.Properties;
  */
 @Component
 public class HSessionFactory {
-    @Value("db.url")
+    @Value("#{dbProperties.url}")
     private String url;
-    @Value("${db.user}")
+    @Value("#{dbProperties.user}")
     private String user;
-    @Value("${db.password}")
+    @Value("#{dbProperties.password}")
     private String password;
+
     /**
      * Represents one approach for bootstrapping Hibernate.
      *
@@ -43,7 +45,12 @@ public class HSessionFactory {
      *
      * @see SessionFactory
      */
-    private final SessionFactory sessionFactory = initializeSessionFactory();
+    private SessionFactory sessionFactory;
+
+    @PostConstruct
+    public void init() {
+        sessionFactory = initializeSessionFactory();
+    }
 
     /**
      * Build and return Session Factory
@@ -73,10 +80,6 @@ public class HSessionFactory {
      */
     private Properties getProperties() {
         Properties properties = new Properties();
-
-        System.out.println(url);
-        System.out.println(user);
-        System.out.println("=========================================================================================");
 
         properties.put(Environment.DRIVER, Driver.class.getCanonicalName());
         properties.put(Environment.DIALECT, MySQL5Dialect.class.getCanonicalName());
