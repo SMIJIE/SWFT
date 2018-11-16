@@ -40,7 +40,7 @@ public class MenuController implements GeneralController {
      * @param modelAndView {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = MENU_API, method = RequestMethod.GET)
+    @GetMapping(MENU_API)
     public ModelAndView getGeneralMenuPage(ModelAndView modelAndView) {
         modelAndView.addObject(PAGE_NAME, PAGE_MENU)
                 .setViewName(MENU_PAGE);
@@ -56,7 +56,7 @@ public class MenuController implements GeneralController {
      * @param modelAndView {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = USER_MENU_EDIT, method = RequestMethod.GET)
+    @GetMapping(USER_MENU_EDIT)
     public ModelAndView getUsersMenuPage(@SessionAttribute(REQUEST_USER) User user,
                                          @RequestParam(value = REQUEST_NUMBER_PAGE, required = false) Integer numPage,
                                          ModelAndView modelAndView) {
@@ -88,7 +88,7 @@ public class MenuController implements GeneralController {
      * @param modelAndView {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = USER_DELETE_DISH, method = RequestMethod.GET)
+    @GetMapping(USER_DELETE_DISH)
     public ModelAndView actionDeleteUsersDish(@SessionAttribute(REQUEST_USER) User user,
                                               @RequestParam(REQUEST_ARR_DISH) Integer[] idDishes,
                                               @RequestParam(REQUEST_NUMBER_PAGE) Integer numPage,
@@ -153,7 +153,7 @@ public class MenuController implements GeneralController {
      * @param modelAndView       {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = USER_UPDATE_DISH, method = RequestMethod.POST)
+    @PostMapping(USER_UPDATE_DISH)
     public ModelAndView actionUpdateUsersDish(@Valid @ModelAttribute(REQUEST_FORM_DISH) FormDish formDish,
                                               BindingResult bindingResult,
                                               @RequestParam(REQUEST_NUMBER_DISH) Integer idDish,

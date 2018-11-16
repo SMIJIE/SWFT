@@ -60,7 +60,7 @@ public class UserController implements GeneralController {
      * @param modelAndView {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = USER_HOME_PAGE, method = RequestMethod.GET)
+    @GetMapping(USER_HOME_PAGE)
     public ModelAndView getHomePage(@SessionAttribute(REQUEST_USER) User user,
                                     @RequestParam(value = REQUEST_NUMBER_PAGE, required = false) Integer numPage,
                                     ModelAndView modelAndView) {
@@ -93,7 +93,7 @@ public class UserController implements GeneralController {
      * @param modelAndView {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = USER_SETTINGS_PAGE, method = RequestMethod.GET)
+    @GetMapping(USER_SETTINGS_PAGE)
     public ModelAndView getUserSettingsPage(ModelAndView modelAndView) {
 
         modelAndView.addObject(PAGE_NAME, PAGE_SETTINGS)
@@ -185,7 +185,7 @@ public class UserController implements GeneralController {
      * @param modelAndView       {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = USER_DAY_RATION, method = RequestMethod.GET)
+    @GetMapping(USER_DAY_RATION)
     public ModelAndView getUserDayRationPage(@SessionAttribute(REQUEST_USER) User user,
                                              @RequestParam(value = REQUEST_NUMBER_PAGE, required = false) Integer numPage,
                                              HttpServletRequest httpServletRequest,
@@ -233,7 +233,7 @@ public class UserController implements GeneralController {
      * @param modelAndView {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = USER_UPDATE_COMPOSITION, method = RequestMethod.POST)
+    @PostMapping(value = USER_UPDATE_COMPOSITION)
     public ModelAndView actionUpdateUsersComposition(@RequestParam(REQUEST_NUMBER_PAGE) Integer numPage,
                                                      @RequestParam(REQUEST_NUMBER_COMPOSITION) Integer idRC,
                                                      @ModelAttribute(REQUEST_FORM_RATION_COMPOSITION) FormDayRationComposition formDRC,
@@ -266,7 +266,7 @@ public class UserController implements GeneralController {
      * @param modelAndView   {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = USER_DELETE_COMPOSITION, method = RequestMethod.GET)
+    @GetMapping(USER_DELETE_COMPOSITION)
     public ModelAndView actionDeleteUsersComposition(@RequestParam(REQUEST_ARR_COMPOSITION) Integer[] idCompositions,
                                                      @RequestParam(REQUEST_NUMBER_PAGE) Integer numPage,
                                                      ModelAndView modelAndView) {
@@ -286,7 +286,7 @@ public class UserController implements GeneralController {
      * @param modelAndView {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = USER_CREATE_DAY_RATION, method = RequestMethod.POST)
+    @PostMapping(USER_CREATE_DAY_RATION)
     public ModelAndView actionCreateUsersDayRation(@SessionAttribute(REQUEST_USER) User user,
                                                    @RequestParam(REQUEST_NUMBER_PAGE) Integer numPage,
                                                    @ModelAttribute(REQUEST_FORM_RATION_COMPOSITION) FormDayRationComposition formDRC,

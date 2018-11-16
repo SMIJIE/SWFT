@@ -39,7 +39,7 @@ public class StatementController implements GeneralController {
      * @param modelAndView {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = DEFAULT, method = RequestMethod.GET)
+    @GetMapping(DEFAULT)
     public ModelAndView getWelcomePage(ModelAndView modelAndView) {
         modelAndView.addObject(PAGE_NAME, PAGE_GENERAL)
                 .setViewName(WELCOME_PAGE);
@@ -53,7 +53,7 @@ public class StatementController implements GeneralController {
      * @param modelAndView {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = SIGN_IN_OR_REGISTER, method = RequestMethod.GET)
+    @GetMapping(SIGN_IN_OR_REGISTER)
     public ModelAndView getSignInOrRegisterPage(ModelAndView modelAndView) {
         modelAndView.addObject(PAGE_NAME, PAGE_SIGN_IN_OR_UP)
                 .addObject(REQUEST_FORM_USER, new FormUser())
@@ -73,7 +73,7 @@ public class StatementController implements GeneralController {
      * @param request            {@link HttpServletRequest}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = LOG_IN, method = RequestMethod.POST)
+    @PostMapping(LOG_IN)
     public ModelAndView actionLogIn(@RequestParam(REQUEST_EMAIL) String email,
                                     @RequestParam(REQUEST_PASSWORD) String password,
                                     ModelAndView modelAndView,
@@ -155,7 +155,7 @@ public class StatementController implements GeneralController {
      * @param modelAndView       {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = USER_LOG_OUT, method = RequestMethod.GET)
+    @GetMapping(USER_LOG_OUT)
     public ModelAndView actionLogOut(@SessionAttribute(REQUEST_USER) User user,
                                      HttpServletRequest servletRequest,
                                      RedirectAttributes redirectAttributes,

@@ -1,6 +1,7 @@
 package ua.training.controller.servlet.listener;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import ua.training.constant.Attributes;
 import ua.training.controller.utility.ControllerUtil;
 import ua.training.model.entity.Dish;
@@ -12,6 +13,8 @@ import javax.servlet.annotation.WebListener;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
+
+import static java.util.Objects.isNull;
 
 /**
  * Description: First initialization of data before Servlets
@@ -26,20 +29,24 @@ public class ServContListener implements ServletContextListener, Attributes {
 
     /**
      * Initialize 'set' of users and 'list' of general dishes
+     * Null check because it's called 2 times, the 2-d time after initializing the spring context
      *
      * @param servletContextEvent {@link ServletContextEvent}
      */
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
-        servletContextEvent.getServletContext().setAttribute(REQUEST_USERS_ALL, allUsers);
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
 
-        List<Dish> generalList = dishServiceImp.getGeneralDishes();
-        ControllerUtil.sortListByAnnotationFields(generalList);
+        if (!isNull(dishServiceImp)) {
+            servletContextEvent.getServletContext().setAttribute(REQUEST_USERS_ALL, allUsers);
 
-        Map<String, List<Dish>> dishes = ControllerUtil.addGeneralDishToContext(generalList);
+            List<Dish> generalList = dishServiceImp.getGeneralDishes();
+            ControllerUtil.sortListByAnnotationFields(generalList);
+            Map<String, List<Dish>> dishes = ControllerUtil.addGeneralDishToContext(generalList);
 
-        if (!generalList.isEmpty()) {
-            servletContextEvent.getServletContext().setAttribute(REQUEST_GENERAL_DISHES, dishes);
+            if (!generalList.isEmpty()) {
+                servletContextEvent.getServletContext().setAttribute(REQUEST_GENERAL_DISHES, dishes);
+            }
         }
     }
 

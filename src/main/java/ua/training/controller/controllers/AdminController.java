@@ -47,7 +47,7 @@ public class AdminController implements GeneralController {
      * @param modelAndView {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = ADMIN_MENU_GENERAL_EDIT, method = RequestMethod.GET)
+    @GetMapping(ADMIN_MENU_GENERAL_EDIT)
     public ModelAndView getGeneralMenuEditPage(ModelAndView modelAndView) {
         modelAndView.addObject(PAGE_NAME, PAGE_MENU_EDIT)
                 .addObject(REQUEST_FORM_DISH, new FormDish())
@@ -67,7 +67,7 @@ public class AdminController implements GeneralController {
      * @param modelAndView       {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = ADMIN_MENU_GENERAL_UPDATE_DISH, method = RequestMethod.POST)
+    @PostMapping(ADMIN_MENU_GENERAL_UPDATE_DISH)
     public ModelAndView actionUpdateGeneralDish(@Valid @ModelAttribute(REQUEST_FORM_DISH) FormDish formDish,
                                                 BindingResult bindingResult,
                                                 @RequestParam(REQUEST_NUMBER_DISH) Integer idDish,
@@ -123,7 +123,7 @@ public class AdminController implements GeneralController {
      * @param modelAndView   {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = ADMIN_MENU_GENERAL_DELETE_ITEM, method = RequestMethod.GET)
+    @GetMapping(ADMIN_MENU_GENERAL_DELETE_ITEM)
     public ModelAndView actionDeleteGeneralDishItem(@RequestParam(REQUEST_ARR_DISH) Integer[] idDishes,
                                                     HttpServletRequest servletRequest,
                                                     ModelAndView modelAndView) {
@@ -149,7 +149,7 @@ public class AdminController implements GeneralController {
      * @param modelAndView {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = ADMIN_USERS_SHOW, method = RequestMethod.GET)
+    @GetMapping(ADMIN_USERS_SHOW)
     public ModelAndView getShowUsersPage(@SessionAttribute(REQUEST_USER) User user,
                                          @RequestParam(value = REQUEST_NUMBER_PAGE, required = false) Integer numPage,
                                          ModelAndView modelAndView) {
@@ -182,7 +182,7 @@ public class AdminController implements GeneralController {
      * @param modelAndView {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = ADMIN_USERS_SEARCH_BY_EMAIL, method = RequestMethod.POST)
+    @PostMapping(ADMIN_USERS_SEARCH_BY_EMAIL)
     public ModelAndView actionSearchUsersByEmail(@SessionAttribute(REQUEST_USER) User user,
                                                  @RequestParam(REQUEST_EMAIL) String email,
                                                  ModelAndView modelAndView) {
@@ -214,7 +214,7 @@ public class AdminController implements GeneralController {
      * @param modelAndView       {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = ADMIN_USERS_UPDATE_BY_EMAIL, method = RequestMethod.POST)
+    @PostMapping(ADMIN_USERS_UPDATE_BY_EMAIL)
     public ModelAndView actionUpdateUsersByEmail(@RequestParam(REQUEST_EMAIL) String email,
                                                  @RequestParam(REQUEST_PASSWORD) String password,
                                                  @RequestParam(REQUEST_USER_ROLE) String role,
@@ -262,7 +262,7 @@ public class AdminController implements GeneralController {
      * @param modelAndView       {@link ModelAndView}
      * @return modelAndView {@link ModelAndView}
      */
-    @RequestMapping(value = ADMIN_USERS_DELETE_BY_EMAIL, method = RequestMethod.GET)
+    @GetMapping(ADMIN_USERS_DELETE_BY_EMAIL)
     public ModelAndView actionDeleteUsersByEmail(@RequestParam(REQUEST_ARR_EMAIL_USERS) String[] emailUsers,
                                                  @RequestParam(REQUEST_NUMBER_PAGE) Integer numPage,
                                                  HttpServletRequest httpServletRequest,
